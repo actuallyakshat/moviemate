@@ -149,6 +149,52 @@ const getBannerMovie = async () => {
   }
 };
 
+function formatDate(dateString) {
+  if (!dateString) return null;
+  // Split the date string into year, month, and day
+  const [year, month, day] = dateString.split("-");
+
+  // Create an array of month names
+  const monthNames = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  // Convert day to a number and add the appropriate suffix
+  let dayWithSuffix;
+  switch (day.slice(-1)) {
+    case "1":
+      dayWithSuffix = day + "st";
+      break;
+    case "2":
+      dayWithSuffix = day + "nd";
+      break;
+    case "3":
+      dayWithSuffix = day + "rd";
+      break;
+    default:
+      dayWithSuffix = day + "th";
+  }
+
+  // Get the month name
+  const monthName = monthNames[parseInt(month, 10) - 1];
+
+  // Construct the formatted date string
+  const formattedDate = `${dayWithSuffix} ${monthName}, ${year}`;
+
+  return formattedDate;
+}
+
 export {
   fetchLatestMovies,
   fetchPopularMovies,
@@ -157,4 +203,5 @@ export {
   getIdByGenre,
   fetchSearchMovies,
   getBannerMovie,
+  formatDate,
 };

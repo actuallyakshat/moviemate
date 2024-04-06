@@ -16,7 +16,7 @@ import { Link } from "react-router-dom";
 const DropDownMenu = () => {
   const { user, signOut } = useClerk();
   return (
-    <DropdownMenu>
+    <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />

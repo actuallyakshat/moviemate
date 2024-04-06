@@ -1,11 +1,11 @@
-import { getBannerMovie } from "@/lib/functions/tmdb";
-import { useEffect, useState } from "react";
 import Banner from "./Banner";
+import LatestMovies from "./LatestMovies";
 
 const Dashboard = () => {
   return (
-    <div className="h-full">
+    <div className="h-full pt-16">
       <Banner />
+      <LatestMovies />
     </div>
   );
 };

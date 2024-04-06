@@ -7,8 +7,8 @@ export function Navbar() {
   return (
     <nav className="bg-background w-full h-16 border-b border-foreground/20 flex items-center justify-center fixed top-0 z-[995]">
       <div className="max-w-7xl px-3 w-full flex items-center justify-between">
-        <Link to="/" className="text-md md:text-xl font-bold">
-          Movie Mate
+        <Link to="/" className="text-md md:text-xl font-black">
+          Movie <span className="text-primary">Mate</span> 🎥
         </Link>
         <>
           <SignedOut>
@@ -37,7 +37,7 @@ export function NavLink({ url, children }) {
     <Link
       className={`${
         pathname === url ? "text-primary" : "text-foreground hover:underline"
-      } font-medium transition-colors`}
+      } font-semibold transition-colors`}
       to={url}
     >
       {children}
