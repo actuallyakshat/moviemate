@@ -7,5 +7,5 @@ const movieRouter = require("./movie");
 
 router.use("/user", userRouter);
 router.use("/friend", friendshipRouter);
-router.user("/movie", movieRouter)
+router.use("/movie", movieRouter);
 module.exports = router;
