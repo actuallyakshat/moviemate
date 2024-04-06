@@ -1,10 +1,19 @@
+import { getPendingRequest } from "@/actions/friendActions";
+import { userAtom } from "@/lib/store/store";
+import { useAtomValue } from "jotai";
 import { useEffect } from "react";
 
 const Mates = () => {
-  // useEffect(() => {
-  //   const
-
-  // }, [third])
+  const user = useAtomValue(userAtom);
+  useEffect(() => {
+    const getRequests = async () => {
+      const response = await getPendingRequest(user?._id);
+      if (response.success) {
+        console.log(response);
+      }
+    };
+    getRequests();
+  }, []);
 
   return (
     <div className="pt-20 w-full">

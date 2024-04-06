@@ -56,7 +56,7 @@ export const DeleteAccount = () => {
       initial="hidden"
       animate="visible"
       transition={{ duration: 0.4, delay: 0.15 }}
-      className="px-5 pt-8 flex flex-col select-none gap-6 font-Poppins transition-colors duration-300"
+      className="px-5 pt-8 flex flex-col select-none gap-6 transition-colors duration-300"
     >
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[50%] scale-150">
         {loading && (

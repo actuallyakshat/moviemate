@@ -279,7 +279,7 @@ exports.removeFriend = async (req, res) => {
 
 exports.getAllFriends = async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const { userId } = req.body;
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -287,27 +287,50 @@ exports.getAllFriends = async (req, res) => {
       });
     }
 
-    const user = await User.findById(userId).populate("friends");
+    const user = await User.findById(userId).populate({
+      path: "friends",
+      populate: {
+        path: "movieId",
+        model: "Movie",
+      },
+      match: { status: "accepted" },
+    });
 
-    if (!user || !user.friends) {
+    if (!user || !user.friends || user.friends.length === 0) {
       return res.status(200).json({
         success: true,
         data: [],
-        message: "No friends found for this user.",
+        message:
+          "No friends found for this user or all friendship requests are pending.",
       });
     }
-    const acceptedFriends = user.friends.filter(
-        (friend) => friend.status === "accepted"
-    );
+
     const friends = await Promise.all(
-      acceptedFriends.map(async (friend) => {
-        const friendUser =
-          friend.user1.toString() !== userId ? friend.user1 : friend.user2;
-        const populatedFriend = await User.findById(friendUser).exec();
-        return populatedFriend;
+      user.friends.map(async (friendship) => {
+        const friendId =
+          friendship.user1.toString() !== userId
+            ? friendship.user1
+            : friendship.user2;
+        const populatedFriend = await User.findById(friendId).exec();
+        return {
+          friend: populatedFriend,
+          movie: friendship.movieId,
+        };
       })
     );
 
+    return res.status(200).json({
+      success: true,
+      data: friends,
+      message: "Friends fetched successfully.",
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal Server Error while fetching user friends'.",
+    });
+  }
     return res.status(200).json({
       success: true,
       data: friends,
@@ -324,7 +347,7 @@ exports.getAllFriends = async (req, res) => {
 
 exports.getPendingRequests = async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const { userId } = req.body.userId;
     if (!userId) {
       return res.status(400).json({
         success: false,
@@ -338,6 +361,26 @@ exports.getPendingRequests = async (req, res) => {
     const requestReceivedFrom = [];
     const requestSendTo = [];
 
+    const pendingRequests = friends.filter(
+      (friend) => friend.status === "pending"
+    );
+
+    await Promise.all(
+      pendingRequests.map(async (friend) => {
+        const friendUser =
+          friend.user1.toString() === userId ? friend.user2 : friend.user1;
+        const populatedFriend = await User.findById(friendUser).exec();
+        const friendDetails = {
+          friendshipId: friend._id,
+          friend: populatedFriend,
+        };
+        if (friend.user1.toString() === userId) {
+          requestSendTo.push(friendDetails);
+        } else {
+          requestReceivedFrom.push(friendDetails);
+        }
+      })
+    );
     const pendingRequests = friends.filter(
       (friend) => friend.status === "pending"
     );
