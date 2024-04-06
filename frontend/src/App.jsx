@@ -1,21 +1,13 @@
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/clerk-react";
-import { Button } from "@/components/ui/button";
+import { Navbar } from "./components/navigation/Navbar";
+import Routes from "./components/navigation/Routes";
+
 function App() {
   return (
-    <div>
-      <h1 className="text-3xl">Hello World</h1>
-      <SignedOut>
-        <SignInButton />
-      </SignedOut>
-      <SignedIn>
-        <UserButton />
-      </SignedIn>
-      <Button>Button</Button>
+    <div className="min-h-screen h-full font-Inter">
+      <Navbar />
+      <div className="pt-20 container">
+        <Routes />
+      </div>
     </div>
   );
 }
