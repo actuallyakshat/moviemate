@@ -1,16 +1,16 @@
-// const User = require("../models/User");
 const User = require("../ models/User")
 
-exports.createUser = async (req, res) => {
+exports.getOrCreateUser = async (req, res) => {
   try {
     const { fullName, email } = req.body;
 
     // Checking user already exist or not
     const oldUser = await User.findOne({ email: req.email });
-    if (!oldUser) {
-      return res.status(400).json({
-        success: false,
+    if (oldUser) {
+      return res.status(200).json({
+        success: true,
         message: "User already exists!",
+        user: oldUser,
       });
     }
 
@@ -28,10 +28,10 @@ exports.createUser = async (req, res) => {
   } catch (error) {
     return res.status(500).json({
       success: false,
-      message: "Internal server error while creating user",
+      message: "Internal server error while getting details of user",
     });
   }
-};
+}
 
 exports.updateUser = async (req, res) => {
   try {
