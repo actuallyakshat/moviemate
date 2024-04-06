@@ -13,7 +13,7 @@ export const Contact = () => {
     hidden: { opacity: 0, x: -40 },
     visible: { opacity: 1, x: 0 },
   };
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
 
   const [loading, setLoading] = useState(false);
   const submitHandler = async (data) => {
@@ -23,21 +23,17 @@ export const Contact = () => {
       data.subject,
       data.message
     );
-    if (response.data.success) {
-      toast.success("We have received your message", {
-        style: {
-          fontWeight: "bold",
-        },
+    if (response.success) {
+      toast({
+        title: "We have received your message",
       });
     } else {
-      toast("We couldn't receive your message", {
-        icon: "😟",
-        style: {
-          fontWeight: "bold",
-        },
+      toast({
+        title: "We couldn't receive your message",
       });
     }
     setLoading(false);
+    reset();
   };
   return (
     <div>
@@ -116,7 +112,7 @@ export const Contact = () => {
               <div role="status" className="mx-auto">
                 <svg
                   aria-hidden="true"
-                  className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-steelBlue"
+                  className="w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-primary"
                   viewBox="0 0 100 101"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
