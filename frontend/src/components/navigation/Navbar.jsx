@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 export function Navbar() {
   const { openSignIn } = useClerk();
   return (
-    <nav className="bg-background w-full h-14 border-b flex items-center justify-center fixed top-0 z-[995]">
+    <nav className="bg-background w-full h-16 border-b border-foreground/20 flex items-center justify-center fixed top-0 z-[995]">
       <div className="max-w-7xl px-3 w-full flex items-center justify-between">
         <Link to="/" className="text-md md:text-xl font-bold">
           Movie Mate

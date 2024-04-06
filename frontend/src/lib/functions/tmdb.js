@@ -1,4 +1,5 @@
 //latest movies
+import axios from "axios";
 const fetchLatestMovies = async () => {
   const response = await axios.get(
     "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
@@ -133,6 +134,21 @@ const fetchSearchMovies = async (query) => {
   );
   return response.data.results;
 };
+
+const getBannerMovie = async () => {
+  try {
+    const response = await fetchLatestMovies();
+    // Check if response is not empty
+    if (response.length > 0) {
+      const randomIndex = Math.floor(Math.random() * response.length);
+      const randomMovie = response[randomIndex];
+      return randomMovie;
+    }
+  } catch (error) {
+    console.error("Error fetching latest movies for banner:", error);
+  }
+};
+
 export {
   fetchLatestMovies,
   fetchPopularMovies,
@@ -140,4 +156,5 @@ export {
   getGenreById,
   getIdByGenre,
   fetchSearchMovies,
+  getBannerMovie,
 };
