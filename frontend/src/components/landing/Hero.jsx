@@ -3,8 +3,11 @@ import { TypeAnimation } from "react-type-animation";
 import { Button } from "../ui/button";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { useAuth, useClerk } from "@clerk/clerk-react";
 
 export const Hero = () => {
+  const { openSignIn } = useClerk();
+  const { isSignedIn } = useAuth();
   const animationVariants = {
     hidden: { opacity: 0, x: -40 },
     visible: { opacity: 1, x: 0 },
@@ -57,9 +60,12 @@ export const Hero = () => {
             whileHover={{ scale: 1.01 }}
             className="mt-3"
           >
-            <Link to="/signup">
-              <Button>Get Started</Button>
-            </Link>
+            {!isSignedIn && <Button onClick={openSignIn}>Get Started</Button>}
+            {isSignedIn && (
+              <Link to="/dashboard">
+                <Button>Dashboard</Button>
+              </Link>
+            )}
           </motion.div>
         </motion.div>
         <motion.div
