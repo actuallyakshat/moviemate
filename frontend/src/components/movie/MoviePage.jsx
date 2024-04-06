@@ -1,16 +1,30 @@
 import { formatDate, getGenreById } from "@/lib/functions/tmdb";
 import { Button } from "../ui/button";
 import { useAtomValue } from "jotai";
-import { currentMovieAtom } from "@/lib/store/store";
+import { currentMovieAtom, userAtom } from "@/lib/store/store";
 import FindMateModal from "./FindMateModal";
 import { useState } from "react";
+import { useToast } from "../ui/use-toast";
 
 const imagePrefix = "http://image.tmdb.org/t/p/w500";
 const MoviePage = () => {
+  const { toast } = useToast();
   const [modal, setModal] = useState(false);
   const movie = useAtomValue(currentMovieAtom);
   const movieBanner = `${imagePrefix}${movie?.backdrop_path}`;
-
+  const user = useAtomValue(userAtom);
+  console.log(user);
+  const clickHandler = () => {
+    if (user.onboardingCompleted) {
+      setModal(true);
+    } else {
+      toast({
+        title: "Profile Incomplete",
+        description: "Please complete your profile to continue",
+        variant: "destructive",
+      });
+    }
+  };
   return (
     <>
       {modal && <FindMateModal setModal={setModal} movie={movie} />}
@@ -57,11 +71,7 @@ const MoviePage = () => {
             </div>
             <p className="text-white max-w-3xl py-1 pb-4">{movie?.overview}</p>
             <div className="w-full flex justify-center lg:justify-start">
-              <Button
-                size="lg"
-                className="text-lg py-6"
-                onClick={() => setModal(true)}
-              >
+              <Button size="lg" className="text-lg py-6" onClick={clickHandler}>
                 Find Mates for {movie?.title}
               </Button>
             </div>

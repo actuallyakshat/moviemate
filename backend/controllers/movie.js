@@ -4,7 +4,6 @@ exports.addOrCreateMovie = async (req, res) => {
   try {
     const { tmdbId, userId, movieName } = req.body;
     let movie = await Movie.findOne({ tmdbId: tmdbId });
-
     if (movie) {
       movie.interestedUsers.push(userId);
       await movie.save();
@@ -39,9 +38,9 @@ exports.addOrCreateMovie = async (req, res) => {
 exports.getAllInterestedUsers = async (req, res) => {
   try {
     const { tmdbId } = req.body;
-    const movie = await Movie.findOne({ tmdbId }).populate('interestedUsers');
+    const movie = await Movie.findOne({ tmdbId }).populate("interestedUsers");
     if (!movie) {
-      return res.status(404).json({
+      return res.status(202).json({
         success: false,
         interestedUsers: [],
         message: "Movie not found",
@@ -59,7 +58,7 @@ exports.getAllInterestedUsers = async (req, res) => {
       message: "Internal server error",
     });
   }
-}
+};
 
 exports.removeUserFromInterested = async (req, res) => {
   try {

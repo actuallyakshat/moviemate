@@ -1,27 +1,31 @@
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import {
+  addInterestedUser,
+  getAllInterestedUsers,
+} from "@/actions/movieActions";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/lib/store/store";
 
 const FindMateModal = ({ setModal, movie }) => {
-  const dummyData = [
-    {
-      name: "Akshat Dubey",
-      age: 20,
-      gender: "Male",
-      image: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-    {
-      name: "Akshat Dubey",
-      age: 20,
-      gender: "Male",
-      image: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-    {
-      name: "Akshat Dubey",
-      age: 20,
-      gender: "Male",
-      image: "https://randomuser.me/api/portraits/women/1.jpg",
-    },
-  ];
-  //   const dummyData = null;
+  const [interestedUsers, setInterestedUsers] = useState(null);
+  const user = useAtomValue(userAtom);
+  console.log(user._id);
+  const submitHandler = async () => {
+    const response = await addInterestedUser(movie.id, user._id, movie.title);
+    if (response.success) {
+      setInterestedUsers(...interestedUsers, user);
+    } else {
+      console.log(response.message);
+    }
+  };
+  useEffect(() => {
+    const getUsers = async () => {
+      const response = await getAllInterestedUsers(movie.id);
+      setInterestedUsers(response?.interestedUsers);
+    };
+    getUsers();
+  }, []);
 
   return (
     <div
@@ -35,12 +39,12 @@ const FindMateModal = ({ setModal, movie }) => {
         <h1 className="text-xl font-semibold text-center">
           Users interested to watch {movie.title}
         </h1>
-        {dummyData && (
+        {interestedUsers && (
           <div className="py-4 space-y-2">
-            {dummyData.map((data) => {
+            {interestedUsers?.map((data) => {
               return (
                 <div
-                  key={data.index}
+                  key={data._id}
                   className="flex items-center gap-3 bg-secondary rounded-lg px-4 p-2 w-full"
                 >
                   <img
@@ -49,7 +53,7 @@ const FindMateModal = ({ setModal, movie }) => {
                     className="w-14 h-14 rounded-full"
                   />
                   <div>
-                    <p className="font-semibold">{data.name}</p>
+                    <p className="font-semibold">{data.fullName}</p>
                     <div className="flex items-center gap-2 font-medium dark:text-zinc-300 text-zinc-500">
                       <p>{data.age}, </p>
                       <p>{data.gender}</p>
@@ -60,18 +64,20 @@ const FindMateModal = ({ setModal, movie }) => {
             })}
           </div>
         )}
-        {!dummyData && (
+        {interestedUsers?.length < 1 && (
           <p className="dark:text-zinc-300 py-12 text-center font-semibold text-zinc-500">
             Oops! No users found. <br /> Be the first one to show interest 🍿
           </p>
         )}
         <div className="w-fit mx-auto space-y-2">
-          {dummyData && (
+          {interestedUsers && (
             <p className="dark:text-zinc-300 text-zinc-500">
               Didn&apos;t find your mate?
             </p>
           )}
-          <Button className="w-full">Add me on the list!</Button>
+          <Button className="w-full" onClick={submitHandler}>
+            Add me on the list!
+          </Button>
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ function App() {
 
   useEffect(() => {
     const getDetails = async () => {
-      if (user) {
+      if (isLoaded && user) {
         const response = await getUserDetails(
           user.fullName,
           user.primaryEmailAddress.emailAddress,
@@ -34,9 +34,12 @@ function App() {
           }
         }
       } else {
-        if (window.location.origin != "/") {
-          setLoading(false);
-          navigate("/");
+        if (isLoaded && !user) {
+          console.log("user nahi mila");
+          if (window.location.origin != "/") {
+            setLoading(false);
+            navigate("/");
+          }
         }
       }
     };

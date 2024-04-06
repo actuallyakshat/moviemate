@@ -7,6 +7,7 @@ export const getUserDetails = async (fullName, email, setUser) => {
       fullName,
       email,
     });
+    console.log(user);
     if (user.data.success) {
       setUser(user.data.user);
       console.log(user.data.user);
