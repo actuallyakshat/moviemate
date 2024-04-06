@@ -66,7 +66,7 @@ exports.sendFriendReq = async(req, res) => {
 
 exports.cancelFriendReq =  async(req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.body.userId;
         const friendId = req.body.friendId;
         if (!userId || !friendId) {
             return res.status(400)
@@ -125,7 +125,7 @@ exports.cancelFriendReq =  async(req, res) => {
 
 exports.acceptFriendReq =  async(req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.body.userId;
         const friendId = req.body.friendId;
         if (!userId || !friendId) {
             return res.status(400)
@@ -165,7 +165,7 @@ exports.acceptFriendReq =  async(req, res) => {
 
 exports.rejectFriendReq =  async(req, res) => {
     try {
-        const userId = req.userId;
+        const userId = req.body.userId;
         const friendId = req.body.friendId;
         if (!userId || !friendId) {
             return res.status(400)
@@ -224,7 +224,7 @@ exports.rejectFriendReq =  async(req, res) => {
 
 exports.removeFriend = async(req, res) => {
     try{
-        const userId = req.userId;
+        const userId = req.body.userId;
         const friendId = req.body.friendId;
         if (!userId || !friendId) {
             return res.status(400)
@@ -286,83 +286,92 @@ exports.removeFriend = async(req, res) => {
     }
 }
 
-exports.getAllFriends = async(req, res) => {
-    try{
-        const userId = req.userId;
-        if (!userId) {
-            return res.status(400)
-            .json(
-                {
-                    success: false, 
-                    message: "userId required" 
-                }
-            );
-        }
-        const user = await User.findById(userId).populate('friends');
-        const friends = user.friends;
-
-        return res.status(200).json({
-            success: true,
-            data: friends,
-            message: "Friends fetched successfully.",
+exports.getAllFriends = async (req, res) => {
+    try {
+      const userId = req.body.userId;
+      if (!userId) {
+        return res.status(400).json({
+          success: false,
+          message: "userId required",
         });
-        
-    } catch(error) {
-        console.error(error);
-        return res.status(500)
-        .json({
-            success: false,
-            message: "Internal Server Error while fetching user friends'.",
-        })
+      }
+
+      const user = await User.findById(userId).populate('friends');
+  
+      if (!user || !user.friends) {
+        return res.status(200).json({
+          success: true,
+          data: [],
+          message: "No friends found for this user.",
+        });
+      }
+      const friends = await Promise.all(user.friends.map(async (friend) => {
+        const friendUser = friend.user1.toString() !== userId ? friend.user1 : friend.user2;
+        const populatedFriend = await User.findById(friendUser).exec();
+        return {
+          friendshipId: friend._id,
+          friend: populatedFriend,
+        };
+      }));
+  
+      return res.status(200).json({
+        success: true,
+        data: friends,
+        message: "Friends fetched successfully.",
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        success: false,
+        message: "Internal Server Error while fetching user friends'.",
+      });
     }
-}
+};
+
 
 exports.getPendingRequests = async(req, res) => {
     try{
-        const userId = req.userId;
+        const userId = req.body.userId;
         if (!userId) {
-            return res.status(400)
-            .json(
-                {
-                    success: false, 
-                    message: "userId required" 
-                }
-            );
+            return res.status(400).json({
+                success: false, 
+                message: "userId required" 
+            });
         }
+        
         const user = await User.findById(userId).populate('friends');
         const friends = user.friends;
         
-        const pendingRequests = friends
-            .filter(friend => friend.status === "pending")
-            .filter(friend => {
-                console.log("Friend Data", friend);
-                console.log("User Id of mine", userId);
-                return friend.user2 === userId;
-            });
-        console.log("Pending Request", pendingRequests);
+        const requestReceivedFrom = [];
+        const requestSendTo = [];
 
-        const requestSentFrom = [];
-        for (const request of pendingRequests) {
-            const friend = await User.findById(request.user1);
-            requestSentFrom.push({
-                _id: friend._id,
-                name: friend.fullName,
-                gender: friend.gender,
-                age: friend.age,                
-            });
-        }
+        const pendingRequests = friends.filter(friend => friend.status === "pending");
+
+        await Promise.all(pendingRequests.map(async (friend) => {
+            const friendUser = friend.user1.toString() === userId ? friend.user2 : friend.user1;
+            const populatedFriend = await User.findById(friendUser).exec();
+            const friendDetails = {
+                friendshipId: friend._id,
+                friend: populatedFriend,
+            };
+            if (friend.user1.toString() === userId) {
+                requestSendTo.push(friendDetails);
+            } else {
+                requestReceivedFrom.push(friendDetails);
+            }
+        }));
+
         return res.status(200).json({
             success: true,
-            friends: requestSentFrom,
-            message: "Pending friend requests are fetched successfully.",
+            requestReceivedFrom: requestReceivedFrom,
+            requestSendTo: requestSendTo,
+            message: "Pending requests fetched successfully.",
         });
-        
     } catch(error) {
         console.error(error);
-        return res.status(500)
-        .json({
+        return res.status(500).json({
             success: false,
-            message: "Internal Server Error while fetching pending friend request.",
-        })
+            message: "Internal Server Error while fetching pending requests.",
+        });
     }
-}
+};
