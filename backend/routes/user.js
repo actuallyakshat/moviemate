@@ -1,13 +1,15 @@
 const express = require("express");
+const checkUser = require("../middleware/userCheck.js");
+
 const router = express.Router();
 const {
   createUser,
   updateUser,
   deleteUser,
-  getDetails,
-} = require("../Controllers/user");
+  // getDetails,
+} = require("../controllers/user");
 router.post("/create", createUser);
-router.post("/details", getDetails);
-router.put("/update", updateUser);
-router.delete("/delete", deleteUser);
+// router.post("/details", checkUser, getDetails);
+router.put("/update", checkUser, updateUser);
+router.delete("/delete", checkUser, deleteUser);
 module.exports = router;
