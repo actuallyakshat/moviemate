@@ -3,11 +3,9 @@ import Routes from "./components/navigation/Routes";
 
 function App() {
   return (
-    <div className="min-h-screen h-full font-Inter">
+    <div className="min-h-screen w-full h-full font-Inter">
       <Navbar />
-      <div className="pt-20 container">
-        <Routes />
-      </div>
+      <Routes />
     </div>
   );
 }

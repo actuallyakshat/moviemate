@@ -2,10 +2,11 @@ import { Routes as MainRoutes, Route } from "react-router-dom";
 import Dashboard from "../dashboard/Dashboard";
 import Chat from "../chat/Chat";
 import Mates from "../mates/Mates";
+import Landing from "../landing/Landing";
 const Routes = () => {
   return (
     <MainRoutes>
-      <Route path="/" />
+      <Route path="/" element={<Landing />} />
       <Route path="/dashboard" element={<Dashboard />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="/mates" element={<Mates />} />
