@@ -15,29 +15,29 @@ export const Contact = () => {
   const { register, handleSubmit } = useForm();
 
   const [loading, setLoading] = useState(false);
-  // const submitHandler = async (data) => {
-  //   setLoading(true);
-  //   const response = await sendContactUsEmail(
-  //     data.email,
-  //     data.subject,
-  //     data.message
-  //   );
-  //   if (response.data.success) {
-  //     toast.success("We have received your message", {
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   } else {
-  //     toast("We couldn't receive your message", {
-  //       icon: "😟",
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   }
-  //   setLoading(false);
-  // };
+  const submitHandler = async (data) => {
+    setLoading(true);
+    const response = await sendContactUsEmail(
+      data.email,
+      data.subject,
+      data.message
+    );
+    if (response.data.success) {
+      toast.success("We have received your message", {
+        style: {
+          fontWeight: "bold",
+        },
+      });
+    } else {
+      toast("We couldn't receive your message", {
+        icon: "😟",
+        style: {
+          fontWeight: "bold",
+        },
+      });
+    }
+    setLoading(false);
+  };
   return (
     <div>
       <section className="bg-background">
