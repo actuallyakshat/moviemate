@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSocketContext } from "@/context/SocketContext";
-const Content = ({ selectedConversation }) => {
+const Content = ({ selectedConversation, userId }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState([]);
   const { socket } = useSocketContext();
@@ -10,7 +10,7 @@ const Content = ({ selectedConversation }) => {
       //getMessages
       const messages = axios
         .post("http://localhost:3000/api/v1/chat/get", {
-          userId: "66115a5e50b2b8642e3aea5a",
+          userId,
           receiverId: selectedConversation._id,
         })
         .then((res) => {
@@ -30,7 +30,7 @@ const Content = ({ selectedConversation }) => {
     socket.emit("newMessage", newMessage);
     await axios
       .post("http://localhost:3000/api/v1/chat/send", {
-        senderId: "66115a5e50b2b8642e3aea5a",
+        senderId: userId,
         receiverId: selectedConversation._id,
         message: newMessage,
       })
