@@ -11,6 +11,7 @@ import { SignOutButton } from "@clerk/clerk-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useClerk } from "@clerk/clerk-react";
 import { ModeToggle } from "./ThemeToggler";
+import { Link } from "react-router-dom";
 
 const DropDownMenu = () => {
   const { user } = useClerk();
@@ -26,7 +27,9 @@ const DropDownMenu = () => {
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Your Profile</DropdownMenuItem>
-        <DropdownMenuItem>Account Settings</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/settings">Account Settings</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem>
           <ModeToggle />
         </DropdownMenuItem>
