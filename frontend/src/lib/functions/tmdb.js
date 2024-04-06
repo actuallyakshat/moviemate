@@ -22,10 +22,18 @@ const fetchLatestMovies = async () => {
     // Filter out movies with adult flag set to true
     movieData = movieData.filter((movie) => !movie.adult);
 
-    // Shuffle the array
-    movieData = shuffleArray(movieData);
+    // Extract unique movie IDs
+    const uniqueMovieIds = new Set();
+    const uniqueMovies = [];
+    for (const movie of movieData) {
+      if (!uniqueMovieIds.has(movie.id)) {
+        uniqueMovieIds.add(movie.id);
+        uniqueMovies.push(movie);
+      }
+    }
 
-    return movieData;
+    // Shuffle the array
+    return shuffleArray(uniqueMovies);
   } catch (error) {
     console.error("Error fetching latest movies:", error);
     return []; // Return empty array if an error occurs
@@ -57,14 +65,18 @@ const fetchTopMovies = async () => {
       ["en", "hi"].includes(movie.original_language)
     );
 
-    // Remove duplicates
-    movieData = removeDuplicates(movieData, "id");
+    // Extract unique movie IDs
+    const uniqueMovieIds = new Set();
+    const uniqueMovies = [];
+    for (const movie of movieData) {
+      if (!uniqueMovieIds.has(movie.id)) {
+        uniqueMovieIds.add(movie.id);
+        uniqueMovies.push(movie);
+      }
+    }
 
     // Shuffle the array
-    movieData = shuffleArray(movieData);
-    console.log(movieData);
-
-    return movieData;
+    return shuffleArray(uniqueMovies);
   } catch (error) {
     console.error("Error fetching top movies:", error);
     return []; // Return empty array if an error occurs
@@ -72,13 +84,6 @@ const fetchTopMovies = async () => {
 };
 
 // Function to remove duplicates from array of objects based on a key
-const removeDuplicates = (array, key) => {
-  return array.filter(
-    (item, index, self) =>
-      index === self.findIndex((obj) => obj[key] === item[key])
-  );
-};
-
 // Function to shuffle array
 const shuffleArray = (array) => {
   for (let i = array.length - 1; i > 0; i--) {
@@ -189,15 +194,23 @@ const fetchMoviesByGenre = async (genreIds) => {
     const responses = await Promise.all(promises);
     let movieData = responses.flatMap((response) => response.data.results);
 
-    // Shuffle the array
-    movieData = shuffleArray(movieData);
+    // Extract unique movie IDs
+    const uniqueMovieIds = new Set();
+    const uniqueMovies = [];
+    for (const movie of movieData) {
+      if (!uniqueMovieIds.has(movie.id)) {
+        uniqueMovieIds.add(movie.id);
+        uniqueMovies.push(movie);
+      }
+    }
 
-    return movieData;
+    return shuffleArray(uniqueMovies);
   } catch (error) {
     console.error("Error fetching movies by genre:", error);
     return []; // Return empty array if an error occurs
   }
 };
+
 //search movies
 const fetchSearchMovies = async (query) => {
   const response = await axios.get(

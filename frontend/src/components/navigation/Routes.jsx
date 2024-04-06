@@ -14,7 +14,7 @@ const Routes = () => {
       <Route path="/mates" element={<Mates />} />
       <Route path="/settings" element={<AccountSettings />} />
       <Route path="/profile/:id" element={<div>profile</div>} />
-      <Route path="/movie/:id" element={<MoviePage />} />
+      <Route path="/movie" element={<MoviePage />} />
     </MainRoutes>
   );
 };
