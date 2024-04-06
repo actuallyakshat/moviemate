@@ -1,18 +1,21 @@
 const Conversation = require("../ models/Conversation");
 const Message = require("../ models/Message");
 const { getReceiverSocketId } = require("../socket/socket");
+
 module.exports.getMessages = async (req, res) => {
-  const userId = req.params.userId;
+  const { userId, receiverId } = req.body;
   try {
-    const conversations = await Conversation.find({
-      participants: userId,
+    // Find the conversation where both userId and receiverId are participants
+    const conversation = await Conversation.findOne({
+      participants: { $all: [receiverId, userId] },
     }).populate("messages");
-    if (conversations) {
+
+    if (conversation) {
       return res
         .status(200)
-        .json({ success: true, messages: conversations.messages });
+        .json({ success: true, messages: conversation.messages });
     } else {
-      return res.status(200).json([]);
+      return res.status(200).json({ success: true, messages: [] }); // Return an empty array if no conversation found
     }
   } catch (err) {
     console.error(err);
@@ -22,11 +25,12 @@ module.exports.getMessages = async (req, res) => {
     });
   }
 };
+
 module.exports.sendMessage = async (req, res) => {
   const { message, senderId, receiverId } = req.body;
   try {
     let conversation = await Conversation.findOne({
-      members: { $all: [senderId, receiverId] },
+      participants: { $all: [senderId, receiverId] },
     });
     if (!conversation) {
       conversation = await Conversation.create({
