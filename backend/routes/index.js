@@ -9,6 +9,6 @@ const chatRouter = require("./chat");
 router.use("/user", userRouter);
 router.use("/friend", friendshipRouter);
 router.use("/movie", movieRouter);
+router.use("/chat", chatRouter);
 router.use("", systemRouter);
-router.use("/chat", require(chatRouter));
 module.exports = router;

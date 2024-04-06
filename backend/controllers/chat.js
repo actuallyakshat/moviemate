@@ -1,6 +1,6 @@
-const Conversation = require("../models/Conversation");
-const Message = require("../models/Message");
-const { getReceiverSocketId } = require("../Socket/socket");
+const Conversation = require("../ models/Conversation");
+const Message = require("../ models/Message");
+const { getReceiverSocketId } = require("../socket/socket");
 module.exports.getMessages = async (req, res) => {
   const userId = req.params.userId;
   try {
