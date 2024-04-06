@@ -4,6 +4,7 @@ import Chat from "../chat/Chat";
 import Mates from "../mates/Mates";
 import Landing from "../landing/Landing";
 import { AccountSettings } from "../AccountSettings/AccountSettings";
+import MoviePage from "../movie/MoviePage";
 const Routes = () => {
   return (
     <MainRoutes>
@@ -13,7 +14,7 @@ const Routes = () => {
       <Route path="/mates" element={<Mates />} />
       <Route path="/settings" element={<AccountSettings />} />
       <Route path="/profile/:id" element={<div>profile</div>} />
-      <Route path="/movie/:id" element={<div>movie</div>} />
+      <Route path="/movie/:id" element={<MoviePage />} />
     </MainRoutes>
   );
 };
