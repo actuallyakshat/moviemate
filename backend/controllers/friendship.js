@@ -296,8 +296,11 @@ exports.getAllFriends = async (req, res) => {
         message: "No friends found for this user.",
       });
     }
+    const acceptedFriends = user.friends.filter(
+        (friend) => friend.status === "accepted"
+    );
     const friends = await Promise.all(
-      user.friends.map(async (friend) => {
+      acceptedFriends.map(async (friend) => {
         const friendUser =
           friend.user1.toString() !== userId ? friend.user1 : friend.user2;
         const populatedFriend = await User.findById(friendUser).exec();

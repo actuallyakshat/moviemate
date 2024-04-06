@@ -13,7 +13,7 @@ const Chat = () => {
     const fetchConversations = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:3000/api/v1/friend/getAllFriends",
+          "http://localhost:4000/api/v1/friend/getAllFriends",
           {
             userId: user?._id,
           }

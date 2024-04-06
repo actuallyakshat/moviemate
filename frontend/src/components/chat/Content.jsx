@@ -9,7 +9,7 @@ const Content = ({ selectedConversation, userId }) => {
     if (selectedConversation) {
       //getMessages
       const messages = axios
-        .post("http://localhost:3000/api/v1/chat/get", {
+        .post("http://localhost:4000/api/v1/chat/get", {
           userId,
           receiverId: selectedConversation._id,
         })
@@ -29,7 +29,7 @@ const Content = ({ selectedConversation, userId }) => {
     setMessages([...messages, { message: newMessage }]);
     socket.emit("newMessage", newMessage);
     await axios
-      .post("http://localhost:3000/api/v1/chat/send", {
+      .post("http://localhost:4000/api/v1/chat/send", {
         senderId: userId,
         receiverId: selectedConversation._id,
         message: newMessage,
