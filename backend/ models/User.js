@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
       enum: ["male", "female", "other"],
       default: null,
     },
+    onboardingCompleted: {
+        type: Boolean,
+        default: false,
+    },
     location: {
       country: {
         type: String,
