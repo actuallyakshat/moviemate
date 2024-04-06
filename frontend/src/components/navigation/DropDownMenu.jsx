@@ -14,7 +14,7 @@ import { ModeToggle } from "./ThemeToggler";
 import { Link } from "react-router-dom";
 
 const DropDownMenu = () => {
-  const { user } = useClerk();
+  const { user, signOut } = useClerk();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -33,8 +33,10 @@ const DropDownMenu = () => {
         <DropdownMenuItem>
           <ModeToggle />
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <SignOutButton />
+        <DropdownMenuItem asChild>
+          <p className="w-full" onClick={signOut}>
+            Logout
+          </p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
