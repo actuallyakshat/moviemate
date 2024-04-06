@@ -26,7 +26,11 @@ const DropDownMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Your Profile</DropdownMenuItem>
+        <DropdownMenuItem>
+          <Link to="/profile" className="w-full">
+            Your Profile
+          </Link>
+        </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link to="/settings" className="w-full">
             Account Settings
