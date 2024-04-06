@@ -2,7 +2,7 @@ const Movie = require("../ models/Movie");
 
 exports.addOrCreateMovie = async (req, res) => {
   try {
-    const { movieName, tmdbId, userId } = req.body;
+    const { tmdbId, userId, movieName } = req.body;
     let movie = await Movie.findOne({ tmdbId: tmdbId });
 
     if (movie) {
@@ -35,6 +35,31 @@ exports.addOrCreateMovie = async (req, res) => {
     });
   }
 };
+
+exports.getAllInterestedUsers = async (req, res) => {
+  try {
+    const { tmdbId } = req.body;
+    const movie = await Movie.findOne({ tmdbId }).populate('interestedUsers');
+    if (!movie) {
+      return res.status(404).json({
+        success: false,
+        interestedUsers: [],
+        message: "Movie not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      interestedUsers: movie.interestedUsers,
+    });
+  } catch (error) {
+    console.error("Error occurred while fetching interested users:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+}
 
 exports.removeUserFromInterested = async (req, res) => {
   try {
