@@ -27,8 +27,10 @@ const DropDownMenu = () => {
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>Your Profile</DropdownMenuItem>
-        <DropdownMenuItem>
-          <Link to="/settings">Account Settings</Link>
+        <DropdownMenuItem asChild>
+          <Link to="/settings" className="w-full">
+            Account Settings
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <ModeToggle />

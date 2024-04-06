@@ -1,11 +1,20 @@
 import { formatDate, getBannerMovie, getGenreById } from "@/lib/functions/tmdb";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
+import { useSetAtom } from "jotai";
+import { currentMovieAtom } from "@/lib/store/store";
 
 const Banner = () => {
+  const setCurrentMovie = useSetAtom(currentMovieAtom);
+  const navigate = useNavigate();
   const imagePrefix = "http://image.tmdb.org/t/p/w500";
   const [bannerMovie, setBannerMovie] = useState(null);
   const [backdrop, setBackdrop] = useState(null);
+  const clickHandler = (movie) => {
+    navigate(`/movie`);
+    setCurrentMovie(movie);
+  };
 
   useEffect(() => {
     const getMovies = async () => {
@@ -55,7 +64,12 @@ const Banner = () => {
             <p className="text-white font-bold"></p>
           </div>
           <p className="text-white max-w-3xl py-1">{bannerMovie?.overview}</p>
-          <Button className="absolute bottom-8">Find Mates</Button>
+          <Button
+            className="absolute bottom-8"
+            onClick={() => clickHandler(bannerMovie)}
+          >
+            Find Mates
+          </Button>
         </div>
       </div>
     </div>
