@@ -12,39 +12,41 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { useNavigate } from "react-router-dom";
-import { userAtom } from "@/store/atoms";
+// import { userAtom } from "@/store/atoms";
 import { useSetAtom } from "jotai";
-import { deleteUser } from "@/actions/userActions";
-import { toast } from "react-hot-toast";
+// import { deleteUser } from "@/actions/userActions";
 import { useState } from "react";
+import { useToast } from "../ui/use-toast";
+import { Button } from "../ui/button";
 
 export const DeleteAccount = () => {
-  const setUser = useSetAtom(userAtom);
-  const navigate = useNavigate();
+  //   const { toast } = useToast();
+  //   const setUser = useSetAtom(userAtom);
+  //   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const deleteAccountHandler = async () => {
-    setLoading(true);
-    const response = await deleteUser(setUser);
-    if (response.data.success) {
-      localStorage.removeItem("user");
-      localStorage.removeItem("token");
-      toast(response.data.message, {
-        style: {
-          fontWeight: "bold",
-        },
-        icon: "😔",
-      });
-      navigate("/signup");
-    } else {
-      toast.error("Something went wrong", {
-        style: {
-          fontWeight: "bold",
-        },
-      });
-    }
-    setLoading(false);
-  };
+  //   const deleteAccountHandler = async () => {
+  //     setLoading(true);
+  //     const response = await deleteUser(setUser);
+  //     if (response.data.success) {
+  //       localStorage.removeItem("user");
+  //       localStorage.removeItem("token");
+  //       toast(response.data.message, {
+  //         style: {
+  //           fontWeight: "bold",
+  //         },
+  //         icon: "😔",
+  //       });
+  //       navigate("/signup");
+  //     } else {
+  //       toast.error("Something went wrong", {
+  //         style: {
+  //           fontWeight: "bold",
+  //         },
+  //       });
+  //     }
+  //     setLoading(false);
+  //   };
   return (
     <motion.div
       variants={{
@@ -62,7 +64,7 @@ export const DeleteAccount = () => {
             <p>Please wait</p>
             <svg
               aria-hidden="true"
-              className="w-8 h-8 text-gray-200 mx-auto animate-spin dark:text-gray-600 fill-steelBlue"
+              className="w-8 h-8 text-foreground mx-auto animate-spin fill-primary"
               viewBox="0 0 100 101"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
@@ -89,9 +91,12 @@ export const DeleteAccount = () => {
       </div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <button className="min-w-[50%] flex font-medium items-center justify-center gap-4 mx-auto bg-imperialRed hover:bg-[#bb151d] px-8 rounded-md py-2 whitespace-nowrap text-white">
+          <Button
+            variants="destructive"
+            className="flex gap-3 items-center bg-destructive hover:bg-destructive/90"
+          >
             Delete my account <FaTrash />
-          </button>
+          </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -104,8 +109,8 @@ export const DeleteAccount = () => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-[#ee1b26] hover:bg-[#bb152f]"
-              onClick={deleteAccountHandler}
+              className="bg-destructive hover:bg-destructive/90"
+              //   onClick={deleteAccountHandler}
             >
               Continue
             </AlertDialogAction>

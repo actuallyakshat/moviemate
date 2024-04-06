@@ -3,7 +3,7 @@ import Dashboard from "../dashboard/Dashboard";
 import Chat from "../chat/Chat";
 import Mates from "../mates/Mates";
 import Landing from "../landing/Landing";
-import AccountSettings from "../AccountSettings/AccountSettings";
+import { AccountSettings } from "../AccountSettings/AccountSettings";
 const Routes = () => {
   return (
     <MainRoutes>
