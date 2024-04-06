@@ -1,4 +1,4 @@
-const User = require("../ models/User")
+const User = require("../ models/User");
 
 exports.getOrCreateUser = async (req, res) => {
   try {
@@ -30,7 +30,7 @@ exports.getOrCreateUser = async (req, res) => {
       message: "Internal server error while getting details of user",
     });
   }
-}
+};
 
 exports.getDetailsById = async (req, res) => {
   try {
@@ -49,16 +49,17 @@ exports.getDetailsById = async (req, res) => {
       message: "Internal server error",
     });
   }
-}
+};
 
 exports.updateUser = async (req, res) => {
   try {
-    const { id, updates } = req.body;
-    updates[onboardingCompleted] = true;
-    const user = await User.updateOne({ _id: id }, updates);
+    const { userId, data } = req.body;
+    console.log(data);
+    data.onboardingCompleted = true;
+    const user = await User.updateOne({ _id: userId }, data);
     res.status(200).json({ success: true, message: "User updated", user });
   } catch (err) {
-    console.err(err);
+    console.error(err);
     res
       .status(500)
       .json({ success: false, message: "Server error while updating user" });
@@ -66,9 +67,11 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  const { id } = req.body;
+  console.log(req.body);
+  const { userId } = req.body;
+  console.log(userId);
   try {
-    await User.deleteOne({ _id: id });
+    await User.deleteOne({ _id: userId });
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (err) {
     console.err(err);

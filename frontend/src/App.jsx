@@ -8,14 +8,18 @@ import { userAtom } from "./lib/store/store";
 import { useSetAtom } from "jotai";
 
 function App() {
-  const {user} = useClerk()
+  const { user } = useClerk();
   const setUser = useSetAtom(userAtom);
   useEffect(() => {
-    if(user){
-      getUserDetails(user.fullName, user.primaryEmailAddress.emailAddress, setUser);
+    if (user) {
+      getUserDetails(
+        user.fullName,
+        user.primaryEmailAddress.emailAddress,
+        setUser
+      );
     }
-  }, [user])
-  
+  }, [user]);
+
   return (
     <div className="min-h-screen w-full h-full font-Inter">
       <Toaster />

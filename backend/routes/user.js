@@ -9,7 +9,7 @@ const {
 } = require("../controllers/user");
 
 router.post("/details", getOrCreateUser);
-router.post("/getDetailsById", getDetailsById)
+router.post("/getDetailsById", getDetailsById);
 router.put("/update", updateUser);
-router.delete("/delete", deleteUser);
+router.post("/delete", deleteUser);
 module.exports = router;
