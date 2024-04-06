@@ -26,6 +26,12 @@ function App() {
         );
         if (response.success) {
           setLoading(false);
+        } else {
+          setLoading(false);
+          if (window.location.origin != "/") {
+            setLoading(false);
+            navigate("/");
+          }
         }
       } else {
         if (window.location.origin != "/") {
