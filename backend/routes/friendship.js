@@ -2,20 +2,20 @@ const express = require("express");
 const router = express.Router();
 
 const {
-    sendFriendReq,
-    cancelFriendReq,
-    acceptFriendReq,
-    rejectFriendReq,
-    getAllFriends,
-    getPendingRequests,
-    removeFriend,
+  sendFriendReq,
+  cancelFriendReq,
+  acceptFriendReq,
+  rejectFriendReq,
+  getAllFriends,
+  getPendingRequests,
+  removeFriend,
 } = require("../controllers/friendship");
 
 // Create
 router.post("/sendFriendRequest", sendFriendReq);
 
 // Read
-router.get("/getAllFriends", getAllFriends);
+router.post("/getAllFriends", getAllFriends);
 router.get("/getPendingRequests", getPendingRequests);
 
 // Update
