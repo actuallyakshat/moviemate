@@ -1,28 +1,93 @@
 //latest movies
 import axios from "axios";
 const fetchLatestMovies = async () => {
-  const response = await axios.get(
-    "https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=1",
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-      },
+  try {
+    const promises = [];
+
+    for (let i = 1; i <= 2; i++) {
+      const promise = axios.get(
+        `https://api.themoviedb.org/3/movie/now_playing?language=en-US&page=${i}`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
+          },
+        }
+      );
+      promises.push(promise);
     }
-  );
-  return response.data.results;
+
+    const responses = await Promise.all(promises);
+    let movieData = responses.flatMap((response) => response.data.results);
+
+    // Filter out movies with adult flag set to true
+    movieData = movieData.filter((movie) => !movie.adult);
+
+    // Shuffle the array
+    movieData = shuffleArray(movieData);
+
+    return movieData;
+  } catch (error) {
+    console.error("Error fetching latest movies:", error);
+    return []; // Return empty array if an error occurs
+  }
 };
+
 //popular movies
-const fetchPopularMovies = async () => {
-  const response = await axios.get(
-    "https://api.themoviedb.org/3/movie/popular?language=en-US&page=1",
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-      },
+const fetchTopMovies = async () => {
+  try {
+    const promises = [];
+
+    for (let i = 1; i <= 5; i++) {
+      const promise = axios.get(
+        `https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=${i}`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
+          },
+        }
+      );
+      promises.push(promise);
     }
-  );
-  return response.data.results;
+
+    const responses = await Promise.all(promises);
+    let movieData = responses.flatMap((response) => response.data.results);
+
+    // Filter movies with original_language 'en' or 'hi'
+    movieData = movieData.filter((movie) =>
+      ["en", "hi"].includes(movie.original_language)
+    );
+
+    // Remove duplicates
+    movieData = removeDuplicates(movieData, "id");
+
+    // Shuffle the array
+    movieData = shuffleArray(movieData);
+    console.log(movieData);
+
+    return movieData;
+  } catch (error) {
+    console.error("Error fetching top movies:", error);
+    return []; // Return empty array if an error occurs
+  }
 };
+
+// Function to remove duplicates from array of objects based on a key
+const removeDuplicates = (array, key) => {
+  return array.filter(
+    (item, index, self) =>
+      index === self.findIndex((obj) => obj[key] === item[key])
+  );
+};
+
+// Function to shuffle array
+const shuffleArray = (array) => {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+};
+
 //movies by genre
 const genre = [
   {
@@ -108,16 +173,30 @@ const getGenreById = (genreId) => {
 const getIdByGenre = (genreName) => {
   return genre.find((g) => g.name === genreName).id;
 };
-const fetchMoviesByGenre = async (genreId) => {
-  const response = await axios.get(
-    `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&page=1`,
-    {
-      headers: {
-        Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
-      },
-    }
-  );
-  return response.data.results;
+const fetchMoviesByGenre = async (genreIds) => {
+  try {
+    const promises = genreIds.map((genreId) => {
+      return axios.get(
+        `https://api.themoviedb.org/3/discover/movie?with_genres=${genreId}&page=1`,
+        {
+          headers: {
+            Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
+          },
+        }
+      );
+    });
+
+    const responses = await Promise.all(promises);
+    let movieData = responses.flatMap((response) => response.data.results);
+
+    // Shuffle the array
+    movieData = shuffleArray(movieData);
+
+    return movieData;
+  } catch (error) {
+    console.error("Error fetching movies by genre:", error);
+    return []; // Return empty array if an error occurs
+  }
 };
 //search movies
 const fetchSearchMovies = async (query) => {
@@ -197,7 +276,7 @@ function formatDate(dateString) {
 
 export {
   fetchLatestMovies,
-  fetchPopularMovies,
+  fetchTopMovies,
   fetchMoviesByGenre,
   getGenreById,
   getIdByGenre,

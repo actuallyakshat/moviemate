@@ -1,26 +1,24 @@
-import { fetchLatestMovies } from "@/lib/functions/tmdb";
+import { fetchTopMovies } from "@/lib/functions/tmdb";
 import { useEffect, useState } from "react";
 
-const LatestMovies = () => {
-  const [latestMovies, setLatestMovies] = useState(null);
-
+const PopularMovies = () => {
+  const [popularMovies, setPopularMovies] = useState(null);
   useEffect(() => {
     const getMovies = async () => {
       try {
-        const response = await fetchLatestMovies();
-        setLatestMovies(response);
+        const response = await fetchTopMovies();
+        setPopularMovies(response);
       } catch (error) {
         console.error("Error fetching latest movies:", error);
       }
     };
     getMovies();
   }, []);
-
   return (
-    <div className="h-full mt-20">
-      <h1 className="px-16 font-bold text-3xl">Latest Movies</h1>
+    <div className="my-5">
+      <h1 className="px-16 font-bold text-3xl">Popular Movies</h1>
       <div className="my-3 flex gap-3 max-w-screen overflow-y-auto">
-        {latestMovies?.map((movie) => (
+        {popularMovies?.map((movie) => (
           <div key={movie.id}>
             <img
               src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
@@ -34,4 +32,4 @@ const LatestMovies = () => {
   );
 };
 
-export default LatestMovies;
+export default PopularMovies;

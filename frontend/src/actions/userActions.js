@@ -9,6 +9,7 @@ export const getUserDetails = async (fullName, email, setUser) => {
     });
     if (user.data.success) {
       setUser(user.data.user);
+      console.log(user.data.user);
       return {
         success: true,
       };
@@ -20,8 +21,8 @@ export const getUserDetails = async (fullName, email, setUser) => {
       };
     }
   } catch (error) {
-      console.error("Error occoured while fetching user details", error);
-      return {
+    console.error("Error occoured while fetching user details", error);
+    return {
       success: false,
     };
   }
@@ -50,12 +51,12 @@ export const getDetailsById = async (userId) => {
       message: error.message,
     };
   }
-}
+};
 
 // update user details
 export const updateUserDetails = async (userId, data, setUser) => {
   try {
-    const response = await axios.put(`${baseUrl}/user/update`,{
+    const response = await axios.put(`${baseUrl}/user/update`, {
       userId,
       data,
     });
@@ -79,4 +80,3 @@ export const updateUserDetails = async (userId, data, setUser) => {
     };
   }
 };
-
