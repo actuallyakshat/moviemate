@@ -327,6 +327,7 @@ exports.getAllFriends = async (req, res) => {
             : friendship.user2;
         const populatedFriend = await User.findById(friendId).exec();
         return {
+          friendshipId: friendship._id,
           friend: populatedFriend,
           movie: friendship.movieId,
         };
