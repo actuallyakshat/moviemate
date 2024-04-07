@@ -30,13 +30,17 @@ const Chat = () => {
     }
   }, [user]);
   return (
-    <div className="pt-16">
+    <div className="pt-16 flex h-screen">
       <Sidebar
         conversations={conversations}
         setSelectedConversation={setSelectedConversation}
-        userId={user?._id}
       />
-      <Content selectedConversation={selectedConversation} userId={user?._id} />
+      {selectedConversation && (
+        <Content
+          selectedConversation={selectedConversation}
+          userId={user?._id}
+        />
+      )}
     </div>
   );
 };

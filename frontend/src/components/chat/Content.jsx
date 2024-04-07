@@ -1,64 +1,67 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import { useSocketContext } from "@/context/SocketContext";
-const Content = ({ selectedConversation, userId }) => {
+import { useEffect, useState } from "react";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  onSnapshot,
+  query,
+  where,
+  orderBy,
+} from "firebase/firestore";
+import { db } from "@/lib/functions/firebaseconfig";
+const Chat = ({ selectedConversation, userId }) => {
+  console.log(selectedConversation);
+  const friendshipId = selectedConversation.friendshipId;
   const [messages, setMessages] = useState([]);
-  const [newMessage, setNewMessage] = useState([]);
-  const { socket } = useSocketContext();
+  const [messagesList, setMessagesList] = useState([]);
+  const messagesRef = collection(db, "messages");
   useEffect(() => {
-    if (selectedConversation) {
-      //getMessages
-      const messages = axios
-        .post(`${import.meta.env.VITE_BASEURL}/chat/get`, {
-          userId,
-          receiverId: selectedConversation._id,
-        })
-        .then((res) => {
-          console.log(res);
-          setMessages(res.data.messages);
-        })
-        .catch((err) => console.log("Error =", err));
-    }
-    socket?.on("newMessage", (newMessage) => {
-      setMessages([...messages], { message: newMessage });
+    const queryMessages = query(
+      messagesRef,
+      where("room", "==", friendshipId),
+      orderBy("timestamp")
+    );
+    const unsubscribe = onSnapshot(queryMessages, (snapshot) => {
+      let messages = [];
+      snapshot.forEach((doc) => {
+        messages.push({ ...doc.data(), id: doc.id });
+      });
+      setMessagesList(messages);
     });
-    return () => socket?.off("newMessage");
-  }, [selectedConversation, socket]);
+    return () => unsubscribe();
+  }, []);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setMessages([...messages, { message: newMessage }]);
-    socket.emit("newMessage", newMessage);
-    await axios
-      .post(`${import.meta.env.VITE_BASEURL}/chat/send`, {
-        senderId: userId,
-        receiverId: selectedConversation._id,
-        message: newMessage,
-      })
-      .then(() => console.log("Message sent"));
-    setNewMessage("");
+    if (messages === "") return;
+    await addDoc(messagesRef, {
+      message: messages,
+      timestamp: serverTimestamp(),
+      user: userId,
+      room: friendshipId,
+    });
+    setMessages("");
   };
   return (
-    <div className="pl-[25rem]">
-      <div className="w-full h-16">
-        <h1>{selectedConversation?.fullName}</h1>
-      </div>
+    <div className="flex flex-col bg-red-700 pl-[50rem]">
       <h1>Chat</h1>
-      <div className="h-[40rem] bg-zinc-100">
-        {messages.map((message) => (
-          <div key={message._id}>{message.message}</div>
+      <div>
+        {messagesList.map((message) => (
+          <div key={message.id}>
+            <span>{message.user} says: </span>
+            <span>{message.message}</span>
+          </div>
         ))}
       </div>
       <form onSubmit={handleSubmit}>
         <input
           type="text"
           placeholder="Enter your message"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
+          onChange={(e) => setMessages(e.target.value)}
+          value={messages}
         />
         <button type="submit">Send</button>
       </form>
     </div>
   );
 };
-
-export default Content;
+export default Chat;
