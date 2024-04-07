@@ -1,7 +1,11 @@
 import axios from "axios";
 const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
-export const getPendingRequest = async (userId, setIncomingRequests, setOutgoingRequests) => {
+export const getPendingRequest = async (
+  userId,
+  setIncomingRequests,
+  setOutgoingRequests
+) => {
   try {
     const response = await axios.post(`${baseUrl}/friend/getPendingRequests`, {
       userId,
@@ -56,10 +60,13 @@ export const acceptFriendRequest = async (userId, friendId) => {
 
 export const declineFriendRequest = async (userId, friendId) => {
   try {
-    const response = await axios.post(`${baseUrl}/friend/declineFriendRequest`, {
-      userId,
-      friendId,
-    });
+    const response = await axios.post(
+      `${baseUrl}/friend/declineFriendRequest`,
+      {
+        userId,
+        friendId,
+      }
+    );
     if (response.data.success) {
       return {
         success: true,
@@ -130,9 +137,14 @@ export const removeFriend = async (userId, friendId) => {
       message: error.message,
     };
   }
-}
+};
 
-export const sendFriendRequest = async (userId, friendId, tmdbId, movieName) => {
+export const sendFriendRequest = async (
+  userId,
+  friendId,
+  tmdbId,
+  movieName
+) => {
   try {
     const response = await axios.post(`${baseUrl}/friend/sendFriendRequest`, {
       userId,
@@ -166,7 +178,8 @@ export const getFriends = async (userId, setFriends) => {
       userId,
     });
     if (response.data.success) {
-      setFriends(response.data.friends);
+      console.log(response);
+      setFriends(response.data.data);
       return {
         success: true,
         message: response.data.message,
@@ -184,4 +197,4 @@ export const getFriends = async (userId, setFriends) => {
       message: error.message,
     };
   }
-}
+};

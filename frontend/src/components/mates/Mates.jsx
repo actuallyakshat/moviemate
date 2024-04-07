@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getPendingRequest } from "../../actions/friendActions";
+import { getFriends, getPendingRequest } from "../../actions/friendActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
 import { set } from "react-hook-form";
@@ -9,8 +9,11 @@ const Mates = () => {
   const user = useAtomValue(userAtom);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
+  const [friends, setFriends] = useState([]);
+  console.log(friends);
   useEffect(() => {
     if (user) {
+      getFriends(user._id, setFriends);
       getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests);
     }
   }, [user]);
@@ -61,8 +64,8 @@ const Mates = () => {
         <div>
           <h1 className="text-3xl font-semibold">Outgoing Requests</h1>
           <div className="pr-20 mt-5">
-            {outgoingRequests.length > 0 ? (
-              outgoingRequests.map((friend) => (
+            {outgoingRequests?.length > 0 ? (
+              outgoingRequests?.map((friend) => (
                 <div
                   key={friend.friend._id}
                   className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
@@ -96,8 +99,34 @@ const Mates = () => {
         </div>
       </div>
       <hr className="my-2" />
-      <div className="p-4">
+      <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
+        <div className="mt-5 px-10 space-y-3">
+          {friends?.length > 0 ? (
+            friends?.map((friend) => (
+              <div
+                key={friend._id}
+                className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
+              >
+                <div className="flex items-center gap-2">
+                  <img
+                    src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
+                    alt="pfp"
+                    className="w-14 h-14 rounded-full"
+                  />
+                  <div className="flex flex-col">
+                    <h3 className="font-medium">{friend?.friend?.fullName}</h3>
+                    <h3>{friend?.friend?.age}, </h3>
+                    <h3>{friend?.friend?.gender} </h3>
+                  </div>
+                </div>
+                <Button variant="destructive">Delete</Button>
+              </div>
+            ))
+          ) : (
+            <p className="font-medium">There are no friends</p>
+          )}
+        </div>
       </div>
     </div>
   );
