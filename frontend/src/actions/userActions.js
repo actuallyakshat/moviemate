@@ -56,6 +56,7 @@ export const getDetailsById = async (userId) => {
 
 // update user details
 export const updateUserDetails = async (userId, data, setUser) => {
+  console.log(data);
   try {
     const response = await axios.put(`${baseUrl}/user/update`, {
       userId,

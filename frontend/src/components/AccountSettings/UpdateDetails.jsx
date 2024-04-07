@@ -1,6 +1,6 @@
 import { userAtom } from "@/lib/store/store";
 import { Label } from "@radix-ui/react-dropdown-menu";
-import { useAtomValue } from "jotai";
+import { useAtom } from "jotai";
 import { Input } from "../ui/input";
 import { motion } from "framer-motion";
 import { DatePicker } from "./DatePicker";
@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { MultiSelect } from "react-multi-select-component";
 import { Button } from "../ui/button";
+import { updateUserDetails } from "@/actions/userActions";
 
 const optionsGenre = [
   { label: "Action", value: "Action" },
@@ -46,41 +47,40 @@ const UpdateDetails = () => {
   const [selectedLang, setSelectedLang] = useState([]);
   const [date, setDate] = useState();
   const { register, handleSubmit } = useForm();
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
   console.log(user);
+  function isEmptyObject(obj) {
+    return Object.keys(obj).length === 0 && obj.constructor === Object;
+  }
 
-  // function isEmptyObject(obj) {
-  //   return Object.keys(obj).length === 0 && obj.constructor === Object;
-  // }
+  const getAge = (DOB) => {
+    const birthDate = new Date(DOB);
+    const currentDate = new Date();
+    const timeDifference = currentDate - birthDate;
+    const ageInMilliseconds = new Date(timeDifference);
+    const age = Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
 
-  // const getAge = (DOB) => {
-  //   const birthDate = new Date(DOB);
-  //   const currentDate = new Date();
-  //   const timeDifference = currentDate - birthDate;
-  //   const ageInMilliseconds = new Date(timeDifference);
-  //   const age = Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
+    if (age) {
+      return age;
+    }
+    return null;
+  };
 
-  //   if (age) {
-  //     return age;
-  //   }
-  //   return null;
-  // };
-
-  // function filterEmptyObjects(data) {
-  //   const filteredData = {};
-  //   for (const key in data) {
-  //     if (data[key] !== null && data[key] !== "") {
-  //       if (typeof data[key] === "object" && !Array.isArray(data[key])) {
-  //         if (!isEmptyObject(data[key])) {
-  //           filteredData[key] = filterEmptyObjects(data[key]);
-  //         }
-  //       } else {
-  //         filteredData[key] = data[key];
-  //       }
-  //     }
-  //   }
-  //   return filteredData;
-  // }
+  function filterEmptyObjects(data) {
+    const filteredData = {};
+    for (const key in data) {
+      if (data[key] !== null && data[key] !== "") {
+        if (typeof data[key] === "object" && !Array.isArray(data[key])) {
+          if (!isEmptyObject(data[key])) {
+            filteredData[key] = filterEmptyObjects(data[key]);
+          }
+        } else {
+          filteredData[key] = data[key];
+        }
+      }
+    }
+    return filteredData;
+  }
 
   // useEffect(() => {
   //   if (user && Object.keys(user).length > 0) {
@@ -92,9 +92,9 @@ const UpdateDetails = () => {
   const onSubmit = async (data) => {
     console.log(data);
     // setLoading(true);
-    // const DOB = data.dateOfBirth;
+    const DOB = data.dateOfBirth;
     if (DOB) data.age = getAge(DOB);
-    data.gender = gender;
+    // data.gender = gender;
     data.favoriteGenres = selectedGenre;
     data.languagePreferences = selectedLang;
     const filteredData = filterEmptyObjects(data);
@@ -102,13 +102,14 @@ const UpdateDetails = () => {
       delete filteredData.location;
     }
     console.log("newData", data);
-    // const response = await updateUserDetails(filteredData, setUser);
+    const response = await updateUserDetails(user._id, filteredData, setUser);
     // setLoading(false);
     // if (response.success) {
-    //   toast.success(response.message, {
-    //     style: {
-    //       fontWeight: "bold",
-    //     },
+    // toast.success(response.message, {
+    //   style: {
+    //     fontWeight: "bold",
+    //   }
+    // });
     //   });
     // } else {
     //   toast.error("Something went wrong", {
@@ -118,7 +119,7 @@ const UpdateDetails = () => {
     //   });
     // }
   };
-  
+
   return (
     <motion.div
       className="max-w-xl pt-5 mx-auto"
@@ -134,11 +135,19 @@ const UpdateDetails = () => {
       <form className="space-y-3 mt-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1">
           <Label>Name</Label>
-          <Input {...register} value={user?.fullName} className="cursor-not-allowed" />
+          <Input
+            {...register}
+            value={user?.fullName}
+            className="cursor-not-allowed"
+          />
         </div>
         <div className="space-y-1">
           <Label>Email</Label>
-          <Input {...register} value={user?.email} className="cursor-not-allowed" />
+          <Input
+            {...register}
+            value={user?.email}
+            className="cursor-not-allowed"
+          />
         </div>
         <div className="space-y-1">
           <Label htmlFor="DOB" className="">
@@ -159,6 +168,7 @@ const UpdateDetails = () => {
           <Label>Gender</Label>
           <RadioGroup
             defaultValue={user?.gender}
+            {...register("gender")}
             className="grid grid-cols-2 mt-2"
           >
             <div className="flex items-center space-x-2">
@@ -173,15 +183,27 @@ const UpdateDetails = () => {
         </div>
         <div className="space-y-1">
           <Label>City</Label>
-          <Input {...register("location.city")} defaultValue={user?.location?.city} placeholder="City" />
+          <Input
+            {...register("location.city")}
+            defaultValue={user?.location?.city}
+            placeholder="City"
+          />
         </div>
         <div className="space-y-1">
           <Label>State</Label>
-          <Input {...register("location.state")} defaultValue={user?.location?.state} placeholder="State" />
+          <Input
+            {...register("location.state")}
+            defaultValue={user?.location?.state}
+            placeholder="State"
+          />
         </div>
         <div className="space-y-1">
           <Label>Country</Label>
-          <Input {...register("location.country")} defaultValue={user?.location?.country} placeholder="Country"/>
+          <Input
+            {...register("location.country")}
+            defaultValue={user?.location?.country}
+            placeholder="Country"
+          />
         </div>
         <div className="space-y-1">
           <Label>Favourite Genres</Label>
