@@ -9,7 +9,7 @@ const Content = ({ selectedConversation, userId }) => {
     if (selectedConversation) {
       //getMessages
       const messages = axios
-        .post("http://localhost:4000/api/v1/chat/get", {
+        .post(`${import.meta.env.VITE_BASEURL}/chat/get`, {
           userId,
           receiverId: selectedConversation._id,
         })
@@ -29,7 +29,7 @@ const Content = ({ selectedConversation, userId }) => {
     setMessages([...messages, { message: newMessage }]);
     socket.emit("newMessage", newMessage);
     await axios
-      .post("http://localhost:4000/api/v1/chat/send", {
+      .post(`${import.meta.env.VITE_BASEURL}/chat/send`, {
         senderId: userId,
         receiverId: selectedConversation._id,
         message: newMessage,

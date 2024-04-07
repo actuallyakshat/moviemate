@@ -13,19 +13,19 @@ const Chat = () => {
     const fetchConversations = async () => {
       try {
         const res = await axios.post(
-          "http://localhost:4000/api/v1/friend/getAllFriends",
+          `${import.meta.env.VITE_BASEURL}/friend/getAllFriends`,
           {
             userId: user?._id,
           }
         );
-        console.log(res.data.data);
+        console.log(res);
         setConversations(res.data.data);
       } catch (error) {
         console.log(error);
       }
     };
     fetchConversations();
-  }, []);
+  }, [user]);
   return (
     <div className="pt-16">
       <Sidebar
