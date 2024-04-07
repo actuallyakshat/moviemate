@@ -10,25 +10,42 @@ import { SignOutButton } from "@clerk/clerk-react";
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useClerk } from "@clerk/clerk-react";
+import { ModeToggle } from "./ThemeToggler";
+import { Link } from "react-router-dom";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/lib/store/store";
 
 const DropDownMenu = () => {
+  const userFromStore = useAtomValue(userAtom);
   const { user, signOut } = useClerk();
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild className="">
+    <DropdownMenu modal={false}>
+      <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
           <AvatarImage src="https://github.com/shadcn.png" />
           <AvatarFallback>CN</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="z-[996]">
+      <DropdownMenuContent>
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Your Profile</DropdownMenuItem>
-        <DropdownMenuItem>Account Settings</DropdownMenuItem>
-        <DropdownMenuItem>Theme</DropdownMenuItem>
         <DropdownMenuItem>
-          <SignOutButton />
+          <Link to={`/profile/${userFromStore?._id}`} className="w-full">
+            Your Profile
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link to="/settings" className="w-full">
+            Account Settings
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <ModeToggle />
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <p className="w-full" onClick={signOut}>
+            Logout
+          </p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

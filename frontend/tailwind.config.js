@@ -20,6 +20,13 @@ module.exports = {
       fontFamily: {
         Inter: ["Inter", "sans-serif"],
       },
+      backgroundImage: {
+        herobg: "url('/src/assets/home/herobg.svg')",
+        features: "url('/src/assets/home/features.svg')",
+        driveIn: "url('/src/assets/home/drive-in.svg')",
+        homeTheatre: "url('/src/assets/home/home-theatre.svg')",
+        featuresBg: "url('/src/assets/home/featuresBg.svg')",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
