@@ -38,8 +38,7 @@ exports.sendFriendReq = async (req, res) => {
     let movie;
     if (existingMovie) {
       movie = existingMovie;
-    }
-    else{
+    } else {
       movie = await Movie.create({
         movieName: movieName,
         tmdbId: tmdbId,
@@ -350,7 +349,7 @@ exports.getAllFriends = async (req, res) => {
 
 exports.getPendingRequests = async (req, res) => {
   try {
-    const { userId } = req.body.userId;
+    const { userId } = req.body;
     if (!userId) {
       return res.status(400).json({
         success: false,
