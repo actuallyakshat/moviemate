@@ -1,11 +1,29 @@
 import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { getDetailsById } from "../../actions/userActions";
 import { ProfileHeader } from "./ProfileHeader";
 import { Photos } from "./Photos";
 
+
 const Profile = () => {
-  const user = useAtom(userAtom);
+  const { id } = useParams();
+  const [currentUser, setCurrentUser] = useAtom(userAtom);
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    if (user) {
+      if(user._id === id){
+        setUser(currentUser);
+      }
+      // Fetch id and set user data
+      getDetailsById(id).then((data) => {
+        if (data.success) {
+          setUser(data.user);
+        }
+      });
+    }
+  }, [user]);
   return (
     <div className="pt-16">
       {/* <div className="relative">
@@ -23,7 +41,8 @@ const Profile = () => {
         <h1 className="text-3xl font-bold pt-28 pl-16">Akshat Dubey</h1>
         <p>{user.bio}</p>
       </div> */}
-      <ProfileHeader />
+
+      <ProfileHeader user={user}/>
       <Photos />
     </div>
   );
