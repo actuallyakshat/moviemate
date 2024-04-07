@@ -1,12 +1,14 @@
 import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
 import React from "react";
+import { ProfileHeader } from "./ProfileHeader";
+import { Photos } from "./Photos";
 
 const Profile = () => {
   const user = useAtom(userAtom);
   return (
     <div className="pt-16">
-      <div className="relative">
+      {/* <div className="relative">
         <img
           src="https://static.vecteezy.com/system/resources/previews/000/677/302/original/abstract-technology-banner-background.jpg"
           className="w-full h-full max-h-[20rem] overflow-hidden bg-zinc-300 object-cover aspect-video"
@@ -19,8 +21,10 @@ const Profile = () => {
       </div>
       <div>
         <h1 className="text-3xl font-bold pt-28 pl-16">Akshat Dubey</h1>
-        <p>{user?.bio}</p>
-      </div>
+        <p>{user.bio}</p>
+      </div> */}
+      <ProfileHeader />
+      <Photos />
     </div>
   );
 };

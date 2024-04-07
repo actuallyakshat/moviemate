@@ -12,8 +12,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useClerk } from "@clerk/clerk-react";
 import { ModeToggle } from "./ThemeToggler";
 import { Link } from "react-router-dom";
+import { useAtomValue } from "jotai";
+import { userAtom } from "@/lib/store/store";
 
 const DropDownMenu = () => {
+  const userFromStore = useAtomValue(userAtom);
   const { user, signOut } = useClerk();
   return (
     <DropdownMenu modal={false}>
@@ -27,7 +30,7 @@ const DropDownMenu = () => {
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          <Link to="/profile" className="w-full">
+          <Link to={`/profile/${userFromStore?._id}`} className="w-full">
             Your Profile
           </Link>
         </DropdownMenuItem>
