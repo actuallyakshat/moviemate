@@ -71,7 +71,8 @@ exports.removeUserFromInterested = async (req, res) => {
       });
     }
 
-    const index = movie.interestedUsers.indexOf(userId);
+    // Check if the user is in the interestedUsers array
+    const index = movie.interestedUsers.findIndex(user => user.toString() === userId);
     if (index === -1) {
       return res.status(404).json({
         success: false,
@@ -79,27 +80,27 @@ exports.removeUserFromInterested = async (req, res) => {
       });
     }
 
+    // Remove the user from the interestedUsers array
     movie.interestedUsers.splice(index, 1);
 
+    // Save the changes
+    await movie.save();
+
     if (movie.interestedUsers.length === 0) {
+      // If no users are interested anymore, delete the movie
       await Movie.findByIdAndDelete(movieId);
       return res.status(200).json({
         success: true,
-        message:
-          "User removed from interested list and movie deleted as no users are interested anymore",
+        message: "User removed from interested list and movie deleted as no users are interested anymore",
       });
     } else {
-      await movie.save();
       return res.status(200).json({
         success: true,
         message: "User removed from interested list for this movie",
       });
     }
   } catch (error) {
-    console.error(
-      "Error occurred while removing user from interested list:",
-      error
-    );
+    console.error("Error occurred while removing user from interested list:", error);
     return res.status(500).json({
       success: false,
       message: "Internal server error",
