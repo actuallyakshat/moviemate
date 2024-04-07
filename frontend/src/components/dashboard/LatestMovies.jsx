@@ -27,9 +27,9 @@ const LatestMovies = () => {
   }, []);
 
   return (
-    <div className="h-full mt-20">
-      <h1 className="px-16 font-bold text-3xl">Latest Movies</h1>
-      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto">
+    <div className="h-full mt-16 pb-6">
+      <h1 className="px-16 font-bold text-4xl mb-6">Latest Movies</h1>
+      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto no-scrollbar no-scrollbar no-scrollbar">
         {latestMovies?.map((movie) => (
           <div
             key={movie.id}
@@ -39,7 +39,7 @@ const LatestMovies = () => {
             <img
               src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt="poster"
-              className="rounded-lg min-w-[10rem]"
+              className="rounded-lg min-w-[15rem]"
             />
           </div>
         ))}

@@ -27,9 +27,9 @@ const MoviesForYou = () => {
     getMovies();
   }, []);
   return (
-    <div className="my-5">
-      <h1 className="px-16 font-bold text-3xl">Movies for you</h1>
-      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto">
+    <div className="my-5 pb-5">
+      <h1 className="px-16 font-bold text-4xl mb-6">Movies for you</h1>
+      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto no-scrollbar">
         {moviesForYou?.map((movie) => (
           <div
             key={movie.id}
@@ -39,7 +39,7 @@ const MoviesForYou = () => {
             <img
               src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt="poster"
-              className="rounded-lg min-w-[10rem]"
+              className="rounded-lg min-w-[15rem]"
             />
           </div>
         ))}
