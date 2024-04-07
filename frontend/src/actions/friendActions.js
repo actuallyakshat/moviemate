@@ -159,3 +159,29 @@ export const sendFriendRequest = async (userId, friendId, tmdbId, movieName) => 
     };
   }
 };
+
+export const getFriends = async (userId, setFriends) => {
+  try {
+    const response = await axios.post(`${baseUrl}/friend/getAllFriends`, {
+      userId,
+    });
+    if (response.data.success) {
+      setFriends(response.data.friends);
+      return {
+        success: true,
+        message: response.data.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: response.data.message,
+      };
+    }
+  } catch (error) {
+    console.error("Error occoured while fetching friends.", error);
+    return {
+      success: false,
+      message: error.message,
+    };
+  }
+}
