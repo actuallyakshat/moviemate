@@ -1,34 +1,35 @@
-import { imageDelete } from "@/actions/userActions";
-import { userAtom } from "@/store/atoms";
 import PropTypes from "prop-types";
 import { FaTrash } from "react-icons/fa6";
 import { useSetAtom } from "jotai";
-import { toast } from "react-hot-toast";
+// import { toast } from "react-hot-toast";
+import { userAtom } from "@/lib/store/store";
+import { useToast } from "../ui/use-toast";
 export const ViewPost = ({ togglePopup, imageLink, postId }) => {
+  const { toast } = useToast();
   const setUser = useSetAtom(userAtom);
-  const deleteImageHandler = async () => {
-    toast("Deleting your post...", {
-      icon: "⏳",
-      style: {
-        fontWeight: "bold",
-      },
-    });
-    const response = await imageDelete(postId, imageLink, setUser);
+  // const deleteImageHandler = async () => {
+  //   toast("Deleting your post...", {
+  //     icon: "⏳",
+  //     style: {
+  //       fontWeight: "bold",
+  //     },
+  //   });
+  //   const response = await imageDelete(postId, imageLink, setUser);
 
-    if (response.data.success) {
-      toast.success("Post deleted successfully!", {
-        style: {
-          fontWeight: "bold",
-        },
-      });
-    } else {
-      toast.error("We couldn't delete your post", {
-        style: {
-          fontWeight: "bold",
-        },
-      });
-    }
-  };
+  //   if (response.data.success) {
+  //     toast.success("Post deleted successfully!", {
+  //       style: {
+  //         fontWeight: "bold",
+  //       },
+  //     });
+  //   } else {
+  //     toast.error("We couldn't delete your post", {
+  //       style: {
+  //         fontWeight: "bold",
+  //       },
+  //     });
+  //   }
+  // };
   return (
     <div
       onClick={togglePopup}
@@ -42,7 +43,7 @@ export const ViewPost = ({ togglePopup, imageLink, postId }) => {
           onClick={(e) => e.stopPropagation()}
         />
         <i
-          onClick={deleteImageHandler}
+          // onClick={deleteImageHandler}
           className="absolute text-white top-4 size-8 right-4 bg-white/20 hover:bg-white/50 rounded-lg transition-colors flex items-center justify-center hover:text-red-600"
         >
           <FaTrash />

@@ -1,6 +1,6 @@
 import { FaCamera } from "react-icons/fa";
 import { Post } from "./Post";
-import { userAtom } from "@/store/atoms";
+import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
@@ -39,7 +39,7 @@ export const Photos = () => {
 
   useEffect(() => {
     setUserPhotos(
-      user.files ? user?.files?.filter((post) => post?.tag === "general") : []
+      user?.files ? user?.files?.filter((post) => post?.tag === "general") : []
     );
   }, [user]);
 

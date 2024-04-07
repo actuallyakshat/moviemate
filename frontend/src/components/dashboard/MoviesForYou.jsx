@@ -29,7 +29,7 @@ const MoviesForYou = () => {
   return (
     <div className="my-5 pb-5">
       <h1 className="px-16 font-bold text-4xl mb-6">Movies for you</h1>
-      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto no-scrollbar">
+      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto no-scrollbar px-4">
         {moviesForYou?.map((movie) => (
           <div
             key={movie.id}

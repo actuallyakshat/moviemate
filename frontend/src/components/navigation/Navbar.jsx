@@ -12,8 +12,14 @@ export function Navbar() {
     <nav className="bg-background w-full h-16 border-b border-foreground/20 flex items-center justify-center fixed top-0 z-[995]">
       {modal && <SearchModal setModal={setModal} />}
       <div className="max-w-7xl px-3 w-full flex items-center justify-between">
-        <Link to="/" className="text-md md:text-xl font-black">
-          Movie <span className="text-primary">Mate</span> 🎥
+        <Link
+          to="/"
+          className="text-md md:text-xl text-2xl pl-2 md:pl-0 font-black"
+        >
+          <span className="hidden md:inline">
+            Movie <span className="text-primary">Mate</span>
+          </span>{" "}
+          🎥
         </Link>
         <>
           <SignedOut>

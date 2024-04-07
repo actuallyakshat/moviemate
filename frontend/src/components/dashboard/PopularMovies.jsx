@@ -34,7 +34,7 @@ const PopularMovies = () => {
   return (
     <div className="my-5 pb-5">
       <h1 className="px-16 font-bold text-4xl mb-6">Popular Movies</h1>
-      <div className="my-3 flex gap-3 max-w-screen overflow-y-auto no-scrollbar">
+      <div className="my-3 px-4 flex gap-3 max-w-screen overflow-y-auto no-scrollbar">
         {popularMovies?.map((movie) => (
           <div
             key={movie.id}

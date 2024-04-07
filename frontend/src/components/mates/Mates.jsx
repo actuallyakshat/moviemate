@@ -9,7 +9,6 @@ import {
 } from "../../actions/friendActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
-import { set } from "react-hook-form";
 import { Button } from "../ui/button";
 
 const Mates = () => {
@@ -99,10 +98,8 @@ const Mates = () => {
                         {friend.friend.fullName}
                       </h1>
                       <div className="flex gap-1 font-medium text-secondary-foreground/50">
-                        {/* <h4>{friend.friend.age}</h4>
-               <h4>{friend.friend.gender}</h4> */}
-                        <h4>Hello, </h4>
-                        <h4>World</h4>
+                        <h4>{friend.friend.age}</h4>
+                        <h4>{friend.friend.gender}</h4>
                       </div>
                     </div>
                   </div>
@@ -126,7 +123,7 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="mt-5 px-10 space-y-3">
+        <div className="pt-6 md:px-10 space-y-3">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
