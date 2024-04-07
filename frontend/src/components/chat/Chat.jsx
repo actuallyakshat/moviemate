@@ -11,6 +11,7 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchConversations = async () => {
+      console.log(user?._id);
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_BASEURL}/friend/getAllFriends`,
@@ -24,7 +25,9 @@ const Chat = () => {
         console.log(error);
       }
     };
-    fetchConversations();
+    if (user) {
+      fetchConversations();
+    }
   }, [user]);
   return (
     <div className="pt-16">
