@@ -58,7 +58,8 @@ const addInterestedUser = async (movieId, userId, movieName) => {
 const removeInterestedUser = async (movieId, userId) => {
   try {
     const response = await axios.post(`${baseUrl}/movie/removeMeFromMovie`, {
-      movieIdL,
+      movieId,
+      userId,
     });
     if (response.data.success) {
       return {
