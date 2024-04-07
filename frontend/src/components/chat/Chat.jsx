@@ -29,8 +29,9 @@ const Chat = () => {
       fetchConversations();
     }
   }, [user]);
+
   return (
-    <div className="pt-16 flex h-screen">
+    <div className="pt-16 flex min-h-screen">
       <Sidebar
         conversations={conversations}
         setSelectedConversation={setSelectedConversation}
