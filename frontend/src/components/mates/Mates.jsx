@@ -1,20 +1,20 @@
-import { getPendingRequest } from "@/actions/friendActions";
-import { userAtom } from "@/lib/store/store";
+import { useEffect, useState } from "react";
+import { getPendingRequest } from "../../actions/friendActions";
 import { useAtomValue } from "jotai";
-import { useEffect } from "react";
+import { userAtom } from "../../lib/store/store";
+import { set } from "react-hook-form";
 
 const Mates = () => {
   const user = useAtomValue(userAtom);
+  const [incomingRequests, setIncomingRequests] = useState([]);
+  const [outgoingRequests, setOutgoingRequests] = useState([]);
   useEffect(() => {
-    const getRequests = async () => {
-      const response = await getPendingRequest(user?._id);
-      if (response.success) {
-        console.log(response);
-      }
-    };
-    getRequests();
-  }, []);
-
+    if(user){
+      getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests);
+    }
+  }, [user])
+  console.log('incomingRequests', incomingRequests);
+  console.log('outgoingRequests', outgoingRequests);
   return (
     <div className="pt-20 w-full">
       <div className="grid grid-col-1 md:grid-cols-2 max-w-7xl w-full mx-auto p-4">

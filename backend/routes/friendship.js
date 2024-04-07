@@ -15,8 +15,8 @@ const {
 router.post("/sendFriendRequest", sendFriendReq);
 
 // Read
-router.get("/getAllFriends", getAllFriends);
-router.get("/getPendingRequests", getPendingRequests);
+router.post("/getAllFriends", getAllFriends);
+router.post("/getPendingRequests", getPendingRequests);
 
 // Update
 router.post("/acceptFriendRequest", acceptFriendReq);

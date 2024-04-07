@@ -1,5 +1,6 @@
 const Friendship = require("../ models/Friendship");
 const User = require("../ models/User");
+const Movie = require("../ models/Movie");
 
 // Keypoints:
 // user1 : The one who send the request
@@ -9,11 +10,12 @@ exports.sendFriendReq = async (req, res) => {
   try {
     const userId = req.body.userId;
     const friendId = req.body.friendId;
-    const movieId = req.body.movieId;
-    if (!userId || !friendId || !movieId) {
+    const tmdbId = req.body.tmdbId;
+    const movieName = req.body.movieName;
+    if (!userId || !friendId || !tmdbId) {
       return res.status(400).json({
         success: false,
-        message: "userId, friendId and movieId are required",
+        message: "userId, friendId tmdbId and movie name are required",
       });
     }
 
@@ -31,6 +33,19 @@ exports.sendFriendReq = async (req, res) => {
       });
     }
 
+    // Checking movie exists or not
+    const existingMovie = await Movie.findOne({ tmdbId: tmdbId });
+    let movie;
+    if (existingMovie) {
+      movie = existingMovie;
+    }
+    else{
+      movie = await Movie.create({
+        movieName: movieName,
+        tmdbId: tmdbId,
+      });
+    }
+    const movieId = movie._id;
     // Creating new friend request
     const newRequest = await Friendship.create({
       user1: userId,
