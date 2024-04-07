@@ -4,13 +4,13 @@ import { useAtomValue } from "jotai";
 import { Input } from "../ui/input";
 import { motion } from "framer-motion";
 import { DatePicker } from "./DatePicker";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { MultiSelect } from "react-multi-select-component";
 import { Button } from "../ui/button";
 
-const options = [
+const optionsGenre = [
   { label: "Action", value: "Action" },
   { label: "Adventure", value: "Adventure" },
   { label: "Animation", value: "Animation" },
@@ -32,12 +32,93 @@ const options = [
   { label: "Western", value: "Western" },
 ];
 
+const optionsLang = [
+  { label: "English", value: "English" },
+  { label: "Hindi", value: "Hindi" },
+  { label: "Gujrati", value: "Gujrati" },
+  { label: "Tamil", value: "Tamil" },
+  { label: "Telegu", value: "Telegu" },
+  { label: "Malyalam", value: "Malyalam" },
+];
+
 const UpdateDetails = () => {
-  const [selected, setSelected] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState([]);
+  const [selectedLang, setSelectedLang] = useState([]);
   const [date, setDate] = useState();
-  const { register } = useForm();
+  const { register, handleSubmit } = useForm();
   const user = useAtomValue(userAtom);
   console.log(user);
+
+  // function isEmptyObject(obj) {
+  //   return Object.keys(obj).length === 0 && obj.constructor === Object;
+  // }
+
+  // const getAge = (DOB) => {
+  //   const birthDate = new Date(DOB);
+  //   const currentDate = new Date();
+  //   const timeDifference = currentDate - birthDate;
+  //   const ageInMilliseconds = new Date(timeDifference);
+  //   const age = Math.abs(ageInMilliseconds.getUTCFullYear() - 1970);
+
+  //   if (age) {
+  //     return age;
+  //   }
+  //   return null;
+  // };
+
+  // function filterEmptyObjects(data) {
+  //   const filteredData = {};
+  //   for (const key in data) {
+  //     if (data[key] !== null && data[key] !== "") {
+  //       if (typeof data[key] === "object" && !Array.isArray(data[key])) {
+  //         if (!isEmptyObject(data[key])) {
+  //           filteredData[key] = filterEmptyObjects(data[key]);
+  //         }
+  //       } else {
+  //         filteredData[key] = data[key];
+  //       }
+  //     }
+  //   }
+  //   return filteredData;
+  // }
+
+  // useEffect(() => {
+  //   if (user && Object.keys(user).length > 0) {
+  //     setfavoriteGenres(user.favoriteGenres);
+  //     setLanguagePreferences(user.languagePreferences);
+  //   }
+  // }, [user]);
+
+  const onSubmit = async (data) => {
+    console.log(data);
+    // setLoading(true);
+    // const DOB = data.dateOfBirth;
+    if (DOB) data.age = getAge(DOB);
+    data.gender = gender;
+    data.favoriteGenres = selectedGenre;
+    data.languagePreferences = selectedLang;
+    const filteredData = filterEmptyObjects(data);
+    if (isEmptyObject(filteredData.location)) {
+      delete filteredData.location;
+    }
+    console.log("newData", data);
+    // const response = await updateUserDetails(filteredData, setUser);
+    // setLoading(false);
+    // if (response.success) {
+    //   toast.success(response.message, {
+    //     style: {
+    //       fontWeight: "bold",
+    //     },
+    //   });
+    // } else {
+    //   toast.error("Something went wrong", {
+    //     style: {
+    //       fontWeight: "bold",
+    //     },
+    //   });
+    // }
+  };
+  
   return (
     <motion.div
       className="max-w-xl pt-5 mx-auto"
@@ -50,14 +131,14 @@ const UpdateDetails = () => {
       transition={{ duration: 0.4, delay: 0.15 }}
     >
       <h1 className="text-3xl mt-2 font-bold">Complete Your Profile</h1>
-      <form className="space-y-3 mt-5">
+      <form className="space-y-3 mt-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1">
           <Label>Name</Label>
-          <Input value={user?.fullName} className="cursor-not-allowed" />
+          <Input {...register} value={user?.fullName} className="cursor-not-allowed" />
         </div>
         <div className="space-y-1">
           <Label>Email</Label>
-          <Input value={user?.email} className="cursor-not-allowed" />
+          <Input {...register} value={user?.email} className="cursor-not-allowed" />
         </div>
         <div className="space-y-1">
           <Label htmlFor="DOB" className="">
@@ -92,32 +173,32 @@ const UpdateDetails = () => {
         </div>
         <div className="space-y-1">
           <Label>City</Label>
-          <Input defaultValue={user?.location?.city} placeholder="City" />
+          <Input {...register("location.city")} defaultValue={user?.location?.city} placeholder="City" />
         </div>
         <div className="space-y-1">
           <Label>State</Label>
-          <Input defaultValue={user?.location?.state} placeholder="State" />
+          <Input {...register("location.state")} defaultValue={user?.location?.state} placeholder="State" />
         </div>
         <div className="space-y-1">
           <Label>Country</Label>
-          <Input defaultValue={user?.location?.country} placeholder="Country" />
+          <Input {...register("location.country")} defaultValue={user?.location?.country} placeholder="Country"/>
         </div>
         <div className="space-y-1">
           <Label>Favourite Genres</Label>
           <MultiSelect
             className="bg-background dark:bg-black text-black"
-            options={options}
-            value={selected}
-            onChange={setSelected}
+            options={optionsGenre}
+            value={selectedGenre}
+            onChange={setSelectedGenre}
             labelledBy="Select"
           />
         </div>
         <div className="space-y-1">
           <Label>Preferred Languages</Label>
           <MultiSelect
-            options={options}
-            value={selected}
-            onChange={setSelected}
+            options={optionsLang}
+            value={selectedLang}
+            onChange={setSelectedLang}
             labelledBy="Select"
           ></MultiSelect>
         </div>
