@@ -43,11 +43,11 @@ const optionsLang = [
 ];
 
 const UpdateDetails = () => {
+  const [user, setUser] = useAtom(userAtom);
   const [selectedGenre, setSelectedGenre] = useState([]);
   const [selectedLang, setSelectedLang] = useState([]);
   const [date, setDate] = useState();
   const { register, handleSubmit } = useForm();
-  const [user, setUser] = useAtom(userAtom);
   console.log(user);
   function isEmptyObject(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
@@ -90,34 +90,40 @@ const UpdateDetails = () => {
   // }, [user]);
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // setLoading(true);
     const DOB = data.dateOfBirth;
     if (DOB) data.age = getAge(DOB);
-    // data.gender = gender;
-    data.favoriteGenres = selectedGenre;
-    data.languagePreferences = selectedLang;
-    const filteredData = filterEmptyObjects(data);
-    if (isEmptyObject(filteredData.location)) {
-      delete filteredData.location;
+
+    // Extract value properties from selectedGenre array
+    const favoriteGenres = selectedGenre.map((genre) => genre.value);
+    data.favoriteGenres = favoriteGenres;
+
+    // Extract value properties from selectedLang array
+    const languagePreferences = selectedLang.map((lang) => lang.value);
+    data.languagePreferences = languagePreferences;
+
+    // Ensure location is an object
+    if (!data.location || typeof data.location !== "object") {
+      data.location = {};
     }
-    console.log("newData", data);
-    const response = await updateUserDetails(user._id, filteredData, setUser);
-    // setLoading(false);
-    // if (response.success) {
-    // toast.success(response.message, {
-    //   style: {
-    //     fontWeight: "bold",
-    //   }
-    // });
-    //   });
-    // } else {
-    //   toast.error("Something went wrong", {
-    //     style: {
-    //       fontWeight: "bold",
-    //     },
-    //   });
-    // }
+
+    const filteredData = filterEmptyObjects(data);
+
+    try {
+      const response = await updateUserDetails(
+        user?._id,
+        filteredData,
+        setUser
+      );
+      if (response.success) {
+        setUser({ ...user, onboardingCompleted: true });
+        console.log(response.message); // Handle success message
+      } else {
+        console.error(response.message); // Handle error message
+      }
+    } catch (error) {
+      console.error("Error updating user details:", error);
+      // Handle error
+    }
   };
 
   return (

@@ -8,7 +8,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
 
 const FindMateModal = ({ setModal, movie }) => {
-  const [interestedUsers, setInterestedUsers] = useState(null);
+  const [interestedUsers, setInterestedUsers] = useState([]);
   const user = useAtomValue(userAtom);
   console.log(user._id);
   const submitHandler = async () => {
@@ -75,9 +75,20 @@ const FindMateModal = ({ setModal, movie }) => {
               Didn&apos;t find your mate?
             </p>
           )}
-          <Button className="w-full" onClick={submitHandler}>
-            Add me on the list!
-          </Button>
+
+          {interestedUsers.some((user) => user._id === user._id) ? (
+            <Button
+              variant="destructive"
+              onClick={submitHandler}
+              className="w-full"
+            >
+              Remove me from the list
+            </Button>
+          ) : (
+            <Button onClick={submitHandler} className="w-full">
+              Add me on the list!
+            </Button>
+          )}
         </div>
       </div>
     </div>
