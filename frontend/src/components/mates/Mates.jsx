@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFriends, getPendingRequest } from "../../actions/friendActions";
+import { getFriends, getPendingRequest, acceptFriendRequest, declineFriendRequest, cancelFriendRequest, removeFriend } from "../../actions/friendActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
 import { set } from "react-hook-form";
