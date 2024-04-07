@@ -50,7 +50,28 @@ const addInterestedUser = async (movieId, userId, movieName) => {
         message: response.data.message,
       };
     }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+const removeInterestedUser = async (movieId, userId) => {
+  try {
+    const response = await axios.post(`${baseUrl}/movie/removeMeFromMovie`, {
+      movieIdL,
+    });
+    if (response.data.success) {
+      return {
+        success: true,
+        message: response.data.message,
+      };
+    } else {
+      return {
+        success: false,
+        message: response.data.message,
+      };
+    }
   } catch (error) {}
 };
 
-export { getAllInterestedUsers, addInterestedUser };
+export { getAllInterestedUsers, addInterestedUser, removeInterestedUser };

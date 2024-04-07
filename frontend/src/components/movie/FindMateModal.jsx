@@ -3,6 +3,7 @@ import { Button } from "../ui/button";
 import {
   addInterestedUser,
   getAllInterestedUsers,
+  removeInterestedUser,
 } from "@/actions/movieActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
@@ -14,11 +15,22 @@ const FindMateModal = ({ setModal, movie }) => {
   const submitHandler = async () => {
     const response = await addInterestedUser(movie.id, user._id, movie.title);
     if (response.success) {
-      setInterestedUsers(...interestedUsers, user);
+      setInterestedUsers([...interestedUsers, user]); // or setInterestedUsers(prevInterestedUsers => [...prevInterestedUsers, user]);
     } else {
       console.log(response.message);
     }
   };
+  const removeUserHandler = async () => {
+    const response = await removeInterestedUser(movie.id, user._id); // Corrected function name
+    if (response.success) {
+      setInterestedUsers(
+        interestedUsers.filter((data) => data._id !== user._id)
+      );
+    } else {
+      console.log(response.message);
+    }
+  };
+
   useEffect(() => {
     const getUsers = async () => {
       const response = await getAllInterestedUsers(movie.id);
@@ -79,7 +91,7 @@ const FindMateModal = ({ setModal, movie }) => {
           {interestedUsers.some((user) => user._id === user._id) ? (
             <Button
               variant="destructive"
-              onClick={submitHandler}
+              onClick={removeUserHandler}
               className="w-full"
             >
               Remove me from the list
