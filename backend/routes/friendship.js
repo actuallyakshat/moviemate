@@ -23,7 +23,7 @@ router.post("/acceptFriendRequest", acceptFriendReq);
 router.post("/rejectFriendRequest", rejectFriendReq);
 
 // Delete
-router.delete("/removeFriend", removeFriend);
-router.delete("/cancelFriendRequest", cancelFriendReq);
+router.post("/removeFriend", removeFriend);
+router.post("/cancelFriendRequest", cancelFriendReq);
 
 module.exports = router;

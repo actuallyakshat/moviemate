@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { getFriends, getPendingRequest, acceptFriendRequest, declineFriendRequest, cancelFriendRequest, removeFriend } from "../../actions/friendActions";
+import {
+  getFriends,
+  getPendingRequest,
+  acceptFriendRequest,
+  declineFriendRequest,
+  cancelFriendRequest,
+  removeFriend,
+} from "../../actions/friendActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
 import { set } from "react-hook-form";
@@ -47,10 +54,22 @@ const Mates = () => {
                     </div>
                   </div>
                   <div className="space-x-3">
-                    <Button variant="ghost" className="hover:text-red-500">
+                    <Button
+                      variant="ghost"
+                      className="hover:text-red-500"
+                      onClick={() =>
+                        declineFriendRequest(user._id, friend.friend._id)
+                      }
+                    >
                       Decline
                     </Button>
-                    <Button variant="ghost" className="hover:text-green-500">
+                    <Button
+                      variant="ghost"
+                      className="hover:text-green-500"
+                      onClick={() =>
+                        acceptFriendRequest(user._id, friend.friend._id)
+                      }
+                    >
                       Accept
                     </Button>
                   </div>
@@ -87,7 +106,13 @@ const Mates = () => {
                       </div>
                     </div>
                   </div>
-                  <Button variant="ghost" className="hover:text-red-500">
+                  <Button
+                    variant="ghost"
+                    className="hover:text-red-500"
+                    onClick={() =>
+                      cancelFriendRequest(user._id, friend.friend._id)
+                    }
+                  >
                     Cancel
                   </Button>
                 </div>
@@ -120,7 +145,19 @@ const Mates = () => {
                     <h3>{friend?.friend?.gender} </h3>
                   </div>
                 </div>
-                <Button variant="destructive">Delete</Button>
+                <Button
+                  variant="destructive"
+                  onClick={() => {
+                    if (user && friend) {
+                      removeFriend(user._id, friend.friend._id);
+                    }
+                    // console.log(user._id);
+                    // console.log(friend.friend._id);
+                    // removeFriend(user._id, friend.friend._id);
+                  }}
+                >
+                  Delete
+                </Button>
               </div>
             ))
           ) : (

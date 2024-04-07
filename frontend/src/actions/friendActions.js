@@ -89,7 +89,7 @@ export const declineFriendRequest = async (userId, friendId) => {
 
 export const cancelFriendRequest = async (userId, friendId) => {
   try {
-    const response = await axios.delete(`${baseUrl}/friend/cancelFriendRequest`, {
+    const response = await axios.post(`${baseUrl}/friend/cancelFriendRequest`, {
       userId,
       friendId,
     });
@@ -115,7 +115,7 @@ export const cancelFriendRequest = async (userId, friendId) => {
 
 export const removeFriend = async (userId, friendId) => {
   try {
-    const response = await axios.delete(`${baseUrl}/friend/removeFriend`, {
+    const response = await axios.post(`${baseUrl}/friend/removeFriend`, {
       userId,
       friendId,
     });
