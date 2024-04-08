@@ -4,38 +4,42 @@ import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
+import { imageUpload } from "../../actions/fileUploadActions";
 export const Photos = () => {
   const { toast } = useToast();
   const [user, setUser] = useAtom(userAtom);
   const [userPhotos, setUserPhotos] = useState([]);
 
-  // const uploadPostHandler = async (event) => {
-  //   const files = event.target.files;
-  //   if (!files || files.length === 0) {
-  //     return;
-  //   }
-  //   const file = event.target.files[0];
-  //   toast("Uploading your image...", {
-  //     icon: "⏳",
-  //     style: {
-  //       fontWeight: "bold",
-  //     },
-  //   });
-  //   const response = await imageUpload("general", file, setUser);
-  //   if (response && response.data.success) {
-  //     toast.success("Post created successfully!", {
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   } else {
-  //     toast.error("We couldn't upload your image.", {
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   }
-  // };
+  const uploadPostHandler = async (event) => {
+    const files = event.target.files;
+    if (!files || files.length === 0) {
+      return;
+    }
+    const file = event.target.files[0];
+    // toast("Uploading your image...", {
+    //   icon: "⏳",
+    //   style: {
+    //     fontWeight: "bold",
+    //   },
+    // });
+    console.log("Uploading image...");
+    const response = await imageUpload(user?._id, "general", file, setUser);
+    if (response && response.data.success) {
+      // toast.success("Post created successfully!", {
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Image uploaded successfully");
+    } else {
+      // toast.error("We couldn't upload your image.", {
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Error uploading image");
+    }
+  };
 
   useEffect(() => {
     setUserPhotos(
@@ -59,7 +63,7 @@ export const Photos = () => {
           type="file"
           accept=".png, .jpg, .jpeg, .heic"
           className="absolute w-full h-full opacity-0 cursor-pointer"
-          // onChange={uploadPostHandler}
+          onChange={uploadPostHandler}
         />
       </div>
     </div>

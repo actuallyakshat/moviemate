@@ -30,8 +30,7 @@ const uploadFileToCloudinary = async (file, folder) => {
 exports.imageUpload = async (req, res) => {
   try {
     // Data Fetch
-    const userId = req.body.userId;
-    const { tag } = req.body;
+    const { tag , userId } = req.body;
     const file = req.files["file"];
 
     // Validation
