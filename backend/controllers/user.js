@@ -2,8 +2,7 @@ const User = require("../ models/User");
 
 exports.getOrCreateUser = async (req, res) => {
   try {
-    const { fullName, email } = req.body;
-
+    const { fullName, email, profileImg } = req.body;
     // Checking user already exist or not
     const oldUser = await User.findOne({ email: email }).populate("friends");
     if (oldUser) {
@@ -17,6 +16,7 @@ exports.getOrCreateUser = async (req, res) => {
     const newUser = await User.create({
       fullName,
       email,
+      profileImage: profileImg,
     });
 
     return res.status(200).json({

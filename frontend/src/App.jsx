@@ -22,6 +22,7 @@ function App() {
         const response = await getUserDetails(
           user.fullName,
           user.primaryEmailAddress.emailAddress,
+          user.imageUrl,
           setUser
         );
         if (response.success) {
