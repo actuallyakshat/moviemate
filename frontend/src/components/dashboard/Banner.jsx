@@ -27,18 +27,18 @@ const Banner = () => {
   }, []);
 
   return (
-    <div className="w-full min-h-[27rem] bg-no-repeat bg-cover overflow-hidden relative hidden md:block">
+    <div className="w-full min-h-[27rem] bg-no-repeat bg-cover overflow-hidden relative">
       <div
         style={{ backgroundImage: backdrop ? `url(${backdrop})` : "none" }}
         className="w-full h-full blur-md absolute top-0 left-0 bg-cover bg-no-repeat max-w-screen scale-110"
       ></div>
       <div className="w-full h-full bg-black/50 blur-md absolute top-0 left-0 bg-cover bg-no-repeat scale-110 max-w-screen"></div>
-      <div className="absolute top-0 left-0 w-full h-full flex gap-12 px-16 max-w-screen">
+      <div className="absolute top-0 left-0 w-full h-full flex gap-12 px-6 lg:px-16 max-w-screen">
         {bannerMovie && (
           <img
             src={`${imagePrefix}${bannerMovie?.poster_path}`}
             alt="poster"
-            className="max-h-[90%] rounded-lg my-auto"
+            className="max-h-[90%] rounded-lg hidden lg:block my-auto"
           />
         )}
         <div className="py-8 space-y-1">
@@ -63,9 +63,11 @@ const Banner = () => {
           <div>
             <p className="text-white font-bold"></p>
           </div>
-          <p className="text-white max-w-3xl py-1">{bannerMovie?.overview}</p>
+          <p className="text-white max-w-3xl pt-1 pb-4">
+            {bannerMovie?.overview}
+          </p>
           <Button
-            className="absolute bottom-8"
+            className="bottom-8"
             onClick={() => clickHandler(bannerMovie)}
           >
             Find Mates

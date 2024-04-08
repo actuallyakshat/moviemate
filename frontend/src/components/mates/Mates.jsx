@@ -30,14 +30,14 @@ const Mates = () => {
       <div className="grid grid-col-1 md:grid-cols-2 gap-4 max-w-7xl w-full mx-auto p-4">
         <div className="col-span-1">
           <h1 className="text-3xl font-semibold">Incoming Requests</h1>
-          <div className="pr-20 mt-5">
+          <div className="mt-5">
             {incomingRequests.length > 0 ? (
               incomingRequests.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
+                  className="p-2 flex w-full items-center justify-between gap-4 border rounded-xl px-4"
                 >
-                  <div className="flex gap-4">
+                  <div className="flex items-center justify-center gap-4">
                     <img
                       src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
                       className="w-14 h-14 rounded-full"
@@ -47,12 +47,12 @@ const Mates = () => {
                         {friend.friend.fullName}
                       </h1>
                       <div className="flex items-center gap-1 font-medium text-secondary-foreground/50">
-                        <h4>Hello</h4>
-                        <h4>World</h4>
+                        <h4>{friend.friend.age}, </h4>
+                        <h4>{friend.friend.gender}</h4>
                       </div>
                     </div>
                   </div>
-                  <div className="space-x-3">
+                  <div className="space-x-3 flex">
                     <Button
                       variant="ghost"
                       className="hover:text-red-500"
@@ -123,23 +123,27 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-6 md:px-10 space-y-3">
+        <div className="pt-6 space-y-3">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
                 key={friend._id}
                 className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
               >
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
                   <img
                     src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
                     alt="pfp"
                     className="w-14 h-14 rounded-full"
                   />
                   <div className="flex flex-col">
-                    <h3 className="font-medium">{friend?.friend?.fullName}</h3>
-                    <h3>{friend?.friend?.age}, </h3>
-                    <h3>{friend?.friend?.gender} </h3>
+                    <h3 className="font-semibold">
+                      {friend?.friend?.fullName}
+                    </h3>
+                    <div className="flex gap-1">
+                      <h3>{friend?.friend?.age},</h3>
+                      <h3>{friend?.friend?.gender} </h3>
+                    </div>
                   </div>
                 </div>
                 <Button

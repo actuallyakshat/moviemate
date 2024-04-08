@@ -1,9 +1,28 @@
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 
-const Sidebar = ({ conversations, setSelectedConversation }) => {
+const Sidebar = ({
+  conversations,
+  setSelectedConversation,
+  isMobileMenuOpen,
+  setIsMobileMenuOpen,
+}) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
+
+  useEffect(() => {
+    setIsMobileMenuOpen(window.innerWidth >= 1024);
+
+    const handleResize = () => {
+      setIsMobileMenuOpen(window.innerWidth >= 1024);
+    };
+    window.addEventListener("resize", handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [setIsMobileMenuOpen]);
 
   useEffect(() => {
     // Filter conversations based on searchQuery
@@ -20,7 +39,11 @@ const Sidebar = ({ conversations, setSelectedConversation }) => {
   };
 
   return (
-    <div className="fixed min-h-[calc(100vh-64px)] bottom-0 left-0 max-w-[25rem] w-full p-3 border-r z-[1000]">
+    <div
+      className={`fixed bg-background h-full lg:max-h-[calc(100vh-64px)] bottom-0 left-0 lg:max-w-[25rem] w-full p-3 border-r z-[1000] ${
+        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
+      }`}
+    >
       <Input
         placeholder="Search friends"
         value={searchQuery}
@@ -33,7 +56,12 @@ const Sidebar = ({ conversations, setSelectedConversation }) => {
             className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
           >
             <div
-              onClick={() => setSelectedConversation(conversation)}
+              onClick={() => {
+                setSelectedConversation(conversation);
+                if (window.innerWidth <= 1024) {
+                  setIsMobileMenuOpen(false);
+                }
+              }}
               className="w-full h-full p-3 rounded-lg"
             >
               <h1 className="font-bold">{conversation?.friend?.fullName}</h1>

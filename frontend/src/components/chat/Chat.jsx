@@ -8,6 +8,7 @@ const Chat = () => {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const user = useAtomValue(userAtom);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -35,12 +36,19 @@ const Chat = () => {
       <Sidebar
         conversations={conversations}
         setSelectedConversation={setSelectedConversation}
+        isMobileMenuOpen={isMobileMenuOpen}
+        setIsMobileMenuOpen={setIsMobileMenuOpen}
       />
-      {selectedConversation && (
+      {selectedConversation ? (
         <Content
           selectedConversation={selectedConversation}
           userId={user?._id}
+          setIsMobileMenuOpen={setIsMobileMenuOpen}
         />
+      ) : (
+        <p className="lg:pl-[27rem] px-4 text-2xl pt-8 font-medium tracking-tight">
+          Please select a conversation
+        </p>
       )}
     </div>
   );

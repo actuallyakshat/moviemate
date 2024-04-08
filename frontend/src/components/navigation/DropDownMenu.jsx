@@ -14,6 +14,7 @@ import { ModeToggle } from "./ThemeToggler";
 import { Link } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
+const defaultPfp = import.meta.env.VITE_DUMMY_PROFILE;
 
 const DropDownMenu = () => {
   const userFromStore = useAtomValue(userAtom);
@@ -22,8 +23,8 @@ const DropDownMenu = () => {
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarImage src={defaultPfp} />
+          <AvatarFallback>Pfp</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

@@ -178,12 +178,12 @@ const UpdateDetails = () => {
             className="grid grid-cols-2 mt-2"
           >
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="male" id="male" />
-              <Label htmlFor="male">Male</Label>
+              <RadioGroupItem value="Male" id="Male" />
+              <Label htmlFor="Male">Male</Label>
             </div>
             <div className="flex items-center space-x-2">
-              <RadioGroupItem value="female" id="female" />
-              <Label htmlFor="female">Female</Label>
+              <RadioGroupItem value="Female" id="Female" />
+              <Label htmlFor="Female">Female</Label>
             </div>
           </RadioGroup>
         </div>
