@@ -50,12 +50,12 @@ export const ProfileHeader = ({user}) => {
 
       let profileFile;
       if (user && Object.keys(user).length > 0) {
-        profileFile = user?.files?.find((file) => file.tag === "profile");
+        profileFile = user?.profileImage || import.meta.env.VITE_DUMMY_PROFILE;
       }
 
       // If a header file is found, set the header URL
       if (profileFile) {
-        setprofileUrl(profileFile?.url);
+        setprofileUrl(profileFile);
       }
 
       const monthName = months[date.getMonth()];

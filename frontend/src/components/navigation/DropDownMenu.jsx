@@ -14,16 +14,17 @@ import { ModeToggle } from "./ThemeToggler";
 import { Link } from "react-router-dom";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
-const defaultPfp = import.meta.env.VITE_DUMMY_PROFILE;
+import { useEffect } from "react";
 
 const DropDownMenu = () => {
   const userFromStore = useAtomValue(userAtom);
   const { user, signOut } = useClerk();
+  const profileImg = user?.imageUrl || import.meta.env.VITE_DUMMY_PROFILE;
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src={defaultPfp} />
+          <AvatarImage src={profileImg} />
           <AvatarFallback>Pfp</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
