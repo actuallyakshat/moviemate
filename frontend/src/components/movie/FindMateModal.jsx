@@ -56,20 +56,23 @@ const FindMateModal = ({ setModal, movie }) => {
               return (
                 <div
                   key={data._id}
-                  className="flex items-center gap-3 bg-secondary rounded-lg px-4 p-2 w-full"
+                  className="flex items-center justify-between bg-secondary rounded-lg px-4 p-2 w-full"
                 >
-                  <img
-                    src={data.image}
-                    alt="pfp"
-                    className="w-14 h-14 rounded-full"
-                  />
-                  <div>
-                    <p className="font-semibold">{data.fullName}</p>
-                    <div className="flex items-center gap-2 font-medium dark:text-zinc-300 text-zinc-500">
-                      <p>{data.age}, </p>
-                      <p>{data.gender}</p>
+                  <div className="flex gap-3">
+                    <img
+                      src={data.image}
+                      alt="pfp"
+                      className="w-14 h-14 rounded-full"
+                    />
+                    <div>
+                      <p className="font-semibold">{data.fullName}</p>
+                      <div className="flex items-center gap-2 font-medium dark:text-zinc-300 text-zinc-500">
+                        <p>{data.age}, </p>
+                        <p>{data.gender}</p>
+                      </div>
                     </div>
                   </div>
+                  <Button>Add Mate</Button>
                 </div>
               );
             })}
@@ -80,9 +83,9 @@ const FindMateModal = ({ setModal, movie }) => {
             Oops! No users found. <br /> Be the first one to show interest 🍿
           </p>
         )}
-        <div className="w-fit mx-auto space-y-2">
+        <div className="w-fit mx-auto space-y-1">
           {interestedUsers && (
-            <p className="dark:text-zinc-300 text-zinc-500">
+            <p className="dark:text-zinc-300 text-center tracking-tight text-zinc-500">
               Didn&apos;t find your mate?
             </p>
           )}
