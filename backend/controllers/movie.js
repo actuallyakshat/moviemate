@@ -62,8 +62,11 @@ exports.getAllInterestedUsers = async (req, res) => {
 
 exports.removeUserFromInterested = async (req, res) => {
   try {
+    //This movieId is the tmdbId coming from the frontend and not the _id of the movie
     const { movieId, userId } = req.body;
-    const movie = await Movie.findById(movieId);
+    //find the movie by tmdbId and then delete it.
+    const movie = await Movie.findOne({ tmdbId: movieId });
+    // const movie = await Movie.findById(movieId);
     if (!movie) {
       return res.status(404).json({
         success: false,
@@ -72,7 +75,9 @@ exports.removeUserFromInterested = async (req, res) => {
     }
 
     // Check if the user is in the interestedUsers array
-    const index = movie.interestedUsers.findIndex(user => user.toString() === userId);
+    const index = movie.interestedUsers.findIndex(
+      (user) => user.toString() === userId
+    );
     if (index === -1) {
       return res.status(404).json({
         success: false,
@@ -88,10 +93,11 @@ exports.removeUserFromInterested = async (req, res) => {
 
     if (movie.interestedUsers.length === 0) {
       // If no users are interested anymore, delete the movie
-      await Movie.findByIdAndDelete(movieId);
+      await Movie.findByIdAndDelete(movie._id); //fix this
       return res.status(200).json({
         success: true,
-        message: "User removed from interested list and movie deleted as no users are interested anymore",
+        message:
+          "User removed from interested list and movie deleted as no users are interested anymore",
       });
     } else {
       return res.status(200).json({
@@ -100,7 +106,10 @@ exports.removeUserFromInterested = async (req, res) => {
       });
     }
   } catch (error) {
-    console.error("Error occurred while removing user from interested list:", error);
+    console.error(
+      "Error occurred while removing user from interested list:",
+      error
+    );
     return res.status(500).json({
       success: false,
       message: "Internal server error",

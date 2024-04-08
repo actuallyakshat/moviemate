@@ -58,7 +58,8 @@ const addInterestedUser = async (movieId, userId, movieName) => {
 const removeInterestedUser = async (movieId, userId) => {
   try {
     const response = await axios.post(`${baseUrl}/movie/removeMeFromMovie`, {
-      movieIdL,
+      movieId,
+      userId,
     });
     if (response.data.success) {
       return {
@@ -71,7 +72,12 @@ const removeInterestedUser = async (movieId, userId) => {
         message: response.data.message,
       };
     }
-  } catch (error) {}
+  } catch (error) {
+    console.error("Error occurred while removing user from interested", error);
+    return {
+      success: false,
+    };
+  }
 };
 
 export { getAllInterestedUsers, addInterestedUser, removeInterestedUser };
