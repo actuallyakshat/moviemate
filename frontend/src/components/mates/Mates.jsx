@@ -23,11 +23,38 @@ const Mates = () => {
       getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests);
     }
   }, [user]);
-  const AcceptFriendHandler = async (friend) => {
-    const response = await acceptFriendRequest(user._id, friend._id);
+  const acceptFriendHandler = async (userId, friend) => {
+    const response = await acceptFriendRequest(userId, friend._id);
     if (response.success) {
       //change the friend state
-      setFriends(friends.filter((f) => f.friend._id !== friend._id));
+      console.log("Friend request accepted");
+      setIncomingRequests(
+        incomingRequests.filter((f) => {
+          f.friend._id !== friend._id;
+        })
+      );
+      setFriends([...friends, { friend }]);
+    } else {
+    }
+  };
+  const declineFriendHandler = async (userId, friendId) => {
+    const response = await declineFriendRequest(userId, friendId);
+    if (response.success) {
+      console.log("Friend request declined");
+      setIncomingRequests(
+        incomingRequests.filter((f) => {
+          f.friend._id !== friendId;
+        })
+      );
+    } else {
+    }
+  };
+  const cancelFriendHandler = async (userId, friendId) => {
+    const response = await cancelFriendRequest(userId, friendId);
+    if (response.success) {
+      setOutgoingRequests(
+        outgoingRequests.filter((f) => f.friend._id !== friendId)
+      );
     } else {
       console.log("Error accepting friend request", response.message);
     }
@@ -66,7 +93,7 @@ const Mates = () => {
                       variant="ghost"
                       className="hover:text-red-500"
                       onClick={() =>
-                        declineFriendRequest(user._id, friend.friend._id)
+                        declineFriendHandler(user._id, friend.friend._id)
                       }
                     >
                       Decline
@@ -74,7 +101,9 @@ const Mates = () => {
                     <Button
                       variant="ghost"
                       className="hover:text-green-500"
-                      onClick={() => AcceptFriendHandler(friend.friend)}
+                      onClick={() =>
+                        acceptFriendHandler(user._id, friend.friend)
+                      }
                     >
                       Accept
                     </Button>
@@ -114,7 +143,7 @@ const Mates = () => {
                     variant="ghost"
                     className="hover:text-red-500"
                     onClick={() =>
-                      cancelFriendRequest(user._id, friend.friend._id)
+                      cancelFriendHandler(user._id, friend.friend._id)
                     }
                   >
                     Cancel

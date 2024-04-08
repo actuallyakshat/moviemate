@@ -60,13 +60,10 @@ export const acceptFriendRequest = async (userId, friendId) => {
 
 export const declineFriendRequest = async (userId, friendId) => {
   try {
-    const response = await axios.post(
-      `${baseUrl}/friend/declineFriendRequest`,
-      {
-        userId,
-        friendId,
-      }
-    );
+    const response = await axios.post(`${baseUrl}/friend/rejectFriendRequest`, {
+      userId,
+      friendId,
+    });
     if (response.data.success) {
       return {
         success: true,
