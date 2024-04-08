@@ -29,6 +29,7 @@ const Mates = () => {
       //change the friend state
       setFriends(friends.filter((f) => f.friend._id !== friend._id));
     } else {
+      console.log("Error accepting friend request", response.message);
     }
   };
   console.log("incomingRequests", incomingRequests[0]);
@@ -38,12 +39,12 @@ const Mates = () => {
       <div className="grid grid-col-1 md:grid-cols-2 gap-8 max-w-7xl w-full mx-auto p-4">
         <div className="col-span-1">
           <h1 className="text-3xl font-semibold">Incoming Requests</h1>
-          <div className="mt-5">
+          <div className="mt-5 space-y-2">
             {incomingRequests.length > 0 ? (
               incomingRequests.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="p-2 flex w-full items-center justify-between gap-4 border rounded-xl px-4"
+                  className="p-2 shadow-md flex w-full items-center justify-between gap-4 border rounded-xl px-4"
                 >
                   <div className="flex items-center justify-center gap-4">
                     <img
@@ -87,12 +88,12 @@ const Mates = () => {
         </div>
         <div>
           <h1 className="text-3xl font-semibold">Outgoing Requests</h1>
-          <div className="pr-20 mt-5">
+          <div className="mt-5 space-y-2">
             {outgoingRequests?.length > 0 ? (
               outgoingRequests?.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
+                  className="p-2 shadow-md flex items-center justify-between gap-4 border rounded-xl px-4"
                 >
                   <div className="flex gap-3">
                     <img
@@ -129,12 +130,12 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-6 space-y-3">
+        <div className="pt-6 space-y-2">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
                 key={friend._id}
-                className="p-2 flex items-center justify-between gap-4 border rounded-xl px-4"
+                className="p-2 shadow-md flex items-center justify-between gap-4 border rounded-xl px-4"
               >
                 <div className="flex items-center gap-3">
                   <img
