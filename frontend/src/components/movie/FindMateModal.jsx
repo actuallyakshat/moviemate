@@ -7,6 +7,7 @@ import {
 } from "@/actions/movieActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
+import { sendFriendRequest } from "@/actions/friendActions";
 import { useToast } from "../ui/use-toast";
 
 const FindMateModal = ({ setModal, movie }) => {
@@ -47,7 +48,18 @@ const FindMateModal = ({ setModal, movie }) => {
     };
     getUsers();
   }, []);
-
+  const addMateHandler = async (potentialMate) => {
+    //userId,friendId,movieName,tmdbID
+    const response = await sendFriendRequest(
+      user._id,
+      potentialMate._id,
+      movie.id,
+      movie.title
+    );
+    if (response.success) {
+      console.log("Friend request sent");
+    }
+  };
   return (
     <div
       onClick={() => setModal(false)}
@@ -82,7 +94,11 @@ const FindMateModal = ({ setModal, movie }) => {
                       </div>
                     </div>
                   </div>
-                  {data._id !== user._id && <Button>Add Mate</Button>}
+                  {data._id !== user._id && (
+                    <Button onClick={() => addMateHandler(data)}>
+                      Add Mate
+                    </Button>
+                  )}
                 </div>
               );
             })}

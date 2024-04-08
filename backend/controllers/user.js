@@ -34,7 +34,7 @@ exports.getOrCreateUser = async (req, res) => {
 
 exports.getDetailsById = async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.userId });
+    const user = await User.findOne({ _id: req.body.userId });
     if (!user) {
       return res.status(404).json({
         success: false,

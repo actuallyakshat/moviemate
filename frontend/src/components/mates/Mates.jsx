@@ -23,6 +23,14 @@ const Mates = () => {
       getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests);
     }
   }, [user]);
+  const AcceptFriendHandler = async (friend) => {
+    const response = await acceptFriendRequest(user._id, friend._id);
+    if (response.success) {
+      //change the friend state
+      setFriends(friends.filter((f) => f.friend._id !== friend._id));
+    } else {
+    }
+  };
   console.log("incomingRequests", incomingRequests[0]);
   console.log("outgoingRequests", outgoingRequests);
   return (
@@ -65,9 +73,7 @@ const Mates = () => {
                     <Button
                       variant="ghost"
                       className="hover:text-green-500"
-                      onClick={() =>
-                        acceptFriendRequest(user._id, friend.friend._id)
-                      }
+                      onClick={() => AcceptFriendHandler(friend.friend)}
                     >
                       Accept
                     </Button>
