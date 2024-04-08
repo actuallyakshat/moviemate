@@ -11,7 +11,6 @@ import { userAtom } from "@/lib/store/store";
 const FindMateModal = ({ setModal, movie }) => {
   const [interestedUsers, setInterestedUsers] = useState([]);
   const user = useAtomValue(userAtom);
-  console.log(user._id);
   const submitHandler = async () => {
     const response = await addInterestedUser(movie.id, user._id, movie.title);
     if (response.success) {
@@ -21,7 +20,7 @@ const FindMateModal = ({ setModal, movie }) => {
     }
   };
   const removeUserHandler = async () => {
-    const response = await removeInterestedUser(movie.id, user._id); // Corrected function name
+    const response = await removeInterestedUser(movie.id, user._id);
     if (response.success) {
       setInterestedUsers(
         interestedUsers.filter((data) => data._id !== user._id)

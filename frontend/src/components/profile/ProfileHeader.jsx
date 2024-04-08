@@ -69,10 +69,10 @@ export const ProfileHeader = () => {
       const location = user?.location
         ? `${user.location.city}, ${user?.location.country}`
         : null;
-      const friendsCount = user.friends
-        ? Object.keys(user?.friends).length
+      const friends = user?.friends.filter((friend) => friend.status === "accepted");
+      const friendsCount = friends
+        ? Object.keys(friends).length
         : null;
-
       setCreatedAt(user?.createdAt);
       setFormattedDate(formattedDate);
       setLocation(location);
