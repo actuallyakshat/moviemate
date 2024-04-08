@@ -5,7 +5,7 @@ exports.getOrCreateUser = async (req, res) => {
     const { fullName, email } = req.body;
 
     // Checking user already exist or not
-    const oldUser = await User.findOne({ email: email });
+    const oldUser = await User.findOne({ email: email }).populate("friends");
     if (oldUser) {
       return res.status(200).json({
         success: true,
