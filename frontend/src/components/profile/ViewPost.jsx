@@ -4,32 +4,36 @@ import { useSetAtom } from "jotai";
 // import { toast } from "react-hot-toast";
 import { userAtom } from "@/lib/store/store";
 import { useToast } from "../ui/use-toast";
-export const ViewPost = ({ togglePopup, imageLink, postId }) => {
+import { imageDelete } from "../../actions/fileUploadActions";
+export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
   const { toast } = useToast();
   const setUser = useSetAtom(userAtom);
-  // const deleteImageHandler = async () => {
-  //   toast("Deleting your post...", {
-  //     icon: "⏳",
-  //     style: {
-  //       fontWeight: "bold",
-  //     },
-  //   });
-  //   const response = await imageDelete(postId, imageLink, setUser);
+  const deleteImageHandler = async () => {
+    // toast("Deleting your post...", {
+    //   icon: "⏳",
+    //   style: {
+    //     fontWeight: "bold",
+    //   },
+    // });
+    console.log("Delete Request Sent...")
+    const response = await imageDelete(postId, imageLink, userId, setUser);
 
-  //   if (response.data.success) {
-  //     toast.success("Post deleted successfully!", {
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   } else {
-  //     toast.error("We couldn't delete your post", {
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //   }
-  // };
+    if (response.data.success) {
+      // toast.success("Post deleted successfully!", {
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Post deleted successfully");
+    } else {
+      // toast.error("We couldn't delete your post", {
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Error deleting post");
+    }
+  };
   return (
     <div
       onClick={togglePopup}
@@ -43,7 +47,7 @@ export const ViewPost = ({ togglePopup, imageLink, postId }) => {
           onClick={(e) => e.stopPropagation()}
         />
         <i
-          // onClick={deleteImageHandler}
+          onClick={deleteImageHandler}
           className="absolute text-white top-4 size-8 right-4 bg-white/20 hover:bg-white/50 rounded-lg transition-colors flex items-center justify-center hover:text-red-600"
         >
           <FaTrash />

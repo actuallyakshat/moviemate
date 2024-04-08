@@ -32,21 +32,25 @@ export const imageUpload = async (userId, tag, file, setUser) => {
     }
   };
   
-  export const imageDelete = async (postId, imageLink, setUser) => {
+  export const imageDelete = async (postId, imageLink, userId, setUser) => {
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post(
         `${baseUrl}/upload/imageDelete`,
-        { postId, imageLink },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { 
+            postId,
+            imageLink,
+            userId, 
+        },
       );
   
       if (response.data.success) {
-        getUserDetails(setUser);
+        const response  = await getDetailsById(userId);
+        if (response.success) {
+          setUser(response.user);
+        }
+        else{
+            console.error(response.message);
+        }
       }
       return response;
     } catch (error) {
