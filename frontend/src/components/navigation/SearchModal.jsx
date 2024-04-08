@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "../ui/input";
 import { fetchSearchMovies } from "@/lib/functions/tmdb";
 import { currentMovieAtom } from "@/lib/store/store";
@@ -6,10 +6,15 @@ import { useAtom } from "jotai";
 import { useNavigate } from "react-router-dom";
 
 const SearchModal = ({ setModal }) => {
+  const searchBarRef = useRef(null);
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
   const [currentMovie, setCurrentMovie] = useAtom(currentMovieAtom);
+
+  useEffect(() => {
+    searchBarRef?.current?.focus();
+  }, []);
 
   const clickHandler = (movie) => {
     setCurrentMovie(movie);
@@ -43,18 +48,19 @@ const SearchModal = ({ setModal }) => {
     <div className="fixed overflow-y-auto no-scrollbar inset-0 bg-black/90 z-[1000]">
       <div
         onClick={() => setModal(false)}
-        className="w-fit hover:text-destructive ml-auto pr-12 pt-6"
+        className="w-fit hover:text-destructive ml-auto pr-8 md:pr-12 pb-6 pt-6"
       >
         <button className="text-white hover:text-destructive text-2xl font-medium">
           X
         </button>
       </div>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-7xl px-4 mx-auto">
         <Input
+          ref={searchBarRef}
           placeholder="Search a movie"
           onChange={handleInputChange}
           value={searchQuery}
-          className="text-white bg-white"
+          className="text-black bg-white"
         />
       </div>
       <div className="flex justify-center flex-wrap py-8 gap-6 px-4 md:px-10">

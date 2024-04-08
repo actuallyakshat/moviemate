@@ -7,13 +7,19 @@ import {
 } from "@/actions/movieActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
+import { useToast } from "../ui/use-toast";
 
 const FindMateModal = ({ setModal, movie }) => {
+  const { toast } = useToast();
   const [interestedUsers, setInterestedUsers] = useState([]);
   const user = useAtomValue(userAtom);
   const submitHandler = async () => {
     const response = await addInterestedUser(movie.id, user._id, movie.title);
     if (response.success) {
+      toast({
+        title: "Success",
+        description: "You are added on the list",
+      });
       setInterestedUsers([...interestedUsers, user]); // or setInterestedUsers(prevInterestedUsers => [...prevInterestedUsers, user]);
     } else {
       console.log(response.message);
@@ -22,6 +28,10 @@ const FindMateModal = ({ setModal, movie }) => {
   const removeUserHandler = async () => {
     const response = await removeInterestedUser(movie.id, user._id);
     if (response.success) {
+      toast({
+        title: "Removed",
+        description: "You are removed from the list",
+      });
       setInterestedUsers(
         interestedUsers.filter((data) => data._id !== user._id)
       );
@@ -90,7 +100,7 @@ const FindMateModal = ({ setModal, movie }) => {
             </p>
           )}
 
-          {interestedUsers.some((user) => user._id === user._id) ? (
+          {interestedUsers.some((data) => data._id === user._id) ? (
             <Button
               variant="destructive"
               onClick={removeUserHandler}

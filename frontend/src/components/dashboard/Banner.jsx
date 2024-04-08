@@ -33,12 +33,12 @@ const Banner = () => {
         className="w-full h-full blur-md absolute top-0 left-0 bg-cover bg-no-repeat max-w-screen scale-110"
       ></div>
       <div className="w-full h-full bg-black/50 blur-md absolute top-0 left-0 bg-cover bg-no-repeat scale-110 max-w-screen"></div>
-      <div className="absolute top-0 left-0 w-full h-full flex gap-12 px-6 lg:px-16 max-w-screen">
+      <div className="relative top-0 left-0 w-full h-full py-10 flex gap-12 px-6 lg:px-16 max-w-screen">
         {bannerMovie && (
           <img
             src={`${imagePrefix}${bannerMovie?.poster_path}`}
             alt="poster"
-            className="max-h-[90%] rounded-lg hidden lg:block my-auto"
+            className="max-h-[25rem] h-full rounded-lg hidden lg:block my-auto"
           />
         )}
         <div className="py-8 space-y-1">

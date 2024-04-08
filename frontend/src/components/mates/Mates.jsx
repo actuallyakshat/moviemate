@@ -27,7 +27,7 @@ const Mates = () => {
   console.log("outgoingRequests", outgoingRequests);
   return (
     <div className="pt-20 w-full">
-      <div className="grid grid-col-1 md:grid-cols-2 gap-4 max-w-7xl w-full mx-auto p-4">
+      <div className="grid grid-col-1 md:grid-cols-2 gap-8 max-w-7xl w-full mx-auto p-4">
         <div className="col-span-1">
           <h1 className="text-3xl font-semibold">Incoming Requests</h1>
           <div className="mt-5">
