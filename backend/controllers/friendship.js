@@ -328,10 +328,11 @@ exports.getAllFriends = async (req, res) => {
             ? friendship.user1
             : friendship.user2;
         const populatedFriend = await User.findById(friendId).exec();
+        const populatedMovie = await Movie.findById(friendship.movieId).exec();
         return {
           friendshipId: friendship._id,
           friend: populatedFriend,
-          movie: friendship.movieId,
+          movie: populatedMovie,
         };
       })
     );
@@ -375,10 +376,11 @@ exports.getPendingRequests = async (req, res) => {
         const friendUser =
           friend.user1.toString() === userId ? friend.user2 : friend.user1;
         const populatedFriend = await User.findById(friendUser).exec();
+        const populatedMovie = await Movie.findById(friend.movieId).exec();
         const friendDetails = {
           friendshipId: friend._id,
           friend: populatedFriend,
-          movie: friendship.movieId,
+          movie: populatedMovie,
         };
         if (friend.user1.toString() === userId) {
           requestSendTo.push(friendDetails);
