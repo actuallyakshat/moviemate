@@ -1,7 +1,5 @@
 import { useNavigate } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa6";
-import { userAtom } from "@/lib/store/store";
-import { useAtomValue } from "jotai";
 import { IoCalendarOutline } from "react-icons/io5";
 import { CiLocationOn } from "react-icons/ci";
 import { LiaUserFriendsSolid } from "react-icons/lia";
@@ -11,9 +9,7 @@ import { UpdationModal } from "./UpdationModal";
 const dummyHeader = `${import.meta.env.VITE_DUMMY_HEADER}`;
 const dummyProfile = `${import.meta.env.VITE_DUMMY_PROFILE}`;
 
-export const ProfileHeader = () => {
-  const user = useAtomValue(userAtom);
-
+export const ProfileHeader = ({user}) => {
   const navigate = useNavigate();
 
   const [, setCreatedAt] = useState(null);
@@ -44,7 +40,7 @@ export const ProfileHeader = () => {
 
       let headerFile;
       if (user && Object.keys(user).length > 0) {
-        headerFile = user?.files.find((file) => file.tag === "header");
+        headerFile = user?.files?.find((file) => file.tag === "header");
       }
 
       // If a header file is found, set the header URL
@@ -54,7 +50,7 @@ export const ProfileHeader = () => {
 
       let profileFile;
       if (user && Object.keys(user).length > 0) {
-        profileFile = user?.files.find((file) => file.tag === "profile");
+        profileFile = user?.files?.find((file) => file.tag === "profile");
       }
 
       // If a header file is found, set the header URL
@@ -69,7 +65,7 @@ export const ProfileHeader = () => {
       const location = user?.location
         ? `${user.location.city}, ${user?.location.country}`
         : null;
-      const friends = user?.friends.filter((friend) => friend.status === "accepted");
+      const friends = user?.friends?.filter((friend) => friend.status === "accepted");
       const friendsCount = friends
         ? Object.keys(friends).length
         : null;

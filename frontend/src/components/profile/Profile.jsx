@@ -10,20 +10,22 @@ import { Photos } from "./Photos";
 const Profile = () => {
   const { id } = useParams();
   const [currentUser, setCurrentUser] = useAtom(userAtom);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   useEffect(() => {
-    if (user) {
-      if(user._id === id){
+    if (currentUser) {
+      if(currentUser._id === id){
         setUser(currentUser);
       }
-      // Fetch id and set user data
-      getDetailsById(id).then((data) => {
-        if (data.success) {
-          setUser(data.user);
-        }
-      });
+      else{
+        // Fetch id and set user data
+        getDetailsById(id).then((data) => {
+          if (data.success) {
+            setUser(data.user);
+          }
+        });
+      }
     }
-  }, [user]);
+  }, [currentUser]);
   return (
     <div className="pt-16">
       {/* <div className="relative">
