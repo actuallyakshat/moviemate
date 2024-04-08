@@ -22,7 +22,6 @@ const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   const [messagesList, setMessagesList] = useState([]);
   console.log(messagesList);
   const messagesRef = collection(db, "messages");
-  console.log("om", selectedConversation);
 
   useEffect(() => {
     const queryMessages = query(
@@ -91,7 +90,9 @@ const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
                     <span className="font-bold">
                       {message.user === user._id
                         ? "You"
-                        : selectedConversation?.friend?.fullName}{" "}
+                        : selectedConversation?.friend?.fullName?.split(
+                            " "
+                          )[0]}{" "}
                       :{" "}
                     </span>
                     <span>{message.message}</span>

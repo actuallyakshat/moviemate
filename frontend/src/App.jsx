@@ -35,7 +35,6 @@ function App() {
         }
       } else {
         if (isLoaded && !user) {
-          console.log("user nahi mila");
           if (window.location.origin != "/") {
             setLoading(false);
             navigate("/");
