@@ -50,6 +50,7 @@ const FindMateModal = ({ setModal, movie }) => {
   }, []);
   const addMateHandler = async (potentialMate) => {
     //userId,friendId,movieName,tmdbID
+    console.log(potentialMate);
     const response = await sendFriendRequest(
       user._id,
       potentialMate._id,
@@ -58,6 +59,13 @@ const FindMateModal = ({ setModal, movie }) => {
     );
     if (response.success) {
       console.log("Friend request sent");
+      setInterestedUsers(
+        interestedUsers.map((data) =>
+          data._id === potentialMate._id
+            ? { ...data, friendRequestSent: true }
+            : data
+        )
+      );
     }
   };
   return (
@@ -94,11 +102,16 @@ const FindMateModal = ({ setModal, movie }) => {
                       </div>
                     </div>
                   </div>
-                  {data._id !== user._id && (
-                    <Button onClick={() => addMateHandler(data)}>
-                      Add Mate
-                    </Button>
-                  )}
+                  {data._id !== user._id &&
+                    (data?.friendRequestSent ? (
+                      <Button variant="ghost" className="text-zinc-500">
+                        Request Sent
+                      </Button>
+                    ) : (
+                      <Button onClick={() => addMateHandler(data)}>
+                        Add Mate
+                      </Button>
+                    ))}
                 </div>
               );
             })}

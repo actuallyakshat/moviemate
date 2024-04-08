@@ -59,6 +59,14 @@ const Mates = () => {
       console.log("Error accepting friend request", response.message);
     }
   };
+  const deleteFriendHandler = async (userId, friendId) => {
+    const response = await removeFriend(userId, friendId);
+    if (response.success) {
+      setFriends(friends.filter((f) => f.friend._id !== friendId));
+    } else {
+      console.log("Error deleting friend", response.message);
+    }
+  };
   console.log("incomingRequests", incomingRequests[0]);
   console.log("outgoingRequests", outgoingRequests);
   return (
@@ -186,7 +194,8 @@ const Mates = () => {
                   variant="destructive"
                   onClick={() => {
                     if (user && friend) {
-                      removeFriend(user._id, friend.friend._id);
+                      //TODO: make it responsive
+                      deleteFriendHandler(user._id, friend.friend._id);
                     }
                     // console.log(user._id);
                     // console.log(friend.friend._id);
