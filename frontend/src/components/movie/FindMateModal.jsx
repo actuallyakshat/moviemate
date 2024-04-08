@@ -72,7 +72,7 @@ const FindMateModal = ({ setModal, movie }) => {
                       </div>
                     </div>
                   </div>
-                  <Button>Add Mate</Button>
+                  {data._id !== user._id && <Button>Add Mate</Button>}
                 </div>
               );
             })}

@@ -45,14 +45,16 @@ const SearchModal = ({ setModal }) => {
         onClick={() => setModal(false)}
         className="w-fit hover:text-destructive ml-auto pr-12 pt-6"
       >
-        <button className="text-white text-2xl font-medium">X</button>
+        <button className="text-white hover:text-destructive text-2xl font-medium">
+          X
+        </button>
       </div>
       <div className="max-w-7xl mx-auto">
         <Input
           placeholder="Search a movie"
           onChange={handleInputChange}
           value={searchQuery}
-          className="text-white"
+          className="text-white bg-white"
         />
       </div>
       <div className="flex justify-center flex-wrap py-8 gap-6 px-4 md:px-10">
