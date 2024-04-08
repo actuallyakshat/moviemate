@@ -378,6 +378,7 @@ exports.getPendingRequests = async (req, res) => {
         const friendDetails = {
           friendshipId: friend._id,
           friend: populatedFriend,
+          movie: friendship.movieId,
         };
         if (friend.user1.toString() === userId) {
           requestSendTo.push(friendDetails);
