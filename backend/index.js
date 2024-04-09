@@ -1,5 +1,5 @@
 const express = require("express");
-const { server, app } = require("./socket/socket");
+const app = express();
 const cors = require("cors");
 // const app = express();
 require("dotenv").config();
@@ -9,10 +9,12 @@ const PORT = process.env.PORT || 3000;
 const fileupload = require("express-fileupload");
 const cloudinary = require("./config/cloudinary");
 
-app.use(fileupload({
-  useTempFiles : true,
-  tempFileDir : '/tmp/'
-}));
+app.use(
+  fileupload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  })
+);
 
 app.use(express.json());
 app.use(cors());
@@ -23,5 +25,5 @@ app.get("/", (req, res) => {
 
 cloudinary.cloudinaryConnect();
 
-server.listen(PORT, () => console.log(`Backend is running @${PORT}`));
+app.listen(PORT, () => console.log(`Backend is running @${PORT}`));
 dbConnect();
