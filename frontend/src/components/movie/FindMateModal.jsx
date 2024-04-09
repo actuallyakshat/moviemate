@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { useNavigate } from "react-router-dom";
 import {
   addInterestedUser,
   getAllInterestedUsers,
@@ -7,15 +8,23 @@ import {
 } from "@/actions/movieActions";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
-import { sendFriendRequest } from "@/actions/friendActions";
+import {
+  sendFriendRequest,
+  getFriends,
+  getPendingRequest,
+} from "@/actions/friendActions";
 import { useToast } from "../ui/use-toast";
 import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const FindMateModal = ({ setModal, movie }) => {
+  const navigate = useNavigate();
   const [loadingMap, setLoadingMap] = useState({});
   const [addMeLoading, setAddMeLoading] = useState(false);
   const { toast } = useToast();
   const [interestedUsers, setInterestedUsers] = useState([]);
+  const [friends, setFriends] = useState([]);
+  const [incomingRequests, setIncomingRequests] = useState([]);
+  const [outgoingRequests, setOutgoingRequests] = useState([]);
   const user = useAtomValue(userAtom);
 
   const submitHandler = async () => {
@@ -54,6 +63,12 @@ const FindMateModal = ({ setModal, movie }) => {
     const getUsers = async () => {
       const response = await getAllInterestedUsers(movie.id);
       setInterestedUsers(response?.interestedUsers);
+      await getFriends(user._id, setFriends);
+      await getPendingRequest(
+        user._id,
+        setIncomingRequests,
+        setOutgoingRequests
+      );
     };
     getUsers();
   }, []);
@@ -68,13 +83,11 @@ const FindMateModal = ({ setModal, movie }) => {
     );
     if (response.success) {
       console.log("Friend request sent");
-      setInterestedUsers(
-        interestedUsers.map((data) =>
-          data._id === potentialMate._id
-            ? { ...data, friendRequestSent: true }
-            : data
-        )
-      );
+      //set the potentialMate in the outgoing request
+      setOutgoingRequests([
+        ...outgoingRequests,
+        { friend: potentialMate, movie: { tmdbId: movie.id } },
+      ]);
     }
     setLoadingMap({ ...loadingMap, [potentialMate._id]: false });
   };
@@ -120,10 +133,22 @@ const FindMateModal = ({ setModal, movie }) => {
                   <>
                     {data._id !== user._id && (
                       <>
-                        {data?.friendRequestSent ? (
-                          <p className="text-foreground px-2 text-sm font-medium">
-                            Request Sent
-                          </p>
+                        {outgoingRequests.some(
+                          (friend) =>
+                            Number(friend.movie.tmdbId) === Number(movie.id)
+                        ) ? (
+                          <Button variant="ghost">Request Sent </Button>
+                        ) : friends.some(
+                            (friend) =>
+                              Number(friend.movie.tmdbId) === Number(movie.id)
+                          ) ? (
+                          <Button
+                            onClick={() => {
+                              navigate(`/chat`);
+                            }}
+                          >
+                            Chat
+                          </Button>
                         ) : (
                           <Button onClick={() => addMateHandler(data)}>
                             Add Mate
