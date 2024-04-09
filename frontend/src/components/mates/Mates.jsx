@@ -10,8 +10,10 @@ import {
 import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
 import { Button } from "../ui/button";
+import { useToast } from "../ui/use-toast";
 
 const Mates = () => {
+  const { toast } = useToast();
   const user = useAtomValue(userAtom);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
@@ -28,6 +30,10 @@ const Mates = () => {
     if (response.success) {
       //change the friend state
       console.log("Friend request accepted");
+      toast({
+        title: "Success",
+        description: "Friend request accepted successfully",
+      });
       setIncomingRequests(
         incomingRequests.filter((f) => {
           f.friend._id !== friend._id;
@@ -35,23 +41,35 @@ const Mates = () => {
       );
       setFriends([...friends, { friend }]);
     } else {
+      console.log("Error accepting friend request", response.message);
     }
   };
   const declineFriendHandler = async (userId, friendId) => {
     const response = await declineFriendRequest(userId, friendId);
     if (response.success) {
       console.log("Friend request declined");
+      toast({
+        title: "Oops",
+        description: "Friend request declined successfully",
+        variant: "destructive",
+      });
       setIncomingRequests(
         incomingRequests.filter((f) => {
           f.friend._id !== friendId;
         })
       );
     } else {
+      console.log("Error accepting friend request", response.message);
     }
   };
   const cancelFriendHandler = async (userId, friendId) => {
     const response = await cancelFriendRequest(userId, friendId);
     if (response.success) {
+      toast({
+        title: "Friend request canceled",
+        description: "Friend request canceled successfully",
+        variant: "destructive",
+      });
       setOutgoingRequests(
         outgoingRequests.filter((f) => f.friend._id !== friendId)
       );
@@ -83,7 +101,7 @@ const Mates = () => {
                 >
                   <div className="flex items-center justify-center gap-4">
                     <img
-                      src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
+                      src={friend?.friend?.profileImage}
                       className="w-14 h-14 rounded-full"
                     />
                     <div>
@@ -119,7 +137,9 @@ const Mates = () => {
                 </div>
               ))
             ) : (
-              <p className="font-medium">There are no incoming requests</p>
+              <p className="font-medium text-secondary-foreground/70">
+                There are no incoming requests
+              </p>
             )}
           </div>
         </div>
@@ -130,19 +150,19 @@ const Mates = () => {
               outgoingRequests?.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="p-2 shadow-md flex items-center justify-between gap-4 border rounded-xl px-4"
+                  className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
                 >
                   <div className="flex gap-3">
                     <img
-                      src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
+                      src={friend.friend.profileImage}
                       className="w-14 h-14 rounded-full"
                     />
-                    <div>
+                    <div className="h-fit my-auto">
                       <h1 className="font-semibold">
                         {friend.friend.fullName}
                       </h1>
-                      <div className="flex gap-1 font-medium text-secondary-foreground/50">
-                        <h4>{friend.friend.age}</h4>
+                      <div className="flex gap-1 font-medium text-secondary-foreground/70">
+                        <h4>{friend.friend.age},</h4>
                         <h4>{friend.friend.gender}</h4>
                       </div>
                     </div>
@@ -159,7 +179,9 @@ const Mates = () => {
                 </div>
               ))
             ) : (
-              <p className="font-medium">There are no outgoing requests</p>
+              <p className="font-medium text-secondary-foreground/70">
+                There are no outgoing requests
+              </p>
             )}
           </div>
         </div>
@@ -167,7 +189,7 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-6 space-y-2">
+        <div className="pt-5 space-y-2">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
@@ -176,7 +198,7 @@ const Mates = () => {
               >
                 <div className="flex items-center gap-3">
                   <img
-                    src="https://is1-ssl.mzstatic.com/image/thumb/AMCArtistImages116/v4/74/9b/d1/749bd157-c81b-2c54-9940-16c13cecaa95/e5e09754-1d06-4a09-b2e1-6c24f77e0157_file_cropped.png/486x486bb.png"
+                    src={friend?.friend?.profileImage}
                     alt="pfp"
                     className="w-14 h-14 rounded-full"
                   />
@@ -207,7 +229,9 @@ const Mates = () => {
               </div>
             ))
           ) : (
-            <p className="font-medium">There are no friends</p>
+            <p className="font-medium text-secondary-foreground/70">
+              You have no mates yet
+            </p>
           )}
         </div>
       </div>

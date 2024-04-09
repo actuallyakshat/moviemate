@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema(
     },
     bio: {
       type: String,
-      default: '',
+      default: "",
     },
     email: {
       type: String,
@@ -33,12 +33,12 @@ const userSchema = new mongoose.Schema(
     },
     gender: {
       type: String,
-      enum: ["male", "female", "other"],
+      enum: ["Male", "Female", "Other"],
       default: null,
     },
     onboardingCompleted: {
-        type: Boolean,
-        default: false,
+      type: Boolean,
+      default: false,
     },
     location: {
       country: {

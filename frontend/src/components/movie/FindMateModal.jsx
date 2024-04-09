@@ -86,17 +86,17 @@ const FindMateModal = ({ setModal, movie }) => {
               return (
                 <div
                   key={data._id}
-                  className="flex items-center justify-between bg-secondary rounded-lg px-4 p-2 w-full"
+                  className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
                 >
                   <div className="flex gap-3">
                     <img
-                      src={data.image}
+                      src={data.profileImage}
                       alt="pfp"
                       className="w-14 h-14 rounded-full"
                     />
-                    <div>
+                    <div className="h-fit my-auto">
                       <p className="font-semibold">{data.fullName}</p>
-                      <div className="flex items-center gap-2 font-medium dark:text-zinc-300 text-zinc-500">
+                      <div className="flex items-center gap-1 font-medium dark:text-zinc-300 text-zinc-500">
                         <p>{data.age}, </p>
                         <p>{data.gender}</p>
                       </div>
@@ -104,9 +104,9 @@ const FindMateModal = ({ setModal, movie }) => {
                   </div>
                   {data._id !== user._id &&
                     (data?.friendRequestSent ? (
-                      <Button variant="ghost" className="text-zinc-500">
+                      <p className="text-foreground px-2 text-sm font-medium">
                         Request Sent
-                      </Button>
+                      </p>
                     ) : (
                       <Button onClick={() => addMateHandler(data)}>
                         Add Mate
@@ -118,7 +118,7 @@ const FindMateModal = ({ setModal, movie }) => {
           </div>
         )}
         {interestedUsers?.length < 1 && (
-          <p className="dark:text-zinc-300 py-12 text-center font-semibold text-zinc-500">
+          <p className="dark:text-zinc-300 pt-8 pb-12 text-center font-semibold text-zinc-500">
             Oops! No users found. <br /> Be the first one to show interest 🍿
           </p>
         )}

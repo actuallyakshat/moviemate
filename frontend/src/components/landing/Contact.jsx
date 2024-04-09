@@ -25,11 +25,13 @@ export const Contact = () => {
     );
     if (response.success) {
       toast({
-        title: "We have received your message",
+        title: "Thank you",
+        description: "We have received your message!",
       });
     } else {
       toast({
-        title: "We couldn't receive your message",
+        title: "We are sorry",
+        description: "We couldn't receive your message!",
       });
     }
     setLoading(false);
