@@ -10,7 +10,7 @@ export function ModeToggle() {
           e.stopPropagation();
           setTheme("light");
         }}
-        className="hidden dark:block w-full"
+        className="hidden dark:block w-full px-2 py-1.5"
       >
         Switch Theme
       </p>
@@ -19,7 +19,7 @@ export function ModeToggle() {
           e.stopPropagation();
           setTheme("dark");
         }}
-        className="dark:hidden block w-full"
+        className="dark:hidden px-2 py-1.5 block w-full"
       >
         Switch Theme
       </p>

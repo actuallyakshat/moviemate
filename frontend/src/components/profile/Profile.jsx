@@ -5,10 +5,12 @@ import { useLocation, useParams } from "react-router-dom";
 import { getDetailsById } from "../../actions/userActions";
 import { ProfileHeader } from "./ProfileHeader";
 import { Photos } from "./Photos";
+import Loading from "../Loading/Loading";
 
 const Profile = () => {
   const location = useLocation();
   const previousPathnameRef = useRef(location.pathname);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (location.pathname !== previousPathnameRef.current) {
@@ -20,6 +22,7 @@ const Profile = () => {
   const { id } = useParams();
   const [currentUser, setCurrentUser] = useAtom(userAtom);
   const [user, setUser] = useState(null);
+
   useEffect(() => {
     if (currentUser) {
       if (currentUser._id === id) {
@@ -32,11 +35,17 @@ const Profile = () => {
           }
         });
       }
+      setLoading(false);
     }
-  }, [currentUser]);
+  }, [currentUser, id]);
+
   return (
-    <div className="pt-16">
-      {/* <div className="relative">
+    <>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="pt-16">
+          {/* <div className="relative">
         <img
           src="https://static.vecteezy.com/system/resources/previews/000/677/302/original/abstract-technology-banner-background.jpg"
           className="w-full h-full max-h-[20rem] overflow-hidden bg-zinc-300 object-cover aspect-video"
@@ -52,9 +61,11 @@ const Profile = () => {
         <p>{user.bio}</p>
       </div> */}
 
-      <ProfileHeader user={user} />
-      <Photos user={user} />
-    </div>
+          <ProfileHeader user={user} />
+          <Photos user={user} />
+        </div>
+      )}
+    </>
   );
 };
 

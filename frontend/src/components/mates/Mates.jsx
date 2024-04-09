@@ -12,6 +12,7 @@ import { userAtom } from "../../lib/store/store";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
 import { useNavigate } from "react-router-dom";
+import Loading from "../Loading/Loading";
 
 const Mates = () => {
   const { toast } = useToast();
@@ -19,33 +20,39 @@ const Mates = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   const navigate = useNavigate();
   console.log(friends);
+
   useEffect(() => {
     if (user) {
       getFriends(user._id, setFriends);
-      getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests);
+      getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests)
+        .then(() => setLoading(false)) // Set loading to false after data is fetched
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          setLoading(false); // In case of error, still set loading to false to prevent indefinite loading
+        });
     }
   }, [user]);
+
   const acceptFriendHandler = async (userId, friend) => {
     const response = await acceptFriendRequest(userId, friend._id);
     if (response.success) {
-      //change the friend state
       console.log("Mate request accepted");
       toast({
         title: "Success",
         description: "Mate request accepted successfully",
       });
       setIncomingRequests(
-        incomingRequests.filter((f) => {
-          f.friend._id !== friend._id;
-        })
+        incomingRequests.filter((f) => f.friend._id !== friend._id)
       );
       setFriends([...friends, { friend }]);
     } else {
       console.log("Error accepting friend request", response.message);
     }
   };
+
   const declineFriendHandler = async (userId, friendId) => {
     const response = await declineFriendRequest(userId, friendId);
     if (response.success) {
@@ -56,14 +63,13 @@ const Mates = () => {
         variant: "destructive",
       });
       setIncomingRequests(
-        incomingRequests.filter((f) => {
-          f.friend._id !== friendId;
-        })
+        incomingRequests.filter((f) => f.friend._id !== friendId)
       );
     } else {
       console.log("Error accepting friend request", response.message);
     }
   };
+
   const cancelFriendHandler = async (userId, friendId) => {
     const response = await cancelFriendRequest(userId, friendId);
     if (response.success) {
@@ -79,6 +85,7 @@ const Mates = () => {
       console.log("Error accepting friend request", response.message);
     }
   };
+
   const deleteFriendHandler = async (userId, friendId) => {
     const response = await removeFriend(userId, friendId);
     if (response.success) {
@@ -92,8 +99,14 @@ const Mates = () => {
       console.log("Error deleting friend", response.message);
     }
   };
+
   console.log("incomingRequests", incomingRequests[0]);
   console.log("outgoingRequests", outgoingRequests);
+
+  // Render loading spinner while data is being fetched
+  if (loading) {
+    return <Loading />;
+  }
   return (
     <div className="pt-20 w-full">
       <div className="grid grid-col-1 md:grid-cols-2 gap-8 max-w-7xl w-full mx-auto p-4">

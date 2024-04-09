@@ -41,7 +41,7 @@ const DropDownMenu = () => {
             Account Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
+        <DropdownMenuItem className="p-0">
           <ModeToggle />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>

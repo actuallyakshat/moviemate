@@ -120,7 +120,15 @@ const FindMateModal = ({ setModal, movie }) => {
                     className="w-14 h-14 rounded-full"
                   />
                   <div className="h-fit my-auto">
-                    <p className="font-semibold">{data.fullName}</p>
+                    <p
+                      className="font-semibold cursor-pointer"
+                      onClick={() => {
+                        navigate(`/profile/${data._id}`);
+                      }}
+                    >
+                      {data.fullName}
+                    </p>
+
                     <div className="flex items-center gap-1 font-medium dark:text-zinc-300 text-zinc-500">
                       <p>{data.age}, </p>
                       <p>{data.gender}</p>

@@ -19,9 +19,9 @@ import { updateUserDetails } from "../../actions/userActions";
 import { useToast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 
-export const UpdationModal = ({ headerUrl, profileUrl }) => {
+export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
   const { toast } = useToast();
-  const [user, setUser] = useAtom(userAtom);
+  const [currentUser, setCurrentUser] = useAtom(userAtom);
   const { register, handleSubmit, reset } = useForm();
   const [newHeader, setNewHeader] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
@@ -32,7 +32,12 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
       const responses = await Promise.all(
         Object.entries(imageData).map(async ([tag, file]) => {
           try {
-            const response = await imageUpload(user?._id, tag, file, setUser);
+            const response = await imageUpload(
+              user?._id,
+              tag,
+              file,
+              setCurrentUser
+            );
             return response;
           } catch (error) {
             console.error(
@@ -157,7 +162,7 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button>Edit Profile</Button>
+          {user?._id === currentUser?._id && <Button>Edit Profile</Button>}
         </AlertDialogTrigger>
         <AlertDialogContent
           className={`gap-0 font-Poppins border-gray-400/30 `}

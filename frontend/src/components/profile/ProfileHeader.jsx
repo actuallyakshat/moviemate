@@ -5,6 +5,7 @@ import { CiLocationOn } from "react-icons/ci";
 import { LiaUserFriendsSolid } from "react-icons/lia";
 import { useEffect, useState } from "react";
 import { UpdationModal } from "./UpdationModal";
+import Loading from "../Loading/Loading";
 
 const dummyHeader = `${import.meta.env.VITE_DUMMY_HEADER}`;
 const dummyProfile = `${import.meta.env.VITE_DUMMY_PROFILE}`;
@@ -19,6 +20,7 @@ export const ProfileHeader = ({ user }) => {
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState(null);
   const [friendsCount, setFriendsCount] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (user) {
@@ -74,8 +76,14 @@ export const ProfileHeader = ({ user }) => {
       setLocation(location);
       setBio(bio);
       setFriendsCount(friendsCount);
+      setLoading(false);
     }
   }, [user]);
+
+  // Render loading spinner while data is being fetched
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full">
@@ -100,8 +108,12 @@ export const ProfileHeader = ({ user }) => {
         ></img>
       </div>
       <div className="w-full pb-4 border-b-gray-300/60 shadow-sm border-b realtive">
-        <div className="w-full flex py-6 px-8 justify-end">
-          <UpdationModal headerUrl={headerUrl} profileUrl={profileUrl} />
+        <div className="min-w-full min-h-[5rem] flex py-6 px-8 justify-end">
+          <UpdationModal
+            headerUrl={headerUrl}
+            profileUrl={profileUrl}
+            user={user}
+          />
         </div>
         <div className="mx-4 sm:mx-10 flex justify-between font-Poppins">
           <div className="py-2 sm:py-4">
@@ -120,7 +132,7 @@ export const ProfileHeader = ({ user }) => {
               )}
               <h1 className="flex items-center gap-2">
                 <LiaUserFriendsSolid className="size-6" />
-                <p>{`${
+                <p onClick={() => navigate(`/mates`)}>{`${
                   friendsCount === 1
                     ? `${friendsCount} Mate`
                     : `${friendsCount} Mates`
@@ -128,16 +140,6 @@ export const ProfileHeader = ({ user }) => {
               </h1>
             </div>
           </div>
-          {/* <div className="flex flex-1 justify-end m-8 gap-4 items-center">
-            <div className="px-4 py-6 bg-[#dcebf5] rounded-xl flex flex-col items-center">
-              <p className="font-bold text-steelBlueDark">12</p>
-              <h1 className="font-bold text-md">Completed Meets</h1>
-            </div>
-            <div className="px-4 py-6 bg-[#f3e1f7] rounded-xl flex flex-col items-center">
-              <p className="font-bold text-[#67107d]">Thriller</p>
-              <h1 className="font-bold text-md">Favourite Genre</h1>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>
