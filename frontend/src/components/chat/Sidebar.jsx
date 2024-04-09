@@ -10,19 +10,19 @@ const Sidebar = ({
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
 
-  useEffect(() => {
-    setIsMobileMenuOpen(window.innerWidth >= 1024);
+  // useEffect(() => {
+  //   setIsMobileMenuOpen(window.innerWidth >= 1024);
 
-    const handleResize = () => {
-      setIsMobileMenuOpen(window.innerWidth >= 1024);
-    };
-    window.addEventListener("resize", handleResize);
+  //   const handleResize = () => {
+  //     setIsMobileMenuOpen(window.innerWidth >= 1024);
+  //   };
+  //   window.addEventListener("resize", handleResize);
 
-    // Cleanup the event listener on component unmount
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [setIsMobileMenuOpen]);
+  //   // Cleanup the event listener on component unmount
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, [setIsMobileMenuOpen]);
 
   useEffect(() => {
     // Filter conversations based on searchQuery
@@ -45,29 +45,36 @@ const Sidebar = ({
       }`}
     >
       <Input
+        className="max-w-2xl mx-auto"
         placeholder="Search friends"
         value={searchQuery}
         onChange={handleInputChange}
       />
       <div className="space-y-2 mt-4">
-        {filteredConversations.map((conversation) => (
-          <div
-            key={conversation?.friend._id}
-            className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
-          >
+        {filteredConversations.length > 0 ? (
+          filteredConversations.map((conversation) => (
             <div
-              onClick={() => {
-                setSelectedConversation(conversation);
-                if (window.innerWidth <= 1024) {
-                  setIsMobileMenuOpen(false);
-                }
-              }}
-              className="w-full h-full p-3 rounded-lg"
+              key={conversation?.friend._id}
+              className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
             >
-              <h1 className="font-bold">{conversation?.friend?.fullName}</h1>
+              <div
+                onClick={() => {
+                  setSelectedConversation(conversation);
+                  if (window.innerWidth <= 1024) {
+                    setIsMobileMenuOpen(false);
+                  }
+                }}
+                className="w-full h-full p-3 rounded-lg"
+              >
+                <h1 className="font-bold">{conversation?.friend?.fullName}</h1>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="font-semibold text-secondary-foreground/70 text-center pt-10 px-6">
+            You currently don&apos;t have any mates to chat with
+          </p>
+        )}
       </div>
     </div>
   );

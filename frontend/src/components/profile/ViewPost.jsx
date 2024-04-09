@@ -15,7 +15,11 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
     //     fontWeight: "bold",
     //   },
     // });
-    console.log("Delete Request Sent...")
+    toast({
+      title: "⏳",
+      description: "Deleting your post...",
+    });
+    console.log("Delete Request Sent...");
     const response = await imageDelete(postId, imageLink, userId, setUser);
 
     if (response.data.success) {
@@ -24,6 +28,11 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
       //     fontWeight: "bold",
       //   },
       // });
+      toast({
+        title: "🗑",
+        description: "Post deleted successfully!",
+        variant: "destructive",
+      });
       console.log("Post deleted successfully");
     } else {
       // toast.error("We couldn't delete your post", {
@@ -31,13 +40,18 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
       //     fontWeight: "bold",
       //   },
       // });
+      toast({
+        title: "🤦🏻‍♂️",
+        description: "We couldn't delete your post",
+        variant: "destructive",
+      });
       console.log("Error deleting post");
     }
   };
   return (
     <div
       onClick={togglePopup}
-      className="fixed z-[51] cursor-pointer size-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+      className="fixed z-[1005] cursor-pointer size-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
     >
       <div className="fixed z-[52] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <img

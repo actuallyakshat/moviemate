@@ -82,7 +82,11 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
       //     fontWeight: "bold",
       //   },
       // });
-      console.log("Uploading your images...")
+      toast({
+        title: "⏳",
+        description: "Uploading your images...",
+      });
+      console.log("Uploading your images...");
       const imageResponse = await uploadImages(imageData);
       imageResponse.forEach((imageResponse) => {
         if (imageResponse.data.success) {
@@ -91,6 +95,10 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
           //     fontWeight: "bold",
           //   },
           // });
+          toast({
+            title: "🎉",
+            description: "Image uploaded successfully!",
+          });
           console.log("Image uploaded successfully");
         } else {
           // toast.error("There was an error while uploading your images", {
@@ -98,6 +106,11 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
           //     fontWeight: "bold",
           //   },
           // });
+          toast({
+            title: "🤦🏻‍♂️",
+            description: "There was an error while uploading your images",
+            variant: "destructive",
+          });
           console.log("Error uploading image");
         }
       });
@@ -117,7 +130,11 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
       //   },
       // });
       console.log("Updating your bio...");
-      const bioResponse = await updateUserDetails(user?._id, bioObject, setUser);
+      const bioResponse = await updateUserDetails(
+        user?._id,
+        bioObject,
+        setUser
+      );
       if (bioResponse.success) {
         // toast.success("Bio updated successfully!", {
         //   style: {
@@ -200,7 +217,7 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
                 {...register("bio")}
                 className={` w-full resize-none min-h-[2.5rem] h-auto text-wrap mb-6 py-3 px-3 text-black border border-gray-400/60 rounded-lg`}
               />
-              <div className="flex items-center gap-2 w-full justify-end">
+              <div className="flex h-fit items-baseline gap-2 w-full justify-end">
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <AlertDialogAction
                   className="bg-primary hover:bg-primary/80"

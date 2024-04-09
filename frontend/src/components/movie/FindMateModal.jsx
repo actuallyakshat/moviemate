@@ -9,25 +9,34 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
 import { sendFriendRequest } from "@/actions/friendActions";
 import { useToast } from "../ui/use-toast";
+import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const FindMateModal = ({ setModal, movie }) => {
+  const [loadingMap, setLoadingMap] = useState({});
+  const [addMeLoading, setAddMeLoading] = useState(false);
   const { toast } = useToast();
   const [interestedUsers, setInterestedUsers] = useState([]);
   const user = useAtomValue(userAtom);
+
   const submitHandler = async () => {
+    setAddMeLoading(true);
     const response = await addInterestedUser(movie.id, user._id, movie.title);
+    setAddMeLoading(false);
     if (response.success) {
       toast({
         title: "Success",
         description: "You are added on the list",
       });
-      setInterestedUsers([...interestedUsers, user]); // or setInterestedUsers(prevInterestedUsers => [...prevInterestedUsers, user]);
+      setInterestedUsers([...interestedUsers, user]);
     } else {
       console.log(response.message);
     }
   };
+
   const removeUserHandler = async () => {
+    setAddMeLoading(true);
     const response = await removeInterestedUser(movie.id, user._id);
+    setAddMeLoading(false);
     if (response.success) {
       toast({
         title: "Removed",
@@ -48,9 +57,9 @@ const FindMateModal = ({ setModal, movie }) => {
     };
     getUsers();
   }, []);
+
   const addMateHandler = async (potentialMate) => {
-    //userId,friendId,movieName,tmdbID
-    console.log(potentialMate);
+    setLoadingMap({ ...loadingMap, [potentialMate._id]: true });
     const response = await sendFriendRequest(
       user._id,
       potentialMate._id,
@@ -67,7 +76,9 @@ const FindMateModal = ({ setModal, movie }) => {
         )
       );
     }
+    setLoadingMap({ ...loadingMap, [potentialMate._id]: false });
   };
+
   return (
     <div
       onClick={() => setModal(false)}
@@ -82,39 +93,48 @@ const FindMateModal = ({ setModal, movie }) => {
         </h1>
         {interestedUsers && (
           <div className="py-4 space-y-2">
-            {interestedUsers?.map((data) => {
-              return (
-                <div
-                  key={data._id}
-                  className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
-                >
-                  <div className="flex gap-3">
-                    <img
-                      src={data.profileImage}
-                      alt="pfp"
-                      className="w-14 h-14 rounded-full"
-                    />
-                    <div className="h-fit my-auto">
-                      <p className="font-semibold">{data.fullName}</p>
-                      <div className="flex items-center gap-1 font-medium dark:text-zinc-300 text-zinc-500">
-                        <p>{data.age}, </p>
-                        <p>{data.gender}</p>
-                      </div>
+            {interestedUsers.map((data) => (
+              <div
+                key={data._id}
+                className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
+              >
+                <div className="flex gap-3">
+                  <img
+                    src={data.profileImage}
+                    alt="pfp"
+                    className="w-14 h-14 rounded-full"
+                  />
+                  <div className="h-fit my-auto">
+                    <p className="font-semibold">{data.fullName}</p>
+                    <div className="flex items-center gap-1 font-medium dark:text-zinc-300 text-zinc-500">
+                      <p>{data.age}, </p>
+                      <p>{data.gender}</p>
                     </div>
                   </div>
-                  {data._id !== user._id &&
-                    (data?.friendRequestSent ? (
-                      <p className="text-foreground px-2 text-sm font-medium">
-                        Request Sent
-                      </p>
-                    ) : (
-                      <Button onClick={() => addMateHandler(data)}>
-                        Add Mate
-                      </Button>
-                    ))}
                 </div>
-              );
-            })}
+                {loadingMap[data._id] ? (
+                  <div>
+                    <LoadingSpinner />
+                  </div>
+                ) : (
+                  <>
+                    {data._id !== user._id && (
+                      <>
+                        {data?.friendRequestSent ? (
+                          <p className="text-foreground px-2 text-sm font-medium">
+                            Request Sent
+                          </p>
+                        ) : (
+                          <Button onClick={() => addMateHandler(data)}>
+                            Add Mate
+                          </Button>
+                        )}
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+            ))}
           </div>
         )}
         {interestedUsers?.length < 1 && (
@@ -129,18 +149,28 @@ const FindMateModal = ({ setModal, movie }) => {
             </p>
           )}
 
-          {interestedUsers.some((data) => data._id === user._id) ? (
-            <Button
-              variant="destructive"
-              onClick={removeUserHandler}
-              className="w-full"
-            >
-              Remove me from the list
-            </Button>
+          {!addMeLoading ? (
+            interestedUsers.some((data) => data._id === user._id) ? (
+              <Button
+                variant="destructive"
+                onClick={removeUserHandler}
+                className="w-full"
+              >
+                Remove me from the list
+              </Button>
+            ) : (
+              <Button onClick={submitHandler} className="w-full">
+                Add me on the list!
+              </Button>
+            )
           ) : (
-            <Button onClick={submitHandler} className="w-full">
-              Add me on the list!
-            </Button>
+            <>
+              {addMeLoading && (
+                <div className="w-fit mx-auto">
+                  <LoadingSpinner />
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>

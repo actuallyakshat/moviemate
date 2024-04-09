@@ -1,22 +1,30 @@
 import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
-import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect, useRef } from "react";
+import { useLocation, useParams } from "react-router-dom";
 import { getDetailsById } from "../../actions/userActions";
 import { ProfileHeader } from "./ProfileHeader";
 import { Photos } from "./Photos";
 
-
 const Profile = () => {
+  const location = useLocation();
+  const previousPathnameRef = useRef(location.pathname);
+
+  useEffect(() => {
+    if (location.pathname !== previousPathnameRef.current) {
+      window.location.reload();
+      previousPathnameRef.current = location.pathname;
+    }
+  }, [location]);
+
   const { id } = useParams();
   const [currentUser, setCurrentUser] = useAtom(userAtom);
   const [user, setUser] = useState(null);
   useEffect(() => {
     if (currentUser) {
-      if(currentUser._id === id){
+      if (currentUser._id === id) {
         setUser(currentUser);
-      }
-      else{
+      } else {
         // Fetch id and set user data
         getDetailsById(id).then((data) => {
           if (data.success) {
@@ -44,7 +52,7 @@ const Profile = () => {
         <p>{user.bio}</p>
       </div> */}
 
-      <ProfileHeader user={user}/>
+      <ProfileHeader user={user} />
       <Photos />
     </div>
   );

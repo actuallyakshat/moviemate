@@ -46,7 +46,7 @@ const Chat = () => {
           setIsMobileMenuOpen={setIsMobileMenuOpen}
         />
       ) : (
-        <p className="lg:pl-[27rem] px-4 text-2xl pt-8 font-medium tracking-tight">
+        <p className="lg:pl-[27rem] px-4 text-2xl w-fit mx-auto pt-8 font-black text-foreground/80">
           Please select a conversation
         </p>
       )}

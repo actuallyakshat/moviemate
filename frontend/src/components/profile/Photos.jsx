@@ -22,6 +22,10 @@ export const Photos = () => {
     //     fontWeight: "bold",
     //   },
     // });
+    toast({
+      title: "⏳",
+      description: "Uploading your image...",
+    });
     console.log("Uploading image...");
     const response = await imageUpload(user?._id, "general", file, setUser);
     if (response && response.data.success) {
@@ -30,6 +34,10 @@ export const Photos = () => {
       //     fontWeight: "bold",
       //   },
       // });
+      toast({
+        title: "🎉",
+        description: "Post created successfully!",
+      });
       console.log("Image uploaded successfully");
     } else {
       // toast.error("We couldn't upload your image.", {
@@ -37,6 +45,11 @@ export const Photos = () => {
       //     fontWeight: "bold",
       //   },
       // });
+      toast({
+        title: "🤦🏻‍♂️",
+        description: "We couldn't upload your image.",
+        variant: "destructive",
+      });
       console.log("Error uploading image");
     }
   };
@@ -50,10 +63,15 @@ export const Photos = () => {
   return (
     <div className="flex-1 mx-4 lg:mx-10 my-6 font-Poppins">
       <h1 className="my-3 opacity-90 font-bold text-xl">Pictures</h1>
-      <div className="md:max-w-[85%] mx-auto my-6 grid grid-cols-3 md:flex-row gap-1">
+      <div className="md:max-w-[85%] mx-auto my-6 grid grid-cols-2 md:grid-cols-3 md:flex-row gap-3">
         {userPhotos &&
           userPhotos?.map((post) => (
-            <Post key={post?._id} postId={post?._id} imageLink={post?.url} userId={user?._id}/>
+            <Post
+              key={post?._id}
+              postId={post?._id}
+              imageLink={post?.url}
+              userId={user?._id}
+            />
           ))}
       </div>
       <div className="max-w-full relative border border-dashed cursor-pointer border-gray-500 flex items-center gap-2 justify-center font-medium py-6">

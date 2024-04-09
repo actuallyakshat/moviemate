@@ -11,6 +11,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "../../lib/store/store";
 import { Button } from "../ui/button";
 import { useToast } from "../ui/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const Mates = () => {
   const { toast } = useToast();
@@ -18,6 +19,7 @@ const Mates = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
+  const navigate = useNavigate();
   console.log(friends);
   useEffect(() => {
     if (user) {
@@ -29,10 +31,10 @@ const Mates = () => {
     const response = await acceptFriendRequest(userId, friend._id);
     if (response.success) {
       //change the friend state
-      console.log("Friend request accepted");
+      console.log("Mate request accepted");
       toast({
         title: "Success",
-        description: "Friend request accepted successfully",
+        description: "Mate request accepted successfully",
       });
       setIncomingRequests(
         incomingRequests.filter((f) => {
@@ -50,7 +52,7 @@ const Mates = () => {
       console.log("Friend request declined");
       toast({
         title: "Oops",
-        description: "Friend request declined successfully",
+        description: "Mate request declined successfully",
         variant: "destructive",
       });
       setIncomingRequests(
@@ -66,8 +68,8 @@ const Mates = () => {
     const response = await cancelFriendRequest(userId, friendId);
     if (response.success) {
       toast({
-        title: "Friend request canceled",
-        description: "Friend request canceled successfully",
+        title: "Mate request cancelled",
+        description: "Mate request cancelled successfully",
         variant: "destructive",
       });
       setOutgoingRequests(
@@ -80,6 +82,11 @@ const Mates = () => {
   const deleteFriendHandler = async (userId, friendId) => {
     const response = await removeFriend(userId, friendId);
     if (response.success) {
+      toast({
+        title: "Mate deleted",
+        description: "Mate deleted successfully",
+        variant: "destructive",
+      });
       setFriends(friends.filter((f) => f.friend._id !== friendId));
     } else {
       console.log("Error deleting friend", response.message);
@@ -105,7 +112,12 @@ const Mates = () => {
                       className="w-14 h-14 rounded-full"
                     />
                     <div>
-                      <h1 className="font-semibold">
+                      <h1
+                        className="font-semibold cursor-pointer"
+                        onClick={() => {
+                          navigate(`/profile/${friend?.friend?._id}`);
+                        }}
+                      >
                         {friend.friend.fullName}
                       </h1>
                       <div className="flex items-center gap-1 font-medium text-secondary-foreground/50">
@@ -158,7 +170,12 @@ const Mates = () => {
                       className="w-14 h-14 rounded-full"
                     />
                     <div className="h-fit my-auto">
-                      <h1 className="font-semibold">
+                      <h1
+                        className="font-semibold cursor-pointer"
+                        onClick={() => {
+                          navigate(`/profile/${friend?.friend?._id}`);
+                        }}
+                      >
                         {friend.friend.fullName}
                       </h1>
                       <div className="flex gap-1 font-medium text-secondary-foreground/70">
@@ -203,9 +220,14 @@ const Mates = () => {
                     className="w-14 h-14 rounded-full"
                   />
                   <div className="flex flex-col">
-                    <h3 className="font-semibold">
+                    <h1
+                      className="font-semibold cursor-pointer"
+                      onClick={() => {
+                        navigate(`/profile/${friend?.friend?._id}`);
+                      }}
+                    >
                       {friend?.friend?.fullName}
-                    </h3>
+                    </h1>
                     <div className="flex gap-1">
                       <h3>{friend?.friend?.age},</h3>
                       <h3>{friend?.friend?.gender} </h3>
