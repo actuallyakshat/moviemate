@@ -53,7 +53,7 @@ const Profile = () => {
       </div> */}
 
       <ProfileHeader user={user} />
-      <Photos />
+      <Photos user={user} />
     </div>
   );
 };

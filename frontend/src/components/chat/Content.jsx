@@ -14,9 +14,11 @@ import { Button } from "../ui/button";
 import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
 import { IoMdArrowBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
-const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
+const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   const friendshipId = selectedConversation.friendshipId;
+  const navigate = useNavigate();
   const user = useAtomValue(userAtom);
   const [messages, setMessages] = useState([]);
   const [messagesList, setMessagesList] = useState([]);
@@ -52,21 +54,35 @@ const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between w-full py-8 px-4 lg:px-12 lg:pl-[27rem]">
+    <div className="flex flex-col justify-between w-full py-3 px-4 lg:px-12 lg:pl-[27rem]">
       {selectedConversation && (
         <>
           <div className="w-full">
-            <Button
-              className="flex items-center gap-1 font-semibold mb-4 lg:hidden -ml-2"
-              variant="ghost"
-              size="sm"
-              onClick={() => setIsMobileMenuOpen(true)}
-            >
-              <IoMdArrowBack /> Back
-            </Button>
-            <h1 className="font-bold text-2xl">
-              Chat with {selectedConversation?.friend?.fullName}
-            </h1>
+            <div className="w-full fixed top-16 flex items-center justify-between bg-background px-5 left-0 lg:left-[25rem] h-14 border-b border-foreground/20">
+              <div className="space-x-3 flex items-center">
+                <Button
+                  className="flex items-center gap-1 font-semibold lg:hidden -ml-2"
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => setIsMobileMenuOpen(true)}
+                >
+                  <IoMdArrowBack className="size-5" />
+                </Button>
+                <img
+                  src={selectedConversation?.friend?.profileImage}
+                  alt=""
+                  className="w-9 h-9 rounded-full"
+                />
+                <h1
+                  className="font-semibold text-lg cursor-pointer"
+                  onClick={() => {
+                    navigate(`/profile/${selectedConversation?.friend?._id}`);
+                  }}
+                >
+                  {selectedConversation?.friend?.fullName}
+                </h1>
+              </div>
+            </div>
           </div>
           <div>
             <div className="py-4 space-y-2 max-h-[90%] overflow-y-auto no-scrollbar">
@@ -83,7 +99,7 @@ const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
                   <div
                     className={
                       message.user === user._id
-                        ? "bg-blue-300 dark:bg-blue-600 rounded-lg p-2 max-w-[75%]"
+                        ? "bg-primary text-white rounded-lg text-sm p-3 max-w-[75%]"
                         : "bg-gray-300 dark:bg-gray-600 rounded-lg p-2 max-w-[75%]"
                     }
                   >
@@ -116,4 +132,4 @@ const Chat = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   );
 };
 
-export default Chat;
+export default Content;

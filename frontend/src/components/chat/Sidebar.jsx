@@ -73,9 +73,22 @@ const Sidebar = ({
                   }}
                   className="w-full h-full p-3 rounded-lg"
                 >
-                  <h1 className="font-bold">
-                    {conversation?.friend?.fullName}
-                  </h1>
+                  <div className="flex items-center gap-3">
+                    <img
+                      src={conversation?.friend?.profileImage}
+                      alt="pfp"
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <div className="h-fit my-auto">
+                      <h1 className="font-bold">
+                        {conversation?.friend?.fullName}
+                      </h1>
+                      <div className="text-sm font-medium text-foreground/70 flex gap-1">
+                        <h3>{conversation?.friend.age},</h3>
+                        <h3>{conversation?.friend.gender}</h3>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             ))

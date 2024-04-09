@@ -5,9 +5,9 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { imageUpload } from "../../actions/fileUploadActions";
-export const Photos = () => {
+export const Photos = ({ user }) => {
   const { toast } = useToast();
-  const [user, setUser] = useAtom(userAtom);
+  // const [user, setUser] = useAtom(userAtom);
   const [userPhotos, setUserPhotos] = useState([]);
 
   const uploadPostHandler = async (event) => {

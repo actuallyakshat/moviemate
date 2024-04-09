@@ -9,7 +9,7 @@ import { UpdationModal } from "./UpdationModal";
 const dummyHeader = `${import.meta.env.VITE_DUMMY_HEADER}`;
 const dummyProfile = `${import.meta.env.VITE_DUMMY_PROFILE}`;
 
-export const ProfileHeader = ({user}) => {
+export const ProfileHeader = ({ user }) => {
   const navigate = useNavigate();
 
   const [, setCreatedAt] = useState(null);
@@ -65,10 +65,10 @@ export const ProfileHeader = ({user}) => {
       const location = user?.location
         ? `${user.location.city}, ${user?.location.country}`
         : null;
-      const friends = user?.friends?.filter((friend) => friend.status === "accepted");
-      const friendsCount = friends
-        ? Object.keys(friends).length
-        : null;
+      const friends = user?.friends?.filter(
+        (friend) => friend.status === "accepted"
+      );
+      const friendsCount = friends ? Object.keys(friends).length : null;
       setCreatedAt(user?.createdAt);
       setFormattedDate(formattedDate);
       setLocation(location);
@@ -112,13 +112,19 @@ export const ProfileHeader = ({user}) => {
                 <IoCalendarOutline className="size-5" />
                 <p>Joined {formattedDate}</p>
               </h1>
-              <h1 className="flex items-center gap-2">
-                <CiLocationOn className="size-6" />
-                <p>{location}</p>
-              </h1>
+              {location && (
+                <h1 className="flex items-center gap-2">
+                  <CiLocationOn className="size-6" />
+                  <p>{location}</p>
+                </h1>
+              )}
               <h1 className="flex items-center gap-2">
                 <LiaUserFriendsSolid className="size-6" />
-                <p>{friendsCount} Mates</p>
+                <p>{`${
+                  friendsCount === 1
+                    ? `${friendsCount} Mate`
+                    : `${friendsCount} Mates`
+                }`}</p>
               </h1>
             </div>
           </div>
