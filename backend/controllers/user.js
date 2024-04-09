@@ -62,6 +62,7 @@ exports.updateUser = async (req, res) => {
     // data.onboardingCompleted = true;
     //onboarding is coming undefined. Let's fix it
     if (data) {
+      console.log("Updating user", data);
       data.onboardingCompleted = true;
       const user = await User.updateOne({ _id: userId }, data);
       res.status(200).json({ success: true, message: "User updated", user });
