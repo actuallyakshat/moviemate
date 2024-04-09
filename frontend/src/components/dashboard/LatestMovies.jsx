@@ -34,13 +34,13 @@ const LatestMovies = () => {
           <div
             key={movie.id}
             onClick={() => handleButtonClick(movie)}
-            className="cursor-pointer"
+            className="cursor-pointer rounded-lg relative overflow-hidden min-w-[17rem]"
           >
             <img
               src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
               alt="poster"
-              className="rounded-lg min-w-[17rem]"
             />
+            <div className="absolute inset-0 hover:bg-black/20 rounded-lg transition duration-200"></div>
           </div>
         ))}
       </div>
