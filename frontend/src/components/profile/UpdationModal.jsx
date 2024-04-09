@@ -14,7 +14,8 @@ import { userAtom } from "@/lib/store/store";
 import { useAtom, useAtomValue } from "jotai";
 import { MdEdit } from "react-icons/md";
 import TextareaAutosize from "react-textarea-autosize";
-// import { imageUpload, updateUserDetails } from "@/actions/userActions";
+import { imageUpload } from "../../actions/fileUploadActions";
+import { updateUserDetails } from "../../actions/userActions";
 import { useToast } from "../ui/use-toast";
 import { Button } from "../ui/button";
 
@@ -24,113 +25,116 @@ export const UpdationModal = ({ headerUrl, profileUrl }) => {
   const { register, handleSubmit, reset } = useForm();
   const [newHeader, setNewHeader] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
-  const onSubmit = async () => {
-    console.log("hi");
+
+  const uploadImages = async (imageData) => {
+    try {
+      console.log(imageData);
+      const responses = await Promise.all(
+        Object.entries(imageData).map(async ([tag, file]) => {
+          try {
+            const response = await imageUpload(user?._id, tag, file, setUser);
+            return response;
+          } catch (error) {
+            console.error(
+              `Error occurred while uploading ${tag} image:`,
+              error
+            );
+            return {
+              success: false,
+              message: `Error occurred while uploading ${tag} image: ${error.message}`,
+            };
+          }
+        })
+      );
+
+      return responses;
+    } catch (error) {
+      console.error("Error occurred while uploading images:", error);
+      return [
+        {
+          success: false,
+          message: `Error occurred while uploading images: ${error.message}`,
+        },
+      ];
+    }
   };
 
-  // const uploadImages = async (imageData) => {
-  //   try {
-  //     console.log(imageData);
-  //     const responses = await Promise.all(
-  //       Object.entries(imageData).map(async ([tag, file]) => {
-  //         try {
-  //           const response = await imageUpload(tag, file, setUser);
-  //           return response;
-  //         } catch (error) {
-  //           console.error(
-  //             `Error occurred while uploading ${tag} image:`,
-  //             error
-  //           );
-  //           return {
-  //             success: false,
-  //             message: `Error occurred while uploading ${tag} image: ${error.message}`,
-  //           };
-  //         }
-  //       })
-  //     );
+  const onSubmit = async (data) => {
+    console.log(data);
+    const imageData = {};
 
-  //     return responses;
-  //   } catch (error) {
-  //     console.error("Error occurred while uploading images:", error);
-  //     return [
-  //       {
-  //         success: false,
-  //         message: `Error occurred while uploading images: ${error.message}`,
-  //       },
-  //     ];
-  //   }
-  // };
+    // Check and assign header image
+    if (data?.header?.[0]) {
+      imageData.header = data.header[0];
+    }
+    // setNewProfile(null);
 
-  // const onSubmit = async (data) => {
-  //   console.log(data);
-  //   const imageData = {};
+    // Check and assign profile image
+    if (data?.profile?.[0]) {
+      imageData.profile = data.profile[0];
+    }
+    // setNewProfile(null);
 
-  //   // Check and assign header image
-  //   if (data?.header?.[0]) {
-  //     imageData.header = data.header[0];
-  //   }
-  //   // setNewProfile(null);
+    if (Object.keys(imageData).length !== 0) {
+      // toast("Uploading your images...", {
+      //   icon: "⏳",
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Uploading your images...")
+      const imageResponse = await uploadImages(imageData);
+      imageResponse.forEach((imageResponse) => {
+        if (imageResponse.data.success) {
+          // toast.success("Image uploaded successfully!", {
+          //   style: {
+          //     fontWeight: "bold",
+          //   },
+          // });
+          console.log("Image uploaded successfully");
+        } else {
+          // toast.error("There was an error while uploading your images", {
+          //   style: {
+          //     fontWeight: "bold",
+          //   },
+          // });
+          console.log("Error uploading image");
+        }
+      });
+      reset();
+      console.log(imageData);
+    }
 
-  //   // Check and assign profile image
-  //   if (data?.profile?.[0]) {
-  //     imageData.profile = data.profile[0];
-  //   }
-  //   // setNewProfile(null);
-
-  //   if (Object.keys(imageData).length !== 0) {
-  //     toast("Uploading your images...", {
-  //       icon: "⏳",
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //     const imageResponse = await uploadImages(imageData);
-  //     imageResponse.forEach((imageResponse) => {
-  //       if (imageResponse.data.success) {
-  //         toast.success("Image uploaded successfully!", {
-  //           style: {
-  //             fontWeight: "bold",
-  //           },
-  //         });
-  //       } else {
-  //         toast.error("There was an error while uploading your images", {
-  //           style: {
-  //             fontWeight: "bold",
-  //           },
-  //         });
-  //       }
-  //     });
-  //     reset();
-  //     console.log(imageData);
-  //   }
-
-  //   if (data.bio != user.bio) {
-  //     const bioObject = {};
-  //     if ("bio" in data) {
-  //       bioObject.bio = data.bio ? data.bio : "";
-  //     }
-  //     toast("Upadting your bio...", {
-  //       icon: "⏳",
-  //       style: {
-  //         fontWeight: "bold",
-  //       },
-  //     });
-  //     const bioResponse = await updateUserDetails(bioObject, setUser);
-  //     if (bioResponse.success) {
-  //       toast.success("Bio updated successfully!", {
-  //         style: {
-  //           fontWeight: "bold",
-  //         },
-  //       });
-  //     } else {
-  //       toast.error("There was an error while updating your bio", {
-  //         style: {
-  //           fontWeight: "bold",
-  //         },
-  //       });
-  //     }
-  //   }
-  // };
+    if (false && data.bio != user.bio) {
+      const bioObject = {};
+      if ("bio" in data) {
+        bioObject.bio = data.bio ? data.bio : "";
+      }
+      // toast("Upadting your bio...", {
+      //   icon: "⏳",
+      //   style: {
+      //     fontWeight: "bold",
+      //   },
+      // });
+      console.log("Updating your bio...");
+      const bioResponse = await updateUserDetails(user?._id, bioObject, setUser);
+      if (bioResponse.success) {
+        // toast.success("Bio updated successfully!", {
+        //   style: {
+        //     fontWeight: "bold",
+        //   },
+        // });
+        console.log("Bio updated successfully");
+      } else {
+        // toast.error("There was an error while updating your bio", {
+        //   style: {
+        //     fontWeight: "bold",
+        //   },
+        // });
+        console.log("Error updating bio");
+      }
+    }
+  };
 
   return (
     <div>
