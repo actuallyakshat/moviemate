@@ -4,8 +4,10 @@ import { Button } from "../ui/button";
 import { useNavigate } from "react-router-dom";
 import { useSetAtom } from "jotai";
 import { currentMovieAtom } from "@/lib/store/store";
+import Loading from "../Loading/Loading";
 
 const Banner = () => {
+  const [loading, setLoading] = useState(true);
   const setCurrentMovie = useSetAtom(currentMovieAtom);
   const navigate = useNavigate();
   const imagePrefix = "http://image.tmdb.org/t/p/w500";
@@ -19,12 +21,17 @@ const Banner = () => {
   useEffect(() => {
     const getMovies = async () => {
       const response = await getBannerMovie();
+      setLoading(false);
       console.log(response);
       setBannerMovie(response);
       setBackdrop(`${imagePrefix}${response.backdrop_path}`);
     };
     getMovies();
   }, []);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <div className="w-full min-h-[27rem] bg-no-repeat bg-cover overflow-hidden relative">

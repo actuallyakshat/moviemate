@@ -56,6 +56,11 @@ const SearchModal = ({ setModal }) => {
       </div>
       <div className="max-w-7xl px-4 mx-auto">
         <Input
+          onKeyDown={(e) => {
+            if (e.key === "Escape") {
+              setModal(false);
+            }
+          }}
           ref={searchBarRef}
           placeholder="Search a movie"
           onChange={handleInputChange}
