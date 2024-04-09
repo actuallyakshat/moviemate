@@ -1,11 +1,13 @@
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
+import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const Sidebar = ({
   conversations,
   setSelectedConversation,
   isMobileMenuOpen,
   setIsMobileMenuOpen,
+  loading,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
@@ -50,32 +52,40 @@ const Sidebar = ({
         value={searchQuery}
         onChange={handleInputChange}
       />
-      <div className="space-y-2 mt-4">
-        {filteredConversations.length > 0 ? (
-          filteredConversations.map((conversation) => (
-            <div
-              key={conversation?.friend._id}
-              className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
-            >
+      {loading ? (
+        <div className="w-full h-full flex items-center">
+          <LoadingSpinner />
+        </div>
+      ) : (
+        <div className="space-y-2 mt-4">
+          {filteredConversations.length > 0 ? (
+            filteredConversations.map((conversation) => (
               <div
-                onClick={() => {
-                  setSelectedConversation(conversation);
-                  if (window.innerWidth <= 1024) {
-                    setIsMobileMenuOpen(false);
-                  }
-                }}
-                className="w-full h-full p-3 rounded-lg"
+                key={conversation?.friend._id}
+                className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
               >
-                <h1 className="font-bold">{conversation?.friend?.fullName}</h1>
+                <div
+                  onClick={() => {
+                    setSelectedConversation(conversation);
+                    if (window.innerWidth <= 1024) {
+                      setIsMobileMenuOpen(false);
+                    }
+                  }}
+                  className="w-full h-full p-3 rounded-lg"
+                >
+                  <h1 className="font-bold">
+                    {conversation?.friend?.fullName}
+                  </h1>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="font-semibold text-secondary-foreground/70 text-center pt-10 px-6">
-            You currently don&apos;t have any mates to chat with
-          </p>
-        )}
-      </div>
+            ))
+          ) : (
+            <p className="font-semibold text-secondary-foreground/70 text-center pt-10 px-6">
+              You currently don&apos;t have any mates to chat with
+            </p>
+          )}
+        </div>
+      )}
     </div>
   );
 };

@@ -8,6 +8,7 @@ const Chat = () => {
   const [conversations, setConversations] = useState([]);
   const [selectedConversation, setSelectedConversation] = useState(null);
   const user = useAtomValue(userAtom);
+  const [loading, setLoading] = useState(true);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(true);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const Chat = () => {
             userId: user?._id,
           }
         );
+        setLoading(false);
         console.log(res);
         setConversations(res.data.data);
       } catch (error) {
@@ -34,6 +36,7 @@ const Chat = () => {
   return (
     <div className="pt-16 flex min-h-screen">
       <Sidebar
+        loading={loading}
         conversations={conversations}
         setSelectedConversation={setSelectedConversation}
         isMobileMenuOpen={isMobileMenuOpen}

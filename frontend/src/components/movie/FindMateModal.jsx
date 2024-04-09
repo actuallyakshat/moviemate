@@ -20,6 +20,7 @@ const FindMateModal = ({ setModal, movie }) => {
   const navigate = useNavigate();
   const [loadingMap, setLoadingMap] = useState({});
   const [addMeLoading, setAddMeLoading] = useState(false);
+  const [requestLoading, setRequestLoading] = useState(true);
   const { toast } = useToast();
   const [interestedUsers, setInterestedUsers] = useState([]);
   const [friends, setFriends] = useState([]);
@@ -69,6 +70,7 @@ const FindMateModal = ({ setModal, movie }) => {
         setIncomingRequests,
         setOutgoingRequests
       );
+      setRequestLoading(false);
     };
     getUsers();
   }, []);
@@ -131,28 +133,47 @@ const FindMateModal = ({ setModal, movie }) => {
                   </div>
                 ) : (
                   <>
-                    {data._id !== user._id && (
+                    {requestLoading ? (
+                      <div>
+                        <LoadingSpinner />
+                      </div>
+                    ) : (
                       <>
-                        {outgoingRequests.some(
-                          (friend) =>
-                            Number(friend.movie.tmdbId) === Number(movie.id)
-                        ) ? (
-                          <Button variant="ghost">Request Sent </Button>
-                        ) : friends.some(
-                            (friend) =>
-                              Number(friend.movie.tmdbId) === Number(movie.id)
-                          ) ? (
-                          <Button
-                            onClick={() => {
-                              navigate(`/chat`);
-                            }}
-                          >
-                            Chat
-                          </Button>
-                        ) : (
-                          <Button onClick={() => addMateHandler(data)}>
-                            Add Mate
-                          </Button>
+                        {data._id !== user._id && (
+                          <>
+                            {outgoingRequests.some(
+                              (friend) => friend.friend._id === data._id
+                            ) ? (
+                              <p className="text-sm font-medium">
+                                Request Sent{" "}
+                              </p>
+                            ) : friends.some(
+                                (friend) => friend.friend._id === data._id
+                              ) ? (
+                              <Button
+                                variant="ghost"
+                                onClick={() => {
+                                  navigate(`/chat`);
+                                }}
+                              >
+                                Chat
+                              </Button>
+                            ) : (
+                              <>
+                                {incomingRequests.some(
+                                  (friend) => friend.friend._id === data._id
+                                ) ? (
+                                  <p className="text-sm font-medium">
+                                    Request Received
+                                  </p>
+                                ) : (
+                                  <Button onClick={() => addMateHandler(data)}>
+                                    Add Mate
+                                  </Button>
+                                )}
+                              </>
+                            )}
+                          </>
                         )}
                       </>
                     )}
