@@ -85,9 +85,11 @@ export const Photos = ({ user }) => {
           ))}
         </div>
       ) : (
-        <p className="text-center text-2xl font-black text-foreground/70 mt-6 w-full">
-          {user?.fullName?.split(" ")[0]} has no posts
-        </p>
+        currentUser?._id !== user?._id && (
+          <p className="text-center text-2xl font-black text-foreground/70 mt-6 w-full">
+            {user?.fullName?.split(" ")[0]} has no posts
+          </p>
+        )
       )}
 
       {user?._id == currentUser?._id && (

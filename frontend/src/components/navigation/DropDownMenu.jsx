@@ -35,21 +35,24 @@ const DropDownMenu = () => {
       <DropdownMenuContent>
         <DropdownMenuLabel>{user.fullName}</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Link to={`/profile/${userFromStore?._id}`} className="w-full">
+        <DropdownMenuItem className="p-0">
+          <Link
+            to={`/profile/${userFromStore?._id}`}
+            className="w-full px-2 py-1.5"
+          >
             Your Profile
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link to="/settings" className="w-full">
+          <Link to="/settings" className="w-full px-2 py-1.5 cursor-pointer">
             Account Settings
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem className="p-0">
+        <DropdownMenuItem className="p-0 cursor-pointer">
           <ModeToggle />
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <p className="w-full" onClick={signOut}>
+          <p className="w-full cursor-pointer" onClick={signOut}>
             Logout
           </p>
         </DropdownMenuItem>

@@ -133,9 +133,17 @@ const Mates = () => {
                       >
                         {friend.friend.fullName}
                       </h1>
-                      <div className="flex items-center gap-1 font-medium text-secondary-foreground/50">
-                        <h4>{friend.friend.age}, </h4>
-                        <h4>{friend.friend.gender}</h4>
+                      <div className="text-sm text-foreground/80">
+                        <h4>
+                          For:{" "}
+                          <span className="font-semibold">
+                            {friend?.movie?.movieName}
+                          </span>
+                        </h4>
+                        <div className="flex gap-1">
+                          <h4>{friend?.friend?.age},</h4>
+                          <h4>{friend?.friend?.gender} </h4>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -191,9 +199,17 @@ const Mates = () => {
                       >
                         {friend.friend.fullName}
                       </h1>
-                      <div className="flex gap-1 font-medium text-secondary-foreground/70">
-                        <h4>{friend.friend.age},</h4>
-                        <h4>{friend.friend.gender}</h4>
+                      <div className="text-sm text-foreground/80">
+                        <h4>
+                          For:{" "}
+                          <span className="font-semibold">
+                            {friend?.movie?.movieName}
+                          </span>
+                        </h4>
+                        <div className="flex gap-1">
+                          <h4>{friend?.friend?.age},</h4>
+                          <h4>{friend?.friend?.gender} </h4>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -219,7 +235,7 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-5 space-y-2">
+        <div className="pt-5 space-y-1">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
@@ -234,16 +250,19 @@ const Mates = () => {
                   />
                   <div className="flex flex-col">
                     <h1
-                      className="font-semibold cursor-pointer"
+                      className="font-semibold cursor-pointer text-lg"
                       onClick={() => {
                         navigate(`/profile/${friend?.friend?._id}`);
                       }}
                     >
                       {friend?.friend?.fullName}
                     </h1>
-                    <div className="flex gap-1">
-                      <h3>{friend?.friend?.age},</h3>
-                      <h3>{friend?.friend?.gender} </h3>
+                    <div className="text-sm text-foreground/80">
+                      <h4>Met via {friend?.movie?.movieName}</h4>
+                      <div className="flex gap-1 ">
+                        <h4>{friend?.friend?.age},</h4>
+                        <h4>{friend?.friend?.gender} </h4>
+                      </div>
                     </div>
                   </div>
                 </div>

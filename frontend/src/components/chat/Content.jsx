@@ -121,7 +121,7 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
             </div>
           </div>
 
-          <div className="fixed bg-background pr-[30rem] w-full bottom-0 pb-4">
+          <div className="fixed bg-background left-0 px-8 lg:pl-[28rem] w-full bottom-0 pb-4">
             <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 type="text"

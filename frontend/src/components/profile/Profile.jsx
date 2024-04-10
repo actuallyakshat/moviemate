@@ -1,6 +1,6 @@
 import { userAtom } from "@/lib/store/store";
 import { useAtom } from "jotai";
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getDetailsById } from "../../actions/userActions";
 import { ProfileHeader } from "./ProfileHeader";
@@ -20,43 +20,35 @@ const Profile = () => {
   }, [location]);
 
   const { id } = useParams();
-  const [currentUser, setCurrentUser] = useAtom(userAtom);
+  const [currentUser] = useAtom(userAtom);
+  const [userProfile, setUserProfile] = useState(null);
   const [user, setUser] = useState(null);
 
-  // useEffect(() => {
-  //   if (currentUser) {
-  //     if (currentUser._id === id) {
-  //       setUser(currentUser);
-  //     } else {
-  //       // Fetch id and set user data
-  //       getDetailsById(id).then((data) => {
-  //         if (data.success) {
-  //           setUser(data.user);
-  //         }
-  //       });
-  //     }
-  //     setLoading(false);
-  //   }
-  // }, [currentUser, id]);
   useEffect(() => {
-    if (currentUser) {
-      // Fetch details for both currentUser._id and id from params
-      Promise.all([getDetailsById(currentUser._id), getDetailsById(id)])
-        .then(([currentUserData, userData]) => {
-          if (currentUserData.success) {
-            setCurrentUser(currentUserData.user);
-          }
-          if (userData.success) {
-            setUser(userData.user);
-          }
-          setLoading(false);
-        })
-        .catch((error) => {
-          console.error("Error fetching user details:", error);
-          setLoading(false);
-        });
-    }
-  }, []);
+    // Fetch details for both currentUser._id and id from params
+    Promise.all([getDetailsById(currentUser?._id), getDetailsById(id)])
+      .then(([currentUserData, userData]) => {
+        if (currentUserData && currentUserData.success) {
+          setUserProfile(currentUserData.user);
+        } else {
+          console.error(
+            "Error fetching current user details:",
+            currentUserData.error
+          );
+        }
+        if (userData && userData.success) {
+          setUser(userData.user);
+        } else {
+          console.error("Error fetching user details:", userData.error);
+        }
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error("Error fetching user details:", error);
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]); // Add currentUser to the dependency array
 
   return (
     <>
