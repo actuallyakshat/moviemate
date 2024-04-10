@@ -122,7 +122,7 @@ const Mates = () => {
                   <div className="flex items-center justify-center gap-4">
                     <img
                       src={friend?.friend?.profileImage}
-                      className="w-14 h-14 rounded-full"
+                      className="w-14 h-14 my-auto rounded-full"
                     />
                     <div>
                       <h1
@@ -188,7 +188,7 @@ const Mates = () => {
                   <div className="flex gap-3">
                     <img
                       src={friend.friend.profileImage}
-                      className="w-14 h-14 rounded-full"
+                      className="w-14 h-14 my-auto rounded-full"
                     />
                     <div className="h-fit my-auto">
                       <h1
@@ -246,7 +246,7 @@ const Mates = () => {
                   <img
                     src={friend?.friend?.profileImage}
                     alt="pfp"
-                    className="w-14 h-14 rounded-full"
+                    className="w-14 h-14 my-auto rounded-full"
                   />
                   <div className="flex flex-col">
                     <h1

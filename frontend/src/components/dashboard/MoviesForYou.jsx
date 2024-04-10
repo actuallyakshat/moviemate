@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-const favouriteGenres = ["Romance"];
+const favouriteGenres = ["Adventure"];
 
 const MoviesForYou = () => {
   const genreIds = favouriteGenres.map((genre) => getIdByGenre(genre));
