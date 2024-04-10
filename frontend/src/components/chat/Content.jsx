@@ -87,7 +87,7 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
             </div>
           </div>
           <div className="py-10">
-            <div className="py-4 lg:px-10 space-y-2 h-full flex flex-col justify-end overflow-y-auto no-scrollbar">
+            <div className="py-4 px-4 lg:px-10 space-y-2 h-full flex flex-col justify-end overflow-y-auto no-scrollbar">
               {messagesList.map(
                 (message) =>
                   message?.timestamp?.seconds && (
@@ -102,8 +102,8 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
                       <div
                         className={
                           message?.user === user._id
-                            ? "bg-primary text-white rounded-lg text-sm px-3 py-2 max-w-[50%]"
-                            : "bg-gray-50 text-foreground dark:bg-gray-600 rounded-lg p-2 max-w-[50%]"
+                            ? "bg-primary text-white rounded-lg text-sm px-3 py-2 max-w-[20rem] md:max-w-[30rem] lg:max-w-[35rem]"
+                            : "bg-gray-50 text-foreground dark:bg-gray-600 rounded-lg p-2 max-w-[20rem] md:max-w-[30rem] lg:max-w-[35rem]"
                         }
                       >
                         <span>{message?.message}</span>
@@ -121,7 +121,7 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
             </div>
           </div>
 
-          <div className="fixed bg-background left-0 px-8 lg:pl-[28rem] w-full bottom-0 pb-4">
+          <div className="fixed bg-background left-0 px-8 lg:pl-[28rem] w-full bottom-0 py-4">
             <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 type="text"

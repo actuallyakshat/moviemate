@@ -235,7 +235,7 @@ const Mates = () => {
       <hr className="my-2" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-5 space-y-1">
+        <div className="pt-5 space-y-2">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
@@ -258,7 +258,12 @@ const Mates = () => {
                       {friend?.friend?.fullName}
                     </h1>
                     <div className="text-sm text-foreground/80">
-                      <h4>Met via {friend?.movie?.movieName}</h4>
+                      <h4>
+                        Met via:{" "}
+                        <span className="font-semibold">
+                          {friend?.movie?.movieName}
+                        </span>
+                      </h4>
                       <div className="flex gap-1 ">
                         <h4>{friend?.friend?.age},</h4>
                         <h4>{friend?.friend?.gender} </h4>
