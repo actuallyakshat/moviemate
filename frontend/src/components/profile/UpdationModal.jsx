@@ -123,7 +123,7 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
       console.log(imageData);
     }
 
-    if (false && data.bio != user.bio) {
+    if (data?.bio && data.bio != user.bio) {
       const bioObject = {};
       if ("bio" in data) {
         bioObject.bio = data.bio ? data.bio : "";

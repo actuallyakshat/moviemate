@@ -30,6 +30,7 @@ const uploadFileToCloudinary = async (file, folder) => {
 exports.imageUpload = async (req, res) => {
   try {
     // Data Fetch
+    console.log("Request body received in backend ", req.body);
     const { tag , userId } = req.body;
     const file = req.files["file"];
 
