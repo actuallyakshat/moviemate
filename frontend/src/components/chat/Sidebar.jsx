@@ -8,9 +8,17 @@ const Sidebar = ({
   isMobileMenuOpen,
   setIsMobileMenuOpen,
   loading,
+  selectedConversation,
 }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [filteredConversations, setFilteredConversations] = useState([]);
+  // bg-zinc-50 hover:bg-zinc-200 dark:bg-zinc-700 dark:hover:bg-zinc-800
+  useEffect(() => {
+    console.log("selected", selectedConversation);
+    console.log("conversation", conversations);
+    console.log("id 1: ", conversations[0]?.friendshipId);
+    console.log("id 2:", selectedConversation?.friendshipId);
+  }, [selectedConversation]);
 
   // useEffect(() => {
   //   setIsMobileMenuOpen(window.innerWidth >= 1024);
@@ -62,7 +70,12 @@ const Sidebar = ({
             filteredConversations.map((conversation) => (
               <div
                 key={conversation?.friend._id}
-                className="items-center gap-3 flex bg-zinc-50 hover:bg-zinc-200 transition-colors border shadow-md dark:bg-zinc-700 dark:hover:bg-zinc-800 rounded-lg cursor-pointer"
+                className={`${
+                  selectedConversation?.friendshipId ==
+                  conversation?.friendshipId
+                    ? "bg-gray-100 dark:bg-gray-700"
+                    : "bg-zinc-50 hover:bg-zinc-100 dark:bg-gray-600 hover:dark:bg-gray-700"
+                } items-center gap-3 flex  transition-colors border shadow-md rounded-lg cursor-pointer`}
               >
                 <div
                   onClick={() => {

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { FaTrash } from "react-icons/fa6";
-import { useSetAtom } from "jotai";
+import { useAtomValue, useSetAtom } from "jotai";
 // import { toast } from "react-hot-toast";
 import { userAtom } from "@/lib/store/store";
 import { useToast } from "../ui/use-toast";
@@ -8,6 +8,7 @@ import { imageDelete } from "../../actions/fileUploadActions";
 export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
   const { toast } = useToast();
   const setUser = useSetAtom(userAtom);
+  const currentUser = useAtomValue(userAtom);
   const deleteImageHandler = async () => {
     // toast("Deleting your post...", {
     //   icon: "⏳",
@@ -60,12 +61,14 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
           alt="post"
           onClick={(e) => e.stopPropagation()}
         />
-        <i
-          onClick={deleteImageHandler}
-          className="absolute text-white top-4 size-8 right-4 bg-white/20 hover:bg-white/50 rounded-lg transition-colors flex items-center justify-center hover:text-red-600"
-        >
-          <FaTrash />
-        </i>
+        {currentUser?._id === userId && (
+          <i
+            onClick={deleteImageHandler}
+            className="absolute text-white top-4 size-8 right-4 bg-white/20 hover:bg-white/50 rounded-lg transition-colors flex items-center justify-center hover:text-red-600"
+          >
+            <FaTrash />
+          </i>
+        )}
       </div>
     </div>
   );

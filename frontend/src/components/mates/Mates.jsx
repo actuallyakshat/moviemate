@@ -224,7 +224,7 @@ const Mates = () => {
             friends?.map((friend) => (
               <div
                 key={friend._id}
-                className="p-2 shadow-md flex items-center justify-between gap-4 border rounded-xl px-4"
+                className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
               >
                 <div className="flex items-center gap-3">
                   <img

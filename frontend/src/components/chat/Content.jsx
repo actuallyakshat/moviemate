@@ -15,6 +15,7 @@ import { useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
 import { IoMdArrowBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import { formatDateTimeFromSeconds } from "@/lib/functions/time";
 
 const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   const friendshipId = selectedConversation.friendshipId;
@@ -37,6 +38,7 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
       setMessagesList(messages);
+      console.log(messagesList);
     });
     return () => unsubscribe();
   }, [selectedConversation]);
@@ -85,33 +87,36 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
             </div>
           </div>
           <div>
-            <div className="py-4 space-y-2 max-h-[90%] overflow-y-auto no-scrollbar">
+            <div className="py-4 lg:px-10 space-y-2 max-h-[90%] overflow-y-auto no-scrollbar">
               {messagesList.map((message) => (
                 <div
-                  key={message.id}
+                  key={message?.id}
                   className={`
               ${
-                message.user === user._id
+                message?.user === user._id
                   ? "flex justify-end"
                   : "flex justify-start"
               } `}
                 >
                   <div
                     className={
-                      message.user === user._id
-                        ? "bg-primary text-white rounded-lg text-sm p-3 max-w-[75%]"
+                      message?.user === user._id
+                        ? "bg-primary text-white rounded-lg text-sm px-3 py-2 max-w-[75%]"
                         : "bg-gray-300 dark:bg-gray-600 rounded-lg p-2 max-w-[75%]"
                     }
                   >
                     <span className="font-bold">
-                      {message.user === user._id
+                      {message?.user === user._id
                         ? "You"
                         : selectedConversation?.friend?.fullName?.split(
                             " "
                           )[0]}{" "}
                       :{" "}
                     </span>
-                    <span>{message.message}</span>
+                    <span>{message?.message}</span>
+                    <p className="text-[12px] text-secondary/90 text-right">
+                      {formatDateTimeFromSeconds(message?.timestamp?.seconds)}
+                    </p>
                   </div>
                 </div>
               ))}

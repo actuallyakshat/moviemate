@@ -41,6 +41,7 @@ const Chat = () => {
         setSelectedConversation={setSelectedConversation}
         isMobileMenuOpen={isMobileMenuOpen}
         setIsMobileMenuOpen={setIsMobileMenuOpen}
+        selectedConversation={selectedConversation}
       />
       {selectedConversation ? (
         <Content

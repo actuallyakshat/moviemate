@@ -28,15 +28,15 @@ const MoviePage = () => {
   return (
     <>
       {modal && <FindMateModal setModal={setModal} movie={movie} />}
-      <div className="min-h-screen h-full overflow-hidden">
+      <div className="min-h-screen h-full overflow-hidden relative">
         <div
           style={{
             backgroundImage: movieBanner ? `url(${movieBanner})` : "none",
           }}
-          className="min-h-screen h-full pt-20 blur-md scale-110 bg-no-repeat bg-cover"
+          className="min-h-screen h-full pt-20 blur-md scale-110 bg-no-repeat bg-cover absolute top-0 left-0 w-full"
         ></div>
-        <div className="min-h-screen h-full w-full absolute bg-black/50 top-0"></div>
-        <div className="absolute top-0 left-0 w-full h-full pt-16 flex flex-col lg:flex-row gap-12 px-3 lg:px-10">
+        <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
+        <div className="absolute top-0 left-0 w-full h-full pt-16 pb-10 flex flex-col lg:flex-row gap-12 px-3 lg:px-10 no-scrollbar overflow-y-auto">
           <img
             src={imagePrefix + movie?.poster_path}
             alt="poster"
@@ -52,10 +52,10 @@ const MoviePage = () => {
               {movie?.title}
             </h1>
             <div className="py-1">
-              {movie?.genre_ids?.map((genre) => (
+              {movie?.genre_ids?.map((genre, index) => (
                 <p
                   className="inline text-zinc-300 mr-2 font-medium"
-                  key={genre.index}
+                  key={index}
                 >
                   {getGenreById(genre)}
                 </p>
