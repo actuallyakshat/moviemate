@@ -6,7 +6,7 @@ import {
   getAllInterestedUsers,
   removeInterestedUser,
 } from "@/actions/movieActions";
-import { useAtomValue } from "jotai";
+import { useAtom, useAtomValue } from "jotai";
 import { userAtom } from "@/lib/store/store";
 import {
   sendFriendRequest,
@@ -26,7 +26,7 @@ const FindMateModal = ({ setModal, movie }) => {
   const [friends, setFriends] = useState([]);
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
-  const user = useAtomValue(userAtom);
+  const [user, setUser] = useAtom(userAtom);
 
   const submitHandler = async () => {
     setAddMeLoading(true);
@@ -85,6 +85,9 @@ const FindMateModal = ({ setModal, movie }) => {
     );
     if (response.success) {
       console.log("Friend request sent");
+      const updatedUser = { ...user };
+      updatedUser.friends.push(response.newRequest); // Assuming newRequest contains the new friendship request
+      setUser(updatedUser); // Set the updated currentUser
       //set the potentialMate in the outgoing request
       setOutgoingRequests([
         ...outgoingRequests,

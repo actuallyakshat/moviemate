@@ -56,7 +56,7 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   };
 
   return (
-    <div className="flex flex-col justify-between w-full py-3 px-4 lg:px-12 lg:pl-[27rem]">
+    <div className="flex flex-col relative justify-between w-full py-3 px-4 lg:px-12 lg:pl-[27rem]">
       {selectedConversation && (
         <>
           <div className="w-full">
@@ -86,41 +86,42 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
               </div>
             </div>
           </div>
-          <div>
-            <div className="py-4 lg:px-10 space-y-2 max-h-[90%] overflow-y-auto no-scrollbar">
-              {messagesList.map((message) => (
-                <div
-                  key={message?.id}
-                  className={`
-              ${
-                message?.user === user._id
-                  ? "flex justify-end"
-                  : "flex justify-start"
-              } `}
-                >
-                  <div
-                    className={
-                      message?.user === user._id
-                        ? "bg-primary text-white rounded-lg text-sm px-3 py-2 max-w-[75%]"
-                        : "bg-gray-300 dark:bg-gray-600 rounded-lg p-2 max-w-[75%]"
-                    }
-                  >
-                    <span className="font-bold">
-                      {message?.user === user._id
-                        ? "You"
-                        : selectedConversation?.friend?.fullName?.split(
-                            " "
-                          )[0]}{" "}
-                      :{" "}
-                    </span>
-                    <span>{message?.message}</span>
-                    <p className="text-[12px] text-secondary/90 text-right">
-                      {formatDateTimeFromSeconds(message?.timestamp?.seconds)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+          <div className="py-10">
+            <div className="py-4 lg:px-10 space-y-2 h-full flex flex-col justify-end overflow-y-auto no-scrollbar">
+              {messagesList.map(
+                (message) =>
+                  message?.timestamp?.seconds && (
+                    <div
+                      key={message?.id}
+                      className={`
+        ${
+          message?.user === user._id ? "flex justify-end" : "flex justify-start"
+        } 
+      `}
+                    >
+                      <div
+                        className={
+                          message?.user === user._id
+                            ? "bg-primary text-white rounded-lg text-sm px-3 py-2 max-w-[50%]"
+                            : "bg-gray-50 text-foreground dark:bg-gray-600 rounded-lg p-2 max-w-[50%]"
+                        }
+                      >
+                        <span>{message?.message}</span>
+                        <p className="text-[12px] text-right">
+                          {message?.timestamp?.seconds
+                            ? formatDateTimeFromSeconds(
+                                message?.timestamp?.seconds
+                              )
+                            : ""}
+                        </p>
+                      </div>
+                    </div>
+                  )
+              )}
             </div>
+          </div>
+
+          <div className="fixed bg-background pr-[30rem] w-full bottom-0 pb-4">
             <form onSubmit={handleSubmit} className="flex gap-2">
               <Input
                 type="text"

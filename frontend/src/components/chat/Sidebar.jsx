@@ -73,7 +73,7 @@ const Sidebar = ({
                 className={`${
                   selectedConversation?.friendshipId ==
                   conversation?.friendshipId
-                    ? "bg-gray-100 dark:bg-gray-700"
+                    ? "bg-gray-200/70 dark:bg-gray-700"
                     : "bg-zinc-50 hover:bg-zinc-100 dark:bg-gray-600 hover:dark:bg-gray-700"
                 } items-center gap-3 flex  transition-colors border shadow-md rounded-lg cursor-pointer`}
               >

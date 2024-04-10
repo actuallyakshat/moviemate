@@ -149,8 +149,10 @@ export const sendFriendRequest = async (
       tmdbId,
       movieName,
     });
+    console.log(response);
     if (response.data.success) {
       return {
+        data: response.data.newRequest,
         success: true,
         message: response.data.message,
       };

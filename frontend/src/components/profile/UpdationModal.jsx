@@ -18,6 +18,7 @@ import { imageUpload } from "../../actions/fileUploadActions";
 import { updateUserDetails } from "../../actions/userActions";
 import { useToast } from "../ui/use-toast";
 import { Button } from "../ui/button";
+import MateButton from "./MateButton";
 
 export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
   const { toast } = useToast();
@@ -167,7 +168,11 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          {user?._id === currentUser?._id && <Button>Edit Profile</Button>}
+          {user?._id === currentUser?._id ? (
+            <Button>Edit Profile</Button>
+          ) : (
+            <MateButton currentUser={currentUser} user={user} />
+          )}
         </AlertDialogTrigger>
         <AlertDialogContent
           className={`gap-0 font-Poppins border-gray-400/30 `}

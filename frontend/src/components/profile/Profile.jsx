@@ -23,21 +23,40 @@ const Profile = () => {
   const [currentUser, setCurrentUser] = useAtom(userAtom);
   const [user, setUser] = useState(null);
 
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     if (currentUser._id === id) {
+  //       setUser(currentUser);
+  //     } else {
+  //       // Fetch id and set user data
+  //       getDetailsById(id).then((data) => {
+  //         if (data.success) {
+  //           setUser(data.user);
+  //         }
+  //       });
+  //     }
+  //     setLoading(false);
+  //   }
+  // }, [currentUser, id]);
   useEffect(() => {
     if (currentUser) {
-      if (currentUser._id === id) {
-        setUser(currentUser);
-      } else {
-        // Fetch id and set user data
-        getDetailsById(id).then((data) => {
-          if (data.success) {
-            setUser(data.user);
+      // Fetch details for both currentUser._id and id from params
+      Promise.all([getDetailsById(currentUser._id), getDetailsById(id)])
+        .then(([currentUserData, userData]) => {
+          if (currentUserData.success) {
+            setCurrentUser(currentUserData.user);
           }
+          if (userData.success) {
+            setUser(userData.user);
+          }
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.error("Error fetching user details:", error);
+          setLoading(false);
         });
-      }
-      setLoading(false);
     }
-  }, [currentUser, id]);
+  }, []);
 
   return (
     <>
