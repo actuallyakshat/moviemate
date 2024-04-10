@@ -10,6 +10,11 @@ export const Photos = ({ user }) => {
   const [currentUser, setCurrentUser] = useAtom(userAtom);
   const [userPhotos, setUserPhotos] = useState([]);
 
+  useEffect(() => {
+    console.log("user: ", user);
+    console.log("currentUser: ", currentUser);
+  }, [currentUser, user]);
+
   const uploadPostHandler = async (event) => {
     const files = event.target.files;
     if (!files || files.length === 0) {
@@ -27,7 +32,12 @@ export const Photos = ({ user }) => {
       description: "Uploading your image...",
     });
     console.log("Uploading image...");
-    const response = await imageUpload(user?._id, "general", file, setUser);
+    const response = await imageUpload(
+      user?._id,
+      "general",
+      file,
+      setCurrentUser
+    );
     if (response && response.data.success) {
       // toast.success("Post created successfully!", {
       //   style: {
@@ -80,7 +90,7 @@ export const Photos = ({ user }) => {
         </p>
       )}
 
-      {user?._id === currentUser?.id && (
+      {user?._id == currentUser?._id && (
         <div className="max-w-full relative border border-dashed cursor-pointer border-gray-500 flex items-center gap-2 justify-center font-medium py-6">
           <FaCamera className="opacity-90 " />
           <p className="text-md opacity-90">Add a new post</p>

@@ -31,7 +31,7 @@ exports.imageUpload = async (req, res) => {
   try {
     // Data Fetch
     console.log("Request body received in backend ", req.body);
-    const { tag , userId } = req.body;
+    const { tag, userId } = req.body;
     const file = req.files["file"];
 
     // Validation
@@ -84,15 +84,19 @@ exports.imageUpload = async (req, res) => {
     // Upload new file to Cloudinary
 
     const response = await uploadFileToCloudinary(file, "Images");
-
+    const secureUrl = response?.secure_url;
     // Create new file document
     const fileData = await File.create({
       user: userId,
       tag,
-      url: response.secure_url,
+      url: secureUrl,
     });
 
     user.files.push(fileData);
+    if (tag == "profile") {
+      user.profileImage = secureUrl;
+    }
+    console.log(user);
     await user.save();
 
     // Fetch updated user details

@@ -62,7 +62,9 @@ export const updateUserDetails = async (userId, data, setUser) => {
       userId,
       data,
     });
+    console.log("user action response: ", response);
     if (response.data.success) {
+      console.log("user action success response: ", response);
       setUser(response.data.user);
       return {
         success: true,

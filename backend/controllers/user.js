@@ -59,13 +59,27 @@ exports.updateUser = async (req, res) => {
   try {
     const { userId, data } = req.body;
     console.log(data);
-    // data.onboardingCompleted = true;
-    //onboarding is coming undefined. Let's fix it
+
     if (data) {
       console.log("Updating user", data);
       data.onboardingCompleted = true;
-      const user = await User.updateOne({ _id: userId }, data);
-      res.status(200).json({ success: true, message: "User updated", user });
+      // Update the user and populate all referring fields
+      const updatedUser = await User.findOneAndUpdate(
+        { _id: userId },
+        data,
+        { new: true } // Return the modified document rather than the original
+      ).populate("friends files"); // Populate all referring fields
+
+      // Check if the user exists and was updated
+      if (updatedUser) {
+        console.log("Updated user:", updatedUser);
+        res
+          .status(200)
+          .json({ success: true, message: "User updated", user: updatedUser });
+      } else {
+        // If no user found
+        res.status(404).json({ success: false, message: "User not found" });
+      }
     } else {
       res.status(400).json({ success: false, message: "No data provided" });
     }

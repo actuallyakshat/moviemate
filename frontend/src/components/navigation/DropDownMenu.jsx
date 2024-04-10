@@ -19,13 +19,17 @@ import { useEffect } from "react";
 const DropDownMenu = () => {
   const userFromStore = useAtomValue(userAtom);
   const { user, signOut } = useClerk();
-  const profileImg = user?.imageUrl || import.meta.env.VITE_DUMMY_PROFILE;
+  const profileImg =
+    userFromStore?.profileImage || import.meta.env.VITE_DUMMY_PROFILE;
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>
         <Avatar className="cursor-pointer">
-          <AvatarImage src={profileImg} />
-          <AvatarFallback>Pfp</AvatarFallback>
+          <AvatarImage
+            src={profileImg}
+            className="object-cover aspect-square"
+          />
+          <AvatarFallback></AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent>

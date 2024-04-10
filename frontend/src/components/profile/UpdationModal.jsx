@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import {
   AlertDialog,
@@ -25,6 +25,11 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
   const { register, handleSubmit, reset } = useForm();
   const [newHeader, setNewHeader] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
+
+  useEffect(() => {
+    console.log("user", user);
+    console.log("currentUser", currentUser);
+  }, [user, currentUser]);
 
   const uploadImages = async (imageData) => {
     try {
@@ -138,7 +143,7 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
       const bioResponse = await updateUserDetails(
         user?._id,
         bioObject,
-        setUser
+        setCurrentUser
       );
       if (bioResponse.success) {
         // toast.success("Bio updated successfully!", {
