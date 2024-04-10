@@ -105,6 +105,7 @@ const LatestMovies = () => {
           infinite: true,
           dots: false,
           variableWidth: false,
+          speed: 600,
           slidesPerRow: 1,
           slidesPerColumn: 1,
           centerMode: false,
@@ -121,12 +122,13 @@ const LatestMovies = () => {
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 2,
+          slidesToShow: 1,
           slidesToScroll: 1,
           infinite: true,
           dots: false,
           // Set spacing between slides
           variableWidth: false,
+          speed: 600,
           slidesPerRow: 1,
           slidesPerColumn: 1,
           centerMode: false,
@@ -147,10 +149,10 @@ const LatestMovies = () => {
   return (
     <div className="h-full mt-16 pb-6">
       <h1 className="px-4 font-bold text-4xl mb-6">Latest Movies</h1>
-      <div className="slider-container h-full">
+      <div className="slider-container h-full px-3">
         <Slider {...settings}>
           {latestMovies?.map((movie) => (
-            <div key={movie.id} className="px-1 h-full overflow-hidden">
+            <div key={movie.id} className="pr-1 h-full overflow-hidden">
               <div
                 onClick={() => handleButtonClick(movie)}
                 className="cursor-pointer h-full rounded-lg relative overflow-hidden"

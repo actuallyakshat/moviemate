@@ -113,3 +113,13 @@
 .slider-container {
   height: fit-content;
 }
+
+/* Set the color to white for active button */
+.slick-dots li.slick-active button:before {
+  color: black !important;
+}
+
+/* Set the color to black for active button when 'dark' class is present */
+.dark .slick-dots li.slick-active button:before {
+  color: white !important;
+}
