@@ -13,18 +13,32 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useNavigate } from "react-router-dom";
 // import { userAtom } from "@/store/atoms";
-import { useSetAtom } from "jotai";
+import { useAtom, useSetAtom } from "jotai";
 // import { deleteUser } from "@/actions/userActions";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
 import { Button } from "../ui/button";
+import { deleteUser } from "@/actions/userActions";
+import { userAtom } from "@/lib/store/store";
+import { useClerk } from "@clerk/clerk-react";
 
 export const DeleteAccount = () => {
+  const [user, setUser] = useAtom(userAtom);
+  const { signOut } = useClerk();
   //   const { toast } = useToast();
   //   const setUser = useSetAtom(userAtom);
   //   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const deleteAccountHandler = async () => {
+    const response = await deleteUser(user._id, setUser);
+    if (response.success) {
+      //display success and navigate to landing page
+      signOut();
+    } else {
+      //display error
+    }
+    console.log("Account deleted");
+  };
   //   const deleteAccountHandler = async () => {
   //     setLoading(true);
   //     const response = await deleteUser(setUser);
@@ -110,7 +124,7 @@ export const DeleteAccount = () => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-destructive hover:bg-destructive/90"
-              //   onClick={deleteAccountHandler}
+              onClick={deleteAccountHandler}
             >
               Continue
             </AlertDialogAction>
