@@ -86,8 +86,8 @@ export const updateUserDetails = async (userId, data, setUser) => {
 };
 export const deleteUser = async (id, setUser) => {
   try {
-    const response = await axios.delete(`${baseUrl}/user/delete`, {
-      params: { id },
+    const response = await axios.post(`${baseUrl}/user/delete`, {
+      id,
     });
     if (response.data.success) {
       setUser(null);

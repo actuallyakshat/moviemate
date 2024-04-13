@@ -33,11 +33,17 @@ export const DeleteAccount = () => {
     const response = await deleteUser(user._id, setUser);
     if (response.success) {
       //display success and navigate to landing page
+      console.log("Account deleted");
+      toast("Sorry to see you go", {
+        style: {
+          fontWeight: "bold",
+        },
+        icon: "😔",
+      });
       signOut();
     } else {
-      //display error
+      console.error("Error deleting account");
     }
-    console.log("Account deleted");
   };
   //   const deleteAccountHandler = async () => {
   //     setLoading(true);
