@@ -12,6 +12,7 @@ import { updateUserDetails } from "@/actions/userActions";
 import LoadingSpinner from "../Loading/LoadingSpinner";
 import { useToast } from "../ui/use-toast";
 import Select from "react-select";
+import { useTheme } from "@/providers/theme-provider";
 
 const optionsGenre = [
   { label: "Action", value: "Action" },
@@ -46,10 +47,7 @@ const optionsLang = [
 
 const UpdateDetails = () => {
   //create a dark use state
-  const [dark, setDark] = useState(
-    !document.querySelector("html").classList.contains("dark")
-  );
-  console.log("dark is changing now", dark);
+  const { theme } = useTheme();
   const [user, setUser] = useAtom(userAtom);
   const getOptionsByLabels = (labels, options) => {
     return labels
@@ -60,12 +58,22 @@ const UpdateDetails = () => {
       .filter(Boolean);
   };
   console.log(user);
-  const [selectedGenre, setSelectedGenre] = useState(
-    getOptionsByLabels(user?.favoriteGenres, optionsGenre)
-  );
-  const [selectedLang, setSelectedLang] = useState(
-    getOptionsByLabels(user?.languagePreferences, optionsLang)
-  );
+  const [selectedGenre, setSelectedGenre] = useState([]);
+  const [selectedLang, setSelectedLang] = useState([]);
+
+  useEffect(() => {
+    // Check if user exists and has favoriteGenres
+    if (user && user.favoriteGenres) {
+      setSelectedGenre(getOptionsByLabels(user.favoriteGenres, optionsGenre));
+    }
+
+    // Check if user exists and has languagePreferences
+    if (user && user.languagePreferences) {
+      setSelectedLang(
+        getOptionsByLabels(user.languagePreferences, optionsLang)
+      );
+    }
+  }, [user, optionsGenre, optionsLang]);
   const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -103,40 +111,19 @@ const UpdateDetails = () => {
     return filteredData;
   }
 
-  // useEffect(() => {
-  //   if (user && Object.keys(user).length > 0) {
-  //     setfavoriteGenres(user.favoriteGenres);
-  //     setLanguagePreferences(user.languagePreferences);
-  //   }
-  // }, [user]);
-  //get the default dark from useEffect
-  useEffect(() => {
-    const toggleDarkMode = () => {
-      setDark(!document.querySelector("html").classList.contains("dark"));
-    };
-    // Listen for changes to the classList
-    document
-      .querySelector("html")
-      .addEventListener("toggleDarkMode", toggleDarkMode);
-
-    // Cleanup
-    return () => {
-      document
-        .querySelector("html")
-        .removeEventListener("toggleDarkMode", toggleDarkMode);
-    };
-  }, []);
   const onSubmit = async (data) => {
     setLoading(true);
     const DOB = data.dateOfBirth;
     if (DOB) data.age = getAge(DOB);
+    console.log("array 1", selectedLang);
+    console.log("array 2", selectedGenre);
 
     // Extract value properties from selectedGenre array
-    const favoriteGenres = selectedGenre.map((genre) => genre.value);
+    const favoriteGenres = selectedGenre?.map((genre) => genre.value);
     data.favoriteGenres = favoriteGenres;
 
     // Extract value properties from selectedLang array
-    const languagePreferences = selectedLang.map((lang) => lang.value);
+    const languagePreferences = selectedLang?.map((lang) => lang.value);
     data.languagePreferences = languagePreferences;
 
     // Ensure location is an object
@@ -271,7 +258,7 @@ const UpdateDetails = () => {
             isMulti={true}
             //check if the classname has dark, then change the styles accordingly
             styles={
-              dark
+              theme == "dark"
                 ? {
                     control: (styles) => ({
                       ...styles,
@@ -334,7 +321,7 @@ const UpdateDetails = () => {
             isMulti={true}
             //check if the classname has dark, then change the styles accordingly
             styles={
-              dark
+              theme == "dark"
                 ? {
                     control: (styles) => ({
                       ...styles,
