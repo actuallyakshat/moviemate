@@ -27,33 +27,33 @@ const MoviePage = () => {
   return (
     <>
       {modal && <FindMateModal setModal={setModal} movie={movie} />}
-      <div className="min-h-screen h-full overflow-hidden relative">
+      <div className="relative h-full min-h-screen overflow-hidden">
         <div
           style={{
             backgroundImage: movieBanner ? `url(${movieBanner})` : "none",
           }}
-          className="min-h-screen h-full pt-20 blur-md scale-110 bg-no-repeat bg-cover absolute top-0 left-0 w-full"
+          className="absolute left-0 top-0 h-full min-h-screen w-full scale-110 bg-cover bg-no-repeat pt-20 blur-md"
         ></div>
-        <div className="absolute top-0 left-0 w-full h-full bg-black/50"></div>
-        <div className="absolute top-0 left-0 w-full h-full pt-16 pb-10 flex flex-col lg:flex-row gap-12 px-3 lg:px-10 no-scrollbar overflow-y-auto">
+        <div className="absolute left-0 top-0 h-full w-full bg-black/50"></div>
+        <div className="no-scrollbar absolute left-0 top-0 flex h-full w-full flex-col gap-12 overflow-y-auto px-3 pb-10 pt-16 lg:flex-row lg:px-10">
           <img
             src={imagePrefix + movie?.poster_path}
             alt="poster"
-            className="max-h-[90%] hidden lg:block rounded-lg my-auto"
+            className="my-auto hidden max-h-[90%] rounded-lg lg:block"
           />
           <img
             src={imagePrefix + movie?.backdrop_path}
-            className="lg:hidden max-h-[15rem] mt-10 object-cover aspect-video rounded-lg"
+            className="mt-10 aspect-video max-h-[15rem] rounded-lg object-cover lg:hidden"
             alt="poster"
           ></img>
-          <div className="lg:py-14 space-y-1 text-lg">
-            <h1 className="text-4xl lg:text-6xl text-white font-black">
+          <div className="space-y-1 text-lg lg:py-14">
+            <h1 className="text-4xl font-black text-white lg:text-6xl">
               {movie?.title}
             </h1>
             <div className="py-1">
               {movie?.genre_ids?.map((genre, index) => (
                 <p
-                  className="inline text-zinc-300 mr-2 font-medium"
+                  className="mr-2 inline font-medium text-zinc-300"
                   key={index}
                 >
                   {getGenreById(genre)}
@@ -61,16 +61,16 @@ const MoviePage = () => {
               ))}
             </div>
 
-            <p className="text-zinc-200 font-bold">
+            <p className="font-bold text-zinc-200">
               ⭐ {movie?.vote_average.toFixed(1)} | 📅{" "}
               {formatDate(movie?.release_date)}
             </p>
             <div>
-              <p className="text-white font-bold"></p>
+              <p className="font-bold text-white"></p>
             </div>
-            <p className="text-white max-w-3xl py-1 pb-4">{movie?.overview}</p>
-            <div className="w-full flex justify-center lg:justify-start">
-              <Button size="lg" className="text-lg py-6" onClick={clickHandler}>
+            <p className="max-w-3xl py-1 pb-4 text-white">{movie?.overview}</p>
+            <div className="flex w-full justify-center lg:justify-start">
+              <Button size="lg" className="py-6 text-lg" onClick={clickHandler}>
                 Find Mates for {movie?.title}
               </Button>
             </div>

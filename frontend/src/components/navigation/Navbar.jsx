@@ -9,12 +9,12 @@ export function Navbar() {
   const [modal, setModal] = useState(false);
   const { openSignIn } = useClerk();
   return (
-    <nav className="bg-background w-full h-16 border-b border-foreground/20 flex items-center justify-center fixed top-0 z-[995]">
+    <nav className="fixed top-0 z-[995] flex h-16 w-full items-center justify-center border-b border-foreground/20 bg-background">
       {modal && <SearchModal setModal={setModal} />}
-      <div className="max-w-7xl px-3 w-full flex items-center justify-between">
+      <div className="flex w-full max-w-7xl items-center justify-between px-3">
         <Link
           to="/"
-          className="text-md md:text-xl text-2xl pl-2 md:pl-0 font-black"
+          className="text-md pl-2 text-2xl font-black md:pl-0 md:text-xl"
         >
           <span className="hidden md:inline">
             Movie <span className="text-primary">Mate</span>

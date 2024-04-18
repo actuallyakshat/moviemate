@@ -33,28 +33,28 @@ const Banner = () => {
   }
 
   return (
-    <div className="w-full min-h-[27rem] bg-no-repeat bg-cover overflow-hidden relative">
+    <div className="relative min-h-[27rem] w-full overflow-hidden bg-cover bg-no-repeat">
       <div
         style={{ backgroundImage: backdrop ? `url(${backdrop})` : "none" }}
-        className="w-full h-full blur-md absolute top-0 left-0 bg-cover bg-no-repeat max-w-screen scale-110"
+        className="max-w-screen absolute left-0 top-0 h-full w-full scale-110 bg-cover bg-no-repeat blur-md"
       ></div>
-      <div className="w-full h-full bg-black/50 blur-md absolute top-0 left-0 bg-cover bg-no-repeat scale-110 max-w-screen"></div>
-      <div className="relative top-0 left-0 w-full h-full py-10 flex gap-12 px-6 lg:px-16 max-w-screen">
+      <div className="max-w-screen absolute left-0 top-0 h-full w-full scale-110 bg-black/50 bg-cover bg-no-repeat blur-md"></div>
+      <div className="max-w-screen relative left-0 top-0 flex h-full w-full gap-12 px-6 py-10 lg:px-16">
         {bannerMovie && (
           <img
             src={`${imagePrefix}${bannerMovie?.poster_path}`}
             alt="poster"
-            className="max-h-[25rem] h-full rounded-lg hidden lg:block my-auto"
+            className="my-auto hidden h-full max-h-[25rem] rounded-lg lg:block"
           />
         )}
-        <div className="py-8 space-y-1">
-          <h1 className="text-4xl text-white font-black">
+        <div className="space-y-1 py-8">
+          <h1 className="text-4xl font-black text-white">
             {bannerMovie?.title}
           </h1>
           <div className="py-1">
             {bannerMovie?.genre_ids.map((genre) => (
               <p
-                className="inline text-zinc-300 mr-2 font-medium"
+                className="mr-2 inline font-medium text-zinc-300"
                 key={genre.index}
               >
                 {getGenreById(genre)}
@@ -62,14 +62,14 @@ const Banner = () => {
             ))}
           </div>
 
-          <p className="text-zinc-200 font-bold">
+          <p className="font-bold text-zinc-200">
             ⭐ {bannerMovie?.vote_average.toFixed(1)} | 📅{" "}
             {formatDate(bannerMovie?.release_date)}
           </p>
           <div>
-            <p className="text-white font-bold"></p>
+            <p className="font-bold text-white"></p>
           </div>
-          <p className="text-white max-w-3xl pt-1 pb-4">
+          <p className="max-w-3xl pb-4 pt-1 text-white">
             {bannerMovie?.overview}
           </p>
           <Button
