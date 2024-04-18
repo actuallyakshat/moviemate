@@ -301,6 +301,15 @@ const UpdateDetails = () => {
                         color: isDisabled ? "#ccc" : "white",
                       };
                     },
+                    multiValueLabel: (styles) => ({
+                      ...styles,
+                      color: "#fff",
+                    }),
+                    multiValue: (styles) => ({
+                      ...styles,
+                      backgroundColor: "#668599",
+                      color: "#fff",
+                    }),
                   }
                 : {}
             }
@@ -350,6 +359,15 @@ const UpdateDetails = () => {
                         color: isDisabled ? "#ccc" : "white",
                       };
                     },
+                    multiValueLabel: (styles) => ({
+                      ...styles,
+                      color: "#fff",
+                    }),
+                    multiValue: (styles) => ({
+                      ...styles,
+                      backgroundColor: "#668599",
+                      color: "#fff",
+                    }),
                   }
                 : {}
             }
