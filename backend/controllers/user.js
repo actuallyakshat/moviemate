@@ -65,7 +65,10 @@ exports.updateUser = async (req, res) => {
 
     if (data) {
       console.log("Updating user", data);
-      data.onboardingCompleted = true;
+      //check if the data has bio field then don't update the onboardingCompleted field
+      if (!data.bio) {
+        data.onboardingCompleted = true;
+      }
       // Update the user and populate all referring fields
       const updatedUser = await User.findOneAndUpdate(
         { _id: userId },
