@@ -277,6 +277,7 @@ const UpdateDetails = () => {
                       ...styles,
                       backgroundColor: "#171a1c",
                       borderColor: "#668599",
+
                       color: "white",
                     }),
                     menuList: (provided, state) => ({
@@ -311,7 +312,12 @@ const UpdateDetails = () => {
                       color: "#fff",
                     }),
                   }
-                : {}
+                : {
+                    control: (styles) => ({
+                      ...styles,
+                      borderColor: "#668599",
+                    }),
+                  }
             }
             required
           />
@@ -320,7 +326,6 @@ const UpdateDetails = () => {
           <Label>Preferred Languages</Label>
           <Select
             options={optionsLang}
-            className="bg-black"
             defaultValue={getOptionsByLabels(
               user?.languagePreferences,
               optionsLang
@@ -369,7 +374,12 @@ const UpdateDetails = () => {
                       color: "#fff",
                     }),
                   }
-                : {}
+                : {
+                    control: (styles) => ({
+                      ...styles,
+                      borderColor: "#668599",
+                    }),
+                  }
             }
             required
           ></Select>
