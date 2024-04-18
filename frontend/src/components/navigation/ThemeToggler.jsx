@@ -9,6 +9,9 @@ export function ModeToggle() {
         onClick={(e) => {
           e.stopPropagation();
           setTheme("light");
+          document
+            .querySelector("html")
+            .dispatchEvent(new Event("toggleDarkMode"));
         }}
         className="hidden dark:block w-full px-2 py-1.5"
       >
@@ -18,6 +21,9 @@ export function ModeToggle() {
         onClick={(e) => {
           e.stopPropagation();
           setTheme("dark");
+          document
+            .querySelector("html")
+            .dispatchEvent(new Event("toggleDarkMode"));
         }}
         className="dark:hidden px-2 py-1.5 block w-full"
       >

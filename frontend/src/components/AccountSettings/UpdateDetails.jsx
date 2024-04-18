@@ -3,7 +3,7 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { useAtom } from "jotai";
 import { Input } from "../ui/input";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { MultiSelect } from "react-multi-select-component";
@@ -45,6 +45,11 @@ const optionsLang = [
 ];
 
 const UpdateDetails = () => {
+  //create a dark use state
+  const [dark, setDark] = useState(
+    !document.querySelector("html").classList.contains("dark")
+  );
+  console.log("dark is changing now", dark);
   const [user, setUser] = useAtom(userAtom);
   console.log(user);
   const [selectedGenre, setSelectedGenre] = useState([]);
@@ -92,7 +97,23 @@ const UpdateDetails = () => {
   //     setLanguagePreferences(user.languagePreferences);
   //   }
   // }, [user]);
+  //get the default dark from useEffect
+  useEffect(() => {
+    const toggleDarkMode = () => {
+      setDark(!document.querySelector("html").classList.contains("dark"));
+    };
+    // Listen for changes to the classList
+    document
+      .querySelector("html")
+      .addEventListener("toggleDarkMode", toggleDarkMode);
 
+    // Cleanup
+    return () => {
+      document
+        .querySelector("html")
+        .removeEventListener("toggleDarkMode", toggleDarkMode);
+    };
+  }, []);
   const onSubmit = async (data) => {
     setLoading(true);
     const DOB = data.dateOfBirth;
@@ -229,26 +250,86 @@ const UpdateDetails = () => {
             onChange={setSelectedGenre}
             options={optionsGenre}
             isMulti={true}
+            //check if the classname has dark, then change the styles accordingly
+            styles={
+              dark
+                ? {
+                    control: (styles) => ({
+                      ...styles,
+                      backgroundColor: "#171a1c",
+                      borderColor: "#668599",
+                      color: "white",
+                    }),
+                    menuList: (provided, state) => ({
+                      ...provided,
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                    }),
+                    option: (
+                      styles,
+                      { data, isDisabled, isFocused, isSelected }
+                    ) => {
+                      // change the background color of the options
+                      return {
+                        ...styles,
+                        backgroundColor: isDisabled
+                          ? null
+                          : isSelected
+                          ? "#668599"
+                          : isFocused
+                          ? "#668599"
+                          : "#171a1c",
+                        color: isDisabled ? "#ccc" : "white",
+                      };
+                    },
+                  }
+                : {}
+            }
           />
         </div>
         <div className="space-y-1">
           <Label>Preferred Languages</Label>
           <Select
-            theme={(theme) => ({
-              ...theme,
-              borderRadius: 0,
-              borderColor: "#aaa",
-              colors: {
-                ...theme.colors,
-                primary25: "black",
-                primary: "#171a1c",
-              },
-            })}
             options={optionsLang}
             className="bg-black"
             defaultValuevalue={selectedLang}
             onChange={setSelectedLang}
             isMulti={true}
+            //check if the classname has dark, then change the styles accordingly
+            styles={
+              dark
+                ? {
+                    control: (styles) => ({
+                      ...styles,
+                      backgroundColor: "#171a1c",
+                      borderColor: "#668599",
+                      color: "white",
+                    }),
+                    menuList: (provided, state) => ({
+                      ...provided,
+                      paddingTop: 0,
+                      paddingBottom: 0,
+                    }),
+                    option: (
+                      styles,
+                      { data, isDisabled, isFocused, isSelected }
+                    ) => {
+                      // change the background color of the options
+                      return {
+                        ...styles,
+                        backgroundColor: isDisabled
+                          ? null
+                          : isSelected
+                          ? "#668599"
+                          : isFocused
+                          ? "#668599"
+                          : "#171a1c",
+                        color: isDisabled ? "#ccc" : "white",
+                      };
+                    },
+                  }
+                : {}
+            }
           ></Select>
         </div>
         <div className="flex justify-end py-3">
