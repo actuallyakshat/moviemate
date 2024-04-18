@@ -22,7 +22,6 @@ const Banner = () => {
     const getMovies = async () => {
       const response = await getBannerMovie();
       setLoading(false);
-      console.log(response);
       setBannerMovie(response);
       setBackdrop(`${imagePrefix}${response.backdrop_path}`);
     };

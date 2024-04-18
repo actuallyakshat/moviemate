@@ -149,7 +149,6 @@ export const sendFriendRequest = async (
       tmdbId,
       movieName,
     });
-    console.log(response);
     if (response.data.success) {
       return {
         data: response.data.newRequest,
@@ -177,7 +176,6 @@ export const getFriends = async (userId, setFriends) => {
       userId,
     });
     if (response.data.success) {
-      console.log(response);
       setFriends(response.data.data);
       return {
         success: true,

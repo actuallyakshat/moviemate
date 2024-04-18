@@ -15,9 +15,8 @@ export const imageUpload = async (userId, tag, file, setUser) => {
     );
     if (response.data.success) {
       const response = await getDetailsById(userId);
-      console.log("outside success: ", response);
+
       if (response.success) {
-        console.log("response: ", response);
         setUser(response.user);
       } else {
         console.error(response.message);

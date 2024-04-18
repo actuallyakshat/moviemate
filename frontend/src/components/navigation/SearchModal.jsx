@@ -34,7 +34,6 @@ const SearchModal = ({ setModal }) => {
     try {
       const response = await fetchSearchMovies(searchQuery);
       setResults(response);
-      console.log("Fetching movies for:", searchQuery);
     } catch (error) {
       console.error("Error fetching movies:", error);
     }

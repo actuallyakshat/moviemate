@@ -27,14 +27,8 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
   const [newHeader, setNewHeader] = useState(null);
   const [newProfile, setNewProfile] = useState(null);
 
-  useEffect(() => {
-    console.log("user", user);
-    console.log("currentUser", currentUser);
-  }, [user, currentUser]);
-
   const uploadImages = async (imageData) => {
     try {
-      console.log(imageData);
       const responses = await Promise.all(
         Object.entries(imageData).map(async ([tag, file]) => {
           try {
@@ -71,7 +65,6 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
   };
 
   const onSubmit = async (data) => {
-    console.log(data);
     const imageData = {};
 
     // Check and assign header image
@@ -97,7 +90,6 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
         title: "⏳",
         description: "Uploading your images...",
       });
-      console.log("Uploading your images...");
       const imageResponse = await uploadImages(imageData);
       imageResponse.forEach((imageResponse) => {
         if (imageResponse.data.success) {
@@ -110,7 +102,6 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
             title: "🎉",
             description: "Image uploaded successfully!",
           });
-          console.log("Image uploaded successfully");
         } else {
           // toast.error("There was an error while uploading your images", {
           //   style: {
@@ -122,11 +113,10 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
             description: "There was an error while uploading your images",
             variant: "destructive",
           });
-          console.log("Error uploading image");
+          console.error("Error uploading image");
         }
       });
       reset();
-      console.log(imageData);
     }
 
     if (data?.bio && data.bio != user.bio) {
@@ -134,32 +124,15 @@ export const UpdationModal = ({ headerUrl, profileUrl, user }) => {
       if ("bio" in data) {
         bioObject.bio = data.bio ? data.bio : "";
       }
-      // toast("Upadting your bio...", {
-      //   icon: "⏳",
-      //   style: {
-      //     fontWeight: "bold",
-      //   },
-      // });
-      console.log("Updating your bio...");
+
       const bioResponse = await updateUserDetails(
         user?._id,
         bioObject,
         setCurrentUser
       );
       if (bioResponse.success) {
-        // toast.success("Bio updated successfully!", {
-        //   style: {
-        //     fontWeight: "bold",
-        //   },
-        // });
-        console.log("Bio updated successfully");
       } else {
-        // toast.error("There was an error while updating your bio", {
-        //   style: {
-        //     fontWeight: "bold",
-        //   },
-        // });
-        console.log("Error updating bio");
+        console.error("Error updating bio");
       }
     }
   };

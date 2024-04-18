@@ -20,7 +20,6 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
       title: "⏳",
       description: "Deleting your post...",
     });
-    console.log("Delete Request Sent...");
     const response = await imageDelete(postId, imageLink, userId, setUser);
 
     if (response.data.success) {
@@ -34,7 +33,7 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
         description: "Post deleted successfully!",
         variant: "destructive",
       });
-      console.log("Post deleted successfully");
+      console.error("Post deleted successfully");
     } else {
       // toast.error("We couldn't delete your post", {
       //   style: {
@@ -46,7 +45,7 @@ export const ViewPost = ({ togglePopup, imageLink, postId, userId }) => {
         description: "We couldn't delete your post",
         variant: "destructive",
       });
-      console.log("Error deleting post");
+      console.error("Error deleting post");
     }
   };
   return (

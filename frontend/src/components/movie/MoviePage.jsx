@@ -13,7 +13,6 @@ const MoviePage = () => {
   const movie = useAtomValue(currentMovieAtom);
   const movieBanner = `${imagePrefix}${movie?.backdrop_path}`;
   const user = useAtomValue(userAtom);
-  console.log(user);
   const clickHandler = () => {
     if (user.onboardingCompleted) {
       setModal(true);

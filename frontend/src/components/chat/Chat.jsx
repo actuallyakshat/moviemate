@@ -13,7 +13,6 @@ const Chat = () => {
 
   useEffect(() => {
     const fetchConversations = async () => {
-      console.log(user?._id);
       try {
         const res = await axios.post(
           `${import.meta.env.VITE_BASEURL}/friend/getAllFriends`,
@@ -22,10 +21,9 @@ const Chat = () => {
           }
         );
         setLoading(false);
-        console.log(res);
         setConversations(res.data.data);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     };
     if (user) {

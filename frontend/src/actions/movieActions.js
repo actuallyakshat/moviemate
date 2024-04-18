@@ -3,8 +3,6 @@ const baseUrl = `${import.meta.env.VITE_BASEURL}`;
 
 const getAllInterestedUsers = async (movieId) => {
   try {
-    console.log(movieId);
-    console.log(`${baseUrl}/movie/getAllInterestedUsers`);
     const response = await axios.post(
       `${baseUrl}/movie/getAllInterestedUsers`,
       {
@@ -33,7 +31,6 @@ const getAllInterestedUsers = async (movieId) => {
 
 const addInterestedUser = async (movieId, userId, movieName) => {
   try {
-    console.log(movieId, userId, movieName);
     const response = await axios.post(`${baseUrl}/movie/addMeForMovie`, {
       tmdbId: movieId,
       userId: userId,

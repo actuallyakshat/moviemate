@@ -10,7 +10,6 @@ export const getUserDetails = async (fullName, email, profileImg, setUser) => {
     });
     if (user.data.success) {
       setUser(user.data.user);
-      console.log(user.data.user);
       return {
         success: true,
       };
@@ -56,15 +55,13 @@ export const getDetailsById = async (userId) => {
 
 // update user details
 export const updateUserDetails = async (userId, data, setUser) => {
-  console.log(data);
   try {
     const response = await axios.put(`${baseUrl}/user/update`, {
       userId,
       data,
     });
-    console.log("user action response: ", response);
+
     if (response.data.success) {
-      console.log("user action success response: ", response);
       setUser(response.data.user);
       return {
         success: true,

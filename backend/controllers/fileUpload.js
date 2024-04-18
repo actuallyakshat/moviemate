@@ -30,7 +30,6 @@ const uploadFileToCloudinary = async (file, folder) => {
 exports.imageUpload = async (req, res) => {
   try {
     // Data Fetch
-    console.log("Request body received in backend ", req.body);
     const { tag, userId } = req.body;
     const file = req.files["file"];
 
@@ -96,7 +95,6 @@ exports.imageUpload = async (req, res) => {
     if (tag == "profile") {
       user.profileImage = secureUrl;
     }
-    console.log(user);
     await user.save();
 
     // Fetch updated user details

@@ -3,7 +3,6 @@ const transporter = require("../config/NodeMailerTransporter");
 exports.contactAdmin = async (req, res) => {
     try {
       const { email, subject, message } = req.body;
-      console.log(email, subject, message);
       htmlContent = `
         <html>
           <head>

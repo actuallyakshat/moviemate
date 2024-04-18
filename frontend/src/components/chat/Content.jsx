@@ -23,7 +23,6 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
   const user = useAtomValue(userAtom);
   const [messages, setMessages] = useState([]);
   const [messagesList, setMessagesList] = useState([]);
-  console.log(messagesList);
   const messagesRef = collection(db, "messages");
 
   useEffect(() => {
@@ -38,7 +37,6 @@ const Content = ({ selectedConversation, userId, setIsMobileMenuOpen }) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
       setMessagesList(messages);
-      console.log(messagesList);
     });
     return () => unsubscribe();
   }, [selectedConversation]);

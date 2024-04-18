@@ -10,11 +10,6 @@ export const Photos = ({ user }) => {
   const [currentUser, setCurrentUser] = useAtom(userAtom);
   const [userPhotos, setUserPhotos] = useState([]);
 
-  useEffect(() => {
-    console.log("user: ", user);
-    console.log("currentUser: ", currentUser);
-  }, [currentUser, user]);
-
   const uploadPostHandler = async (event) => {
     const files = event.target.files;
     if (!files || files.length === 0) {
@@ -31,7 +26,6 @@ export const Photos = ({ user }) => {
       title: "⏳",
       description: "Uploading your image...",
     });
-    console.log("Uploading image...");
     const response = await imageUpload(
       user?._id,
       "general",
@@ -48,7 +42,6 @@ export const Photos = ({ user }) => {
         title: "🎉",
         description: "Post created successfully!",
       });
-      console.log("Image uploaded successfully");
     } else {
       // toast.error("We couldn't upload your image.", {
       //   style: {
@@ -60,7 +53,7 @@ export const Photos = ({ user }) => {
         description: "We couldn't upload your image.",
         variant: "destructive",
       });
-      console.log("Error uploading image");
+      console.error("Error uploading image");
     }
   };
 

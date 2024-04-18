@@ -57,7 +57,6 @@ const UpdateDetails = () => {
       })
       .filter(Boolean);
   };
-  console.log(user);
   const [selectedGenre, setSelectedGenre] = useState([]);
   const [selectedLang, setSelectedLang] = useState([]);
 
@@ -115,8 +114,6 @@ const UpdateDetails = () => {
     setLoading(true);
     const DOB = data.dateOfBirth;
     if (DOB) data.age = getAge(DOB);
-    console.log("array 1", selectedLang);
-    console.log("array 2", selectedGenre);
 
     // Extract value properties from selectedGenre array
     const favoriteGenres = selectedGenre?.map((genre) => genre.value);
@@ -143,7 +140,6 @@ const UpdateDetails = () => {
         toast({ title: "✅ Profile updated successfully!" });
         setUser({ ...user, onboardingCompleted: true });
         setLoading(false);
-        console.log(response.message); // Handle success message
       } else {
         console.error(response.message); // Handle error message
       }
@@ -200,7 +196,6 @@ const UpdateDetails = () => {
             }
           />
         </div>
-        {console.log(user?.gender)}
         <div>
           <Label>Gender</Label>
           <RadioGroup
@@ -247,7 +242,6 @@ const UpdateDetails = () => {
         </div>
         <div className="space-y-1">
           <Label>Favourite Genres</Label>
-          {console.log(selectedGenre)}
           <Select
             defaultValue={getOptionsByLabels(
               user?.favoriteGenres,

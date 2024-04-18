@@ -39,7 +39,7 @@ const FindMateModal = ({ setModal, movie }) => {
       });
       setInterestedUsers([...interestedUsers, user]);
     } else {
-      console.log(response.message);
+      console.error(response.message);
     }
   };
 
@@ -56,7 +56,7 @@ const FindMateModal = ({ setModal, movie }) => {
         interestedUsers.filter((data) => data._id !== user._id)
       );
     } else {
-      console.log(response.message);
+      console.error(response.message);
     }
   };
 
@@ -84,7 +84,6 @@ const FindMateModal = ({ setModal, movie }) => {
       movie.title
     );
     if (response.success) {
-      console.log("Friend request sent");
       const updatedUser = { ...user };
       updatedUser.friends.push(response.newRequest); // Assuming newRequest contains the new friendship request
       setUser(updatedUser); // Set the updated currentUser

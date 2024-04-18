@@ -34,7 +34,6 @@ export const DeleteAccount = () => {
     const response = await deleteUser(user._id, setUser);
     setLoading(false);
     if (response.success) {
-      console.log("Account deleted");
       toast("We are sorry to see you go!");
       signOut();
       navigate("/");

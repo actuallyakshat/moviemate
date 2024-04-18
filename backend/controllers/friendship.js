@@ -237,8 +237,6 @@ exports.removeFriend = async (req, res) => {
   try {
     const userId = req.body.userId;
     const friendId = req.body.friendId;
-    console.log("userId", userId);
-    console.log("friendId", friendId);
     if (!userId || !friendId) {
       return res.status(400).json({
         success: false,

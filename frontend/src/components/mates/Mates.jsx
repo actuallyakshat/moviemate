@@ -20,9 +20,8 @@ const Mates = () => {
   const [incomingRequests, setIncomingRequests] = useState([]);
   const [outgoingRequests, setOutgoingRequests] = useState([]);
   const [friends, setFriends] = useState([]);
-  const [loading, setLoading] = useState(true); // Add loading state
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  console.log(friends);
 
   useEffect(() => {
     if (user) {
@@ -39,7 +38,6 @@ const Mates = () => {
   const acceptFriendHandler = async (userId, friend) => {
     const response = await acceptFriendRequest(userId, friend._id);
     if (response.success) {
-      console.log("Mate request accepted");
       toast({
         title: "Success",
         description: "Mate request accepted successfully",
@@ -49,14 +47,13 @@ const Mates = () => {
       );
       setFriends([...friends, { friend }]);
     } else {
-      console.log("Error accepting friend request", response.message);
+      console.error("Error accepting friend request", response.message);
     }
   };
 
   const declineFriendHandler = async (userId, friendId) => {
     const response = await declineFriendRequest(userId, friendId);
     if (response.success) {
-      console.log("Friend request declined");
       toast({
         title: "Oops",
         description: "Mate request declined successfully",
@@ -66,7 +63,7 @@ const Mates = () => {
         incomingRequests.filter((f) => f.friend._id !== friendId)
       );
     } else {
-      console.log("Error accepting friend request", response.message);
+      console.error("Error accepting friend request", response.message);
     }
   };
 
@@ -82,7 +79,7 @@ const Mates = () => {
         outgoingRequests.filter((f) => f.friend._id !== friendId)
       );
     } else {
-      console.log("Error accepting friend request", response.message);
+      console.error("Error accepting friend request", response.message);
     }
   };
 
@@ -96,12 +93,9 @@ const Mates = () => {
       });
       setFriends(friends.filter((f) => f.friend._id !== friendId));
     } else {
-      console.log("Error deleting friend", response.message);
+      console.error("Error deleting friend", response.message);
     }
   };
-
-  console.log("incomingRequests", incomingRequests[0]);
-  console.log("outgoingRequests", outgoingRequests);
 
   // Render loading spinner while data is being fetched
   if (loading) {
@@ -278,9 +272,6 @@ const Mates = () => {
                       //TODO: make it responsive
                       deleteFriendHandler(user._id, friend.friend._id);
                     }
-                    // console.log(user._id);
-                    // console.log(friend.friend._id);
-                    // removeFriend(user._id, friend.friend._id);
                   }}
                 >
                   Delete

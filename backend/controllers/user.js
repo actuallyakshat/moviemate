@@ -61,10 +61,8 @@ exports.getDetailsById = async (req, res) => {
 exports.updateUser = async (req, res) => {
   try {
     const { userId, data } = req.body;
-    console.log(data);
 
     if (data) {
-      console.log("Updating user", data);
       //check if the data has bio field then don't update the onboardingCompleted field
       if (!data.bio) {
         data.onboardingCompleted = true;
@@ -78,7 +76,6 @@ exports.updateUser = async (req, res) => {
 
       // Check if the user exists and was updated
       if (updatedUser) {
-        console.log("Updated user:", updatedUser);
         res
           .status(200)
           .json({ success: true, message: "User updated", user: updatedUser });
@@ -98,13 +95,12 @@ exports.updateUser = async (req, res) => {
 };
 
 exports.deleteUser = async (req, res) => {
-  console.log(req.body);
   const userId = req.body.id;
-  console.log("userId is ", userId);
+
   try {
     //delete the user's files, movies, friendsips and the user then return success message
     const user = await User.findOne({ _id: userId }).populate("files");
-    console.log("User found", user);
+    console.error("User found", user);
     await deleteFiles(user.files);
     await File.deleteMany({ user: userId });
     await Movie.updateMany(
@@ -115,7 +111,7 @@ exports.deleteUser = async (req, res) => {
       $or: [{ user1: userId }, { user2: userId }],
     });
     await User.deleteOne({ _id: userId });
-    console.log("User deleted");
+
     res.status(200).json({ success: true, message: "User deleted" });
   } catch (err) {
     console.error(err);
