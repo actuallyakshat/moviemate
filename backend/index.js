@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
-app.use(cors());
 // const app = express();
 require("dotenv").config();
 const dbConnect = require("./config/dbConnect");
@@ -9,6 +8,12 @@ const apiv1Router = require("./routes/index");
 const PORT = process.env.PORT || 3000;
 const fileupload = require("express-fileupload");
 const cloudinary = require("./config/cloudinary");
+
+app.use(
+  cors({
+    origin: process.env.ALLOWED_ORIGIN,
+  })
+);
 
 app.use(
   fileupload({
