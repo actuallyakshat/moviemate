@@ -9,11 +9,7 @@ const PORT = process.env.PORT || 3000;
 const fileupload = require("express-fileupload");
 const cloudinary = require("./config/cloudinary");
 
-app.use(
-  cors({
-    origin: process.env.ALLOWED_ORIGIN,
-  })
-);
+app.use(cors());
 
 app.use(
   fileupload({

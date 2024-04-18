@@ -11,6 +11,7 @@ import { Button } from "../ui/button";
 import { updateUserDetails } from "@/actions/userActions";
 import LoadingSpinner from "../Loading/LoadingSpinner";
 import { useToast } from "../ui/use-toast";
+import Select from "react-select";
 
 const optionsGenre = [
   { label: "Action", value: "Action" },
@@ -45,6 +46,7 @@ const optionsLang = [
 
 const UpdateDetails = () => {
   const [user, setUser] = useAtom(userAtom);
+  console.log(user);
   const [selectedGenre, setSelectedGenre] = useState([]);
   const [selectedLang, setSelectedLang] = useState([]);
   const [date, setDate] = useState();
@@ -132,6 +134,8 @@ const UpdateDetails = () => {
     }
   };
 
+  if (!user) return null;
+
   return (
     <motion.div
       className="max-w-xl pt-5 mx-auto"
@@ -165,8 +169,8 @@ const UpdateDetails = () => {
           <Label htmlFor="DOB" className="">
             Date of Birth
           </Label>
-          <input
-            className="block border w-full p-1 px-3 rounded-lg"
+          <Input
+            className="block dark:bg-background border w-full p-1 px-3 rounded-lg"
             {...register("dateOfBirth")}
             id="DOB"
             type="date"
@@ -176,6 +180,7 @@ const UpdateDetails = () => {
             }
           />
         </div>
+        {console.log(user?.gender)}
         <div>
           <Label>Gender</Label>
           <RadioGroup
@@ -219,22 +224,32 @@ const UpdateDetails = () => {
         </div>
         <div className="space-y-1">
           <Label>Favourite Genres</Label>
-          <MultiSelect
-            className="bg-background dark:bg-black text-black"
-            options={optionsGenre}
-            value={selectedGenre}
+          <Select
+            defaultValue={selectedGenre}
             onChange={setSelectedGenre}
-            labelledBy="Select"
+            options={optionsGenre}
+            isMulti={true}
           />
         </div>
         <div className="space-y-1">
           <Label>Preferred Languages</Label>
-          <MultiSelect
+          <Select
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 0,
+              borderColor: "#aaa",
+              colors: {
+                ...theme.colors,
+                primary25: "black",
+                primary: "#171a1c",
+              },
+            })}
             options={optionsLang}
-            value={selectedLang}
+            className="bg-black"
+            defaultValuevalue={selectedLang}
             onChange={setSelectedLang}
-            labelledBy="Select"
-          ></MultiSelect>
+            isMulti={true}
+          ></Select>
         </div>
         <div className="flex justify-end py-3">
           {loading ? (
