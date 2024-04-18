@@ -44,16 +44,16 @@ const SearchModal = ({ setModal }) => {
   };
 
   return (
-    <div className="fixed overflow-y-auto no-scrollbar inset-0 bg-black/90 z-[1000]">
+    <div className="no-scrollbar fixed inset-0 z-[1000] overflow-y-auto bg-black/90">
       <div
         onClick={() => setModal(false)}
-        className="w-fit hover:text-destructive ml-auto pr-8 md:pr-12 pb-6 pt-6"
+        className="ml-auto w-fit pb-6 pr-8 pt-6 hover:text-destructive md:pr-12"
       >
-        <button className="text-white hover:text-destructive text-2xl font-medium">
+        <button className="text-2xl font-medium text-white hover:text-destructive">
           X
         </button>
       </div>
-      <div className="max-w-7xl px-4 mx-auto">
+      <div className="mx-auto max-w-7xl px-4">
         <Input
           onKeyDown={(e) => {
             if (e.key === "Escape") {
@@ -64,17 +64,17 @@ const SearchModal = ({ setModal }) => {
           placeholder="Search a movie"
           onChange={handleInputChange}
           value={searchQuery}
-          className="text-black bg-white"
+          className="mx-auto max-w-2xl bg-white text-black"
         />
       </div>
-      <div className="flex justify-center flex-wrap py-8 gap-6 px-4 md:px-10">
+      <div className="flex flex-wrap justify-center gap-6 px-4 py-8 md:px-10">
         {results
           ?.filter((result) => result.poster_path || result.backdrop_path) // Filter out results without poster_path or backdrop_path
           .map((result) => (
             <div
               key={result.id}
               onClick={() => clickHandler(result)}
-              className="cursor-pointer max-w-[20rem] hover:opacity-80 transition-opacity"
+              className="max-w-[20rem] cursor-pointer transition-opacity hover:opacity-80"
             >
               {result.poster_path && ( // Check if poster_path exists
                 <>
@@ -82,7 +82,7 @@ const SearchModal = ({ setModal }) => {
                     src={`https://image.tmdb.org/t/p/w500${result.poster_path}`}
                     className="max-w-[10rem]"
                   />
-                  <h1 className="font-bold max-w-[15ch] text-sm text-white">
+                  <h1 className="max-w-[15ch] text-sm font-bold text-white">
                     {result.title}
                   </h1>
                 </>

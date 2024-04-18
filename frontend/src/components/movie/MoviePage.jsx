@@ -70,7 +70,11 @@ const MoviePage = () => {
             </div>
             <p className="max-w-3xl py-1 pb-4 text-white">{movie?.overview}</p>
             <div className="flex w-full justify-center lg:justify-start">
-              <Button size="lg" className="py-6 text-lg" onClick={clickHandler}>
+              <Button
+                size="lg"
+                className="text-wrap py-10 text-lg lg:py-6"
+                onClick={clickHandler}
+              >
                 Find Mates for {movie?.title}
               </Button>
             </div>

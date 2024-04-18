@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
-import { MultiSelect } from "react-multi-select-component";
 import { Button } from "../ui/button";
 import { updateUserDetails } from "@/actions/userActions";
 import LoadingSpinner from "../Loading/LoadingSpinner";
@@ -69,7 +68,7 @@ const UpdateDetails = () => {
     // Check if user exists and has languagePreferences
     if (user && user.languagePreferences) {
       setSelectedLang(
-        getOptionsByLabels(user.languagePreferences, optionsLang)
+        getOptionsByLabels(user.languagePreferences, optionsLang),
       );
     }
   }, [user, optionsGenre, optionsLang]);
@@ -134,7 +133,7 @@ const UpdateDetails = () => {
       const response = await updateUserDetails(
         user?._id,
         filteredData,
-        setUser
+        setUser,
       );
       if (response.success) {
         toast({ title: "✅ Profile updated successfully!" });
@@ -154,7 +153,7 @@ const UpdateDetails = () => {
 
   return (
     <motion.div
-      className="max-w-xl pt-5 mx-auto"
+      className="mx-auto max-w-xl pt-5"
       variants={{
         hidden: { opacity: 0, scale: 1, x: -40 },
         visible: { opacity: 1, scale: 1, x: 0 },
@@ -163,8 +162,8 @@ const UpdateDetails = () => {
       animate="visible"
       transition={{ duration: 0.4, delay: 0.15 }}
     >
-      <h1 className="text-3xl mt-2 font-bold">Complete Your Profile</h1>
-      <form className="space-y-3 mt-5" onSubmit={handleSubmit(onSubmit)}>
+      <h1 className="mt-2 text-3xl font-bold">Complete Your Profile</h1>
+      <form className="mt-5 space-y-3" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-1">
           <Label>Name</Label>
           <Input
@@ -186,7 +185,7 @@ const UpdateDetails = () => {
             Date of Birth
           </Label>
           <Input
-            className="block dark:bg-background border w-full p-1 px-3 rounded-lg"
+            className="block w-full rounded-lg border p-1 px-3 dark:bg-background"
             {...register("dateOfBirth")}
             id="DOB"
             type="date"
@@ -201,7 +200,7 @@ const UpdateDetails = () => {
           <RadioGroup
             defaultValue={user?.gender}
             {...register("gender")}
-            className="grid grid-cols-2 mt-2"
+            className="mt-2 grid grid-cols-2"
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="Male" id="Male" />
@@ -245,7 +244,7 @@ const UpdateDetails = () => {
           <Select
             defaultValue={getOptionsByLabels(
               user?.favoriteGenres,
-              optionsGenre
+              optionsGenre,
             )}
             onChange={setSelectedGenre}
             options={optionsGenre}
@@ -268,7 +267,7 @@ const UpdateDetails = () => {
                     }),
                     option: (
                       styles,
-                      { data, isDisabled, isFocused, isSelected }
+                      { data, isDisabled, isFocused, isSelected },
                     ) => {
                       // change the background color of the options
                       return {
@@ -276,10 +275,10 @@ const UpdateDetails = () => {
                         backgroundColor: isDisabled
                           ? null
                           : isSelected
-                          ? "#668599"
-                          : isFocused
-                          ? "#668599"
-                          : "#171a1c",
+                            ? "#668599"
+                            : isFocused
+                              ? "#668599"
+                              : "#171a1c",
                         color: isDisabled ? "#ccc" : "white",
                       };
                     },
@@ -309,7 +308,7 @@ const UpdateDetails = () => {
             options={optionsLang}
             defaultValue={getOptionsByLabels(
               user?.languagePreferences,
-              optionsLang
+              optionsLang,
             )}
             onChange={setSelectedLang}
             isMulti={true}
@@ -330,7 +329,7 @@ const UpdateDetails = () => {
                     }),
                     option: (
                       styles,
-                      { data, isDisabled, isFocused, isSelected }
+                      { data, isDisabled, isFocused, isSelected },
                     ) => {
                       // change the background color of the options
                       return {
@@ -338,10 +337,10 @@ const UpdateDetails = () => {
                         backgroundColor: isDisabled
                           ? null
                           : isSelected
-                          ? "#668599"
-                          : isFocused
-                          ? "#668599"
-                          : "#171a1c",
+                            ? "#668599"
+                            : isFocused
+                              ? "#668599"
+                              : "#171a1c",
                         color: isDisabled ? "#ccc" : "white",
                       };
                     },

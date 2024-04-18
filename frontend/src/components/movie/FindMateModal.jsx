@@ -53,7 +53,7 @@ const FindMateModal = ({ setModal, movie }) => {
         description: "You are removed from the list",
       });
       setInterestedUsers(
-        interestedUsers.filter((data) => data._id !== user._id)
+        interestedUsers.filter((data) => data._id !== user._id),
       );
     } else {
       console.error(response.message);
@@ -68,7 +68,7 @@ const FindMateModal = ({ setModal, movie }) => {
       await getPendingRequest(
         user._id,
         setIncomingRequests,
-        setOutgoingRequests
+        setOutgoingRequests,
       );
       setRequestLoading(false);
     };
@@ -81,7 +81,7 @@ const FindMateModal = ({ setModal, movie }) => {
       user._id,
       potentialMate._id,
       movie.id,
-      movie.title
+      movie.title,
     );
     if (response.success) {
       const updatedUser = { ...user };
@@ -99,31 +99,31 @@ const FindMateModal = ({ setModal, movie }) => {
   return (
     <div
       onClick={() => setModal(false)}
-      className="w-full h-full fixed top-0 left-0 bg-black/50 z-[1000] flex items-center justify-center modal"
+      className="modal fixed left-0 top-0 z-[1000] flex h-full w-full items-center justify-center bg-black/50"
     >
       <div
-        className="max-w-2xl max-h-[90vh] w-full bg-background border border-foreground/20 p-6 rounded-xl overflow-y-scroll no-scrollbar"
+        className="no-scrollbar max-h-[90vh] w-full max-w-2xl overflow-y-scroll rounded-xl border border-foreground/20 bg-background p-6"
         onClick={(e) => e.stopPropagation()}
       >
-        <h1 className="text-xl font-semibold text-center">
+        <h1 className="text-center text-xl font-semibold">
           Users interested to watch {movie.title}
         </h1>
         {interestedUsers && (
-          <div className="py-4 space-y-2">
+          <div className="space-y-2 py-4">
             {interestedUsers.map((data) => (
               <div
                 key={data._id}
-                className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
+                className="flex w-full items-center justify-between rounded-lg border bg-zinc-100 p-2 px-4 shadow-md dark:bg-secondary"
               >
                 <div className="flex gap-3">
                   <img
                     src={data.profileImage}
                     alt="pfp"
-                    className="w-14 h-14 rounded-full"
+                    className="h-14 w-14 rounded-full object-cover"
                   />
-                  <div className="h-fit my-auto">
+                  <div className="my-auto h-fit">
                     <p
-                      className="font-semibold cursor-pointer"
+                      className="cursor-pointer font-semibold"
                       onClick={() => {
                         navigate(`/profile/${data._id}`);
                       }}
@@ -131,7 +131,7 @@ const FindMateModal = ({ setModal, movie }) => {
                       {data.fullName}
                     </p>
 
-                    <div className="flex items-center gap-1 font-medium dark:text-zinc-300 text-zinc-500">
+                    <div className="flex items-center gap-1 font-medium text-zinc-500 dark:text-zinc-300">
                       <p>{data.age}, </p>
                       <p>{data.gender}</p>
                     </div>
@@ -152,13 +152,13 @@ const FindMateModal = ({ setModal, movie }) => {
                         {data._id !== user._id && (
                           <>
                             {outgoingRequests.some(
-                              (friend) => friend.friend._id === data._id
+                              (friend) => friend.friend._id === data._id,
                             ) ? (
                               <p className="text-sm font-medium">
                                 Request Sent{" "}
                               </p>
                             ) : friends.some(
-                                (friend) => friend.friend._id === data._id
+                                (friend) => friend.friend._id === data._id,
                               ) ? (
                               <Button
                                 variant="ghost"
@@ -171,7 +171,7 @@ const FindMateModal = ({ setModal, movie }) => {
                             ) : (
                               <>
                                 {incomingRequests.some(
-                                  (friend) => friend.friend._id === data._id
+                                  (friend) => friend.friend._id === data._id,
                                 ) ? (
                                   <p className="text-sm font-medium">
                                     Request Received
@@ -194,13 +194,13 @@ const FindMateModal = ({ setModal, movie }) => {
           </div>
         )}
         {interestedUsers?.length < 1 && (
-          <p className="dark:text-zinc-300 pt-8 pb-12 text-center font-semibold text-zinc-500">
+          <p className="pb-12 pt-8 text-center font-semibold text-zinc-500 dark:text-zinc-300">
             Oops! No users found. <br /> Be the first one to show interest 🍿
           </p>
         )}
-        <div className="w-fit mx-auto space-y-1">
+        <div className="mx-auto w-fit space-y-1">
           {interestedUsers && (
-            <p className="dark:text-zinc-300 text-center tracking-tight text-zinc-500">
+            <p className="text-center tracking-tight text-zinc-500 dark:text-zinc-300">
               Didn&apos;t find your mate?
             </p>
           )}
@@ -222,7 +222,7 @@ const FindMateModal = ({ setModal, movie }) => {
           ) : (
             <>
               {addMeLoading && (
-                <div className="w-fit mx-auto">
+                <div className="mx-auto w-fit">
                   <LoadingSpinner />
                 </div>
               )}
