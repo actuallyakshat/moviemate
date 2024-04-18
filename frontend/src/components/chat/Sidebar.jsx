@@ -50,10 +50,16 @@ const Sidebar = ({
 
   return (
     <div
-      className={`fixed bg-background h-full lg:max-h-[calc(100vh-64px)] bottom-0 left-0 lg:max-w-[25rem] w-full p-3 border-r z-[1000] ${
+      className={`fixed bg-background h-full lg:max-h-[calc(100vh-64px)] bottom-0 left-0 lg:max-w-[25rem] pt-14 w-full p-3 border-r z-[1000] ${
         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
+      <div
+        className="absolute block lg:hidden top-3 font-black right-7"
+        onClick={() => setIsMobileMenuOpen(false)}
+      >
+        X
+      </div>
       <Input
         className="max-w-2xl mx-auto"
         placeholder="Search friends"
@@ -106,7 +112,7 @@ const Sidebar = ({
               </div>
             ))
           ) : (
-            <p className="font-semibold text-secondary-foreground/70 text-center pt-10 px-6">
+            <p className="font-semibold text-xl text-secondary-foreground/70 text-center pt-6 px-6">
               You currently don&apos;t have any mates to chat with
             </p>
           )}

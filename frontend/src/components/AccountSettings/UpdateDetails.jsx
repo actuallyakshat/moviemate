@@ -46,9 +46,21 @@ const optionsLang = [
 
 const UpdateDetails = () => {
   const [user, setUser] = useAtom(userAtom);
+  const getOptionsByLabels = (labels, options) => {
+    return labels
+      ?.map((label) => {
+        const option = options.find((opt) => opt?.label === label);
+        return option ? { label: option.label, value: option.value } : null;
+      })
+      .filter(Boolean);
+  };
   console.log(user);
-  const [selectedGenre, setSelectedGenre] = useState([]);
-  const [selectedLang, setSelectedLang] = useState([]);
+  const [selectedGenre, setSelectedGenre] = useState(
+    getOptionsByLabels(user?.favoriteGenres, optionsGenre)
+  );
+  const [selectedLang, setSelectedLang] = useState(
+    getOptionsByLabels(user?.languagePreferences, optionsLang)
+  );
   const [date, setDate] = useState();
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
@@ -204,6 +216,7 @@ const UpdateDetails = () => {
             {...register("location.city")}
             defaultValue={user?.location?.city}
             placeholder="City"
+            required
           />
         </div>
         <div className="space-y-1">
@@ -212,6 +225,7 @@ const UpdateDetails = () => {
             {...register("location.state")}
             defaultValue={user?.location?.state}
             placeholder="State"
+            required
           />
         </div>
         <div className="space-y-1">
@@ -220,15 +234,21 @@ const UpdateDetails = () => {
             {...register("location.country")}
             defaultValue={user?.location?.country}
             placeholder="Country"
+            required
           />
         </div>
         <div className="space-y-1">
           <Label>Favourite Genres</Label>
+          {console.log(selectedGenre)}
           <Select
-            defaultValue={selectedGenre}
+            defaultValue={getOptionsByLabels(
+              user?.favoriteGenres,
+              optionsGenre
+            )}
             onChange={setSelectedGenre}
             options={optionsGenre}
             isMulti={true}
+            required
           />
         </div>
         <div className="space-y-1">
@@ -246,9 +266,13 @@ const UpdateDetails = () => {
             })}
             options={optionsLang}
             className="bg-black"
-            defaultValuevalue={selectedLang}
+            defaultValue={getOptionsByLabels(
+              user?.languagePreferences,
+              optionsLang
+            )}
             onChange={setSelectedLang}
             isMulti={true}
+            required
           ></Select>
         </div>
         <div className="flex justify-end py-3">

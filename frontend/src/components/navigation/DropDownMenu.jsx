@@ -19,8 +19,7 @@ import { useEffect } from "react";
 const DropDownMenu = () => {
   const userFromStore = useAtomValue(userAtom);
   const { user, signOut } = useClerk();
-  const profileImg =
-    userFromStore?.profileImage || import.meta.env.VITE_DUMMY_PROFILE;
+  const profileImg = userFromStore?.profileImage;
   return (
     <DropdownMenu modal={false}>
       <DropdownMenuTrigger asChild>

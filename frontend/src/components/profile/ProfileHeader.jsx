@@ -8,7 +8,6 @@ import { UpdationModal } from "./UpdationModal";
 import Loading from "../Loading/Loading";
 
 const dummyHeader = `${import.meta.env.VITE_DUMMY_HEADER}`;
-const dummyProfile = `${import.meta.env.VITE_DUMMY_PROFILE}`;
 
 export const ProfileHeader = ({ user }) => {
   const navigate = useNavigate();
@@ -16,7 +15,7 @@ export const ProfileHeader = ({ user }) => {
   const [, setCreatedAt] = useState(null);
   const [formattedDate, setFormattedDate] = useState("");
   const [headerUrl, setHeaderUrl] = useState(dummyHeader);
-  const [profileUrl, setprofileUrl] = useState(dummyProfile);
+  const [profileUrl, setprofileUrl] = useState(null);
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState(null);
   const [friendsCount, setFriendsCount] = useState(null);
@@ -52,7 +51,7 @@ export const ProfileHeader = ({ user }) => {
 
       let profileFile;
       if (user && Object.keys(user).length > 0) {
-        profileFile = user?.profileImage || import.meta.env.VITE_DUMMY_PROFILE;
+        profileFile = user?.profileImage;
       }
 
       // If a header file is found, set the header URL

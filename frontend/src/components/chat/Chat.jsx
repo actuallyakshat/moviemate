@@ -50,7 +50,10 @@ const Chat = () => {
           setIsMobileMenuOpen={setIsMobileMenuOpen}
         />
       ) : (
-        <p className="lg:pl-[27rem] px-4 text-2xl w-fit mx-auto pt-8 font-black text-foreground/80">
+        <p
+          onClick={() => setIsMobileMenuOpen(true)}
+          className="lg:pl-[27rem] underline lg:no-underline px-4 text-2xl w-fit mx-auto pt-8 font-black text-foreground/80"
+        >
           Please select a conversation
         </p>
       )}

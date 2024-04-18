@@ -232,7 +232,7 @@ const Mates = () => {
           </div>
         </div>
       </div>
-      <hr className="my-2" />
+      <div className="my-2 h-[0.5px] dark:bg-gray-300/30 bg-gray-600/20" />
       <div className="p-4 max-w-7xl mx-auto">
         <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
         <div className="pt-5 space-y-2">

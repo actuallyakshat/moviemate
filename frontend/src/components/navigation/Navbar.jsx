@@ -23,7 +23,7 @@ export function Navbar() {
         </Link>
         <>
           <SignedOut>
-            <Button variant="outline" onClick={openSignIn}>
+            <Button variant="ghost" onClick={openSignIn}>
               Login
             </Button>
           </SignedOut>
