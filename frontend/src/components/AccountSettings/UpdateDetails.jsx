@@ -3,13 +3,14 @@ import { Label } from "@radix-ui/react-dropdown-menu";
 import { useAtom } from "jotai";
 import { Input } from "../ui/input";
 import { motion } from "framer-motion";
-import { DatePicker } from "./DatePicker";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { MultiSelect } from "react-multi-select-component";
 import { Button } from "../ui/button";
 import { updateUserDetails } from "@/actions/userActions";
+import LoadingSpinner from "../Loading/LoadingSpinner";
+import { useToast } from "../ui/use-toast";
 
 const optionsGenre = [
   { label: "Action", value: "Action" },
@@ -47,6 +48,8 @@ const UpdateDetails = () => {
   const [selectedGenre, setSelectedGenre] = useState([]);
   const [selectedLang, setSelectedLang] = useState([]);
   const [date, setDate] = useState();
+  const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
   const { register, handleSubmit } = useForm();
   function isEmptyObject(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
@@ -89,6 +92,7 @@ const UpdateDetails = () => {
   // }, [user]);
 
   const onSubmit = async (data) => {
+    setLoading(true);
     const DOB = data.dateOfBirth;
     if (DOB) data.age = getAge(DOB);
 
@@ -114,13 +118,16 @@ const UpdateDetails = () => {
         setUser
       );
       if (response.success) {
+        toast({ title: "✅ Profile updated successfully!" });
         setUser({ ...user, onboardingCompleted: true });
+        setLoading(false);
         console.log(response.message); // Handle success message
       } else {
         console.error(response.message); // Handle error message
       }
     } catch (error) {
       console.error("Error updating user details:", error);
+      setLoading(false);
       // Handle error
     }
   };
@@ -230,7 +237,13 @@ const UpdateDetails = () => {
           ></MultiSelect>
         </div>
         <div className="flex justify-end py-3">
-          <Button>Submit</Button>
+          {loading ? (
+            <div>
+              <LoadingSpinner />
+            </div>
+          ) : (
+            <Button>Submit</Button>
+          )}
         </div>
       </form>
     </motion.div>
