@@ -11,7 +11,7 @@ const fetchLatestMovies = async () => {
           headers: {
             Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
           },
-        }
+        },
       );
       promises.push(promise);
     }
@@ -52,7 +52,7 @@ const fetchTopMovies = async () => {
           headers: {
             Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
           },
-        }
+        },
       );
       promises.push(promise);
     }
@@ -62,7 +62,7 @@ const fetchTopMovies = async () => {
 
     // Filter movies with original_language 'en' or 'hi'
     movieData = movieData.filter((movie) =>
-      ["en", "hi"].includes(movie.original_language)
+      ["en", "hi"].includes(movie.original_language),
     );
 
     // Extract unique movie IDs
@@ -79,7 +79,8 @@ const fetchTopMovies = async () => {
     return shuffleArray(uniqueMovies);
   } catch (error) {
     console.error("Error fetching top movies:", error);
-    return []; // Return empty array if an error occurs
+    console.log(error.message);
+    return null; // Return empty array if an error occurs
   }
 };
 
@@ -187,7 +188,7 @@ const fetchMoviesByGenre = async (genreIds) => {
           headers: {
             Authorization: `Bearer ${import.meta.env.VITE_TMDB_TOKEN}`,
           },
-        }
+        },
       );
     });
 
@@ -222,7 +223,7 @@ const fetchSearchMovies = async (query) => {
       params: {
         query,
       },
-    }
+    },
   );
   return response.data.results;
 };

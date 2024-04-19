@@ -32,6 +32,15 @@ const Banner = () => {
     return <Loading />;
   }
 
+  if (!bannerMovie)
+    return (
+      <div>
+        <h1 className="p-4 text-xl font-bold text-opacity-60">
+          Oops, We had an error fetching the content for you
+        </h1>
+      </div>
+    );
+
   return (
     <div className="relative min-h-[27rem] w-full overflow-hidden bg-cover bg-no-repeat">
       <div

@@ -18,6 +18,7 @@ import LoadingSpinner from "../Loading/LoadingSpinner";
 
 const FindMateModal = ({ setModal, movie }) => {
   const navigate = useNavigate();
+  const [loadingUser, setLoadingUsers] = useState(false);
   const [loadingMap, setLoadingMap] = useState({});
   const [addMeLoading, setAddMeLoading] = useState(false);
   const [requestLoading, setRequestLoading] = useState(true);
@@ -62,6 +63,7 @@ const FindMateModal = ({ setModal, movie }) => {
 
   useEffect(() => {
     const getUsers = async () => {
+      setLoadingUsers(true);
       const response = await getAllInterestedUsers(movie.id);
       setInterestedUsers(response?.interestedUsers);
       await getFriends(user._id, setFriends);
@@ -71,6 +73,7 @@ const FindMateModal = ({ setModal, movie }) => {
         setOutgoingRequests,
       );
       setRequestLoading(false);
+      setLoadingUsers(false);
     };
     getUsers();
   }, []);
@@ -108,78 +111,89 @@ const FindMateModal = ({ setModal, movie }) => {
         <h1 className="text-center text-xl font-semibold">
           Users interested to watch {movie.title}
         </h1>
-        {interestedUsers && (
-          <div className="space-y-2 py-4">
-            {interestedUsers.map((data) => (
-              <div
-                key={data._id}
-                className="flex w-full items-center justify-between rounded-lg border bg-zinc-100 p-2 px-4 shadow-md dark:bg-secondary"
-              >
-                <div className="flex gap-3">
-                  <img
-                    src={data.profileImage}
-                    alt="pfp"
-                    className="h-14 w-14 rounded-full object-cover"
-                  />
-                  <div className="my-auto h-fit">
-                    <p
-                      className="cursor-pointer font-semibold"
-                      onClick={() => {
-                        navigate(`/profile/${data._id}`);
-                      }}
-                    >
-                      {data.fullName}
-                    </p>
+        {loadingUser ? (
+          <div className="mx-auto mb-2 mt-6 w-fit">
+            <LoadingSpinner />
+          </div>
+        ) : (
+          <>
+            {interestedUsers && (
+              <div className="space-y-2 py-4">
+                {interestedUsers.map((data) => (
+                  <div
+                    key={data._id}
+                    className="flex w-full items-center justify-between rounded-lg border bg-zinc-100 p-2 px-4 shadow-md dark:bg-secondary"
+                  >
+                    <div className="flex gap-3">
+                      <img
+                        src={data.profileImage}
+                        alt="pfp"
+                        className="h-14 w-14 rounded-full object-cover"
+                      />
+                      <div className="my-auto h-fit">
+                        <p
+                          className="cursor-pointer font-semibold"
+                          onClick={() => {
+                            navigate(`/profile/${data._id}`);
+                          }}
+                        >
+                          {data.fullName}
+                        </p>
 
-                    <div className="flex items-center gap-1 font-medium text-zinc-500 dark:text-zinc-300">
-                      <p>{data.age}, </p>
-                      <p>{data.gender}</p>
+                        <div className="flex items-center gap-1 font-medium text-zinc-500 dark:text-zinc-300">
+                          <p>{data.age}, </p>
+                          <p>{data.gender}</p>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
-                {loadingMap[data._id] ? (
-                  <div>
-                    <LoadingSpinner />
-                  </div>
-                ) : (
-                  <>
-                    {requestLoading ? (
+                    {loadingMap[data._id] ? (
                       <div>
                         <LoadingSpinner />
                       </div>
                     ) : (
                       <>
-                        {data._id !== user._id && (
+                        {requestLoading ? (
+                          <div>
+                            <LoadingSpinner />
+                          </div>
+                        ) : (
                           <>
-                            {outgoingRequests.some(
-                              (friend) => friend.friend._id === data._id,
-                            ) ? (
-                              <p className="text-sm font-medium">
-                                Request Sent{" "}
-                              </p>
-                            ) : friends.some(
-                                (friend) => friend.friend._id === data._id,
-                              ) ? (
-                              <Button
-                                variant="ghost"
-                                onClick={() => {
-                                  navigate(`/chat`);
-                                }}
-                              >
-                                Chat
-                              </Button>
-                            ) : (
+                            {data._id !== user._id && (
                               <>
-                                {incomingRequests.some(
+                                {outgoingRequests.some(
                                   (friend) => friend.friend._id === data._id,
                                 ) ? (
                                   <p className="text-sm font-medium">
-                                    Request Received
+                                    Request Sent{" "}
                                   </p>
-                                ) : (
-                                  <Button onClick={() => addMateHandler(data)}>
-                                    Add Mate
+                                ) : friends.some(
+                                    (friend) => friend.friend._id === data._id,
+                                  ) ? (
+                                  <Button
+                                    variant="ghost"
+                                    onClick={() => {
+                                      navigate(`/chat`);
+                                    }}
+                                  >
+                                    Chat
                                   </Button>
+                                ) : (
+                                  <>
+                                    {incomingRequests.some(
+                                      (friend) =>
+                                        friend.friend._id === data._id,
+                                    ) ? (
+                                      <p className="text-sm font-medium">
+                                        Request Received
+                                      </p>
+                                    ) : (
+                                      <Button
+                                        onClick={() => addMateHandler(data)}
+                                      >
+                                        Add Mate
+                                      </Button>
+                                    )}
+                                  </>
                                 )}
                               </>
                             )}
@@ -187,48 +201,49 @@ const FindMateModal = ({ setModal, movie }) => {
                         )}
                       </>
                     )}
-                  </>
-                )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        )}
-        {interestedUsers?.length < 1 && (
-          <p className="pb-12 pt-8 text-center font-semibold text-zinc-500 dark:text-zinc-300">
-            Oops! No users found. <br /> Be the first one to show interest 🍿
-          </p>
-        )}
-        <div className="mx-auto w-fit space-y-1">
-          {interestedUsers && (
-            <p className="text-center tracking-tight text-zinc-500 dark:text-zinc-300">
-              Didn&apos;t find your mate?
-            </p>
-          )}
-
-          {!addMeLoading ? (
-            interestedUsers.some((data) => data._id === user._id) ? (
-              <Button
-                variant="destructive"
-                onClick={removeUserHandler}
-                className="w-full"
-              >
-                Remove me from the list
-              </Button>
-            ) : (
-              <Button onClick={submitHandler} className="w-full">
-                Add me on the list!
-              </Button>
-            )
-          ) : (
-            <>
-              {addMeLoading && (
-                <div className="mx-auto w-fit">
-                  <LoadingSpinner />
-                </div>
+            )}
+            {interestedUsers?.length < 1 && (
+              <p className="pb-12 pt-8 text-center font-semibold text-zinc-500 dark:text-zinc-300">
+                Oops! No users found. <br /> Be the first one to show interest
+                🍿
+              </p>
+            )}
+            <div className="mx-auto w-fit space-y-1">
+              {interestedUsers && (
+                <p className="text-center tracking-tight text-zinc-500 dark:text-zinc-300">
+                  Didn&apos;t find your mate?
+                </p>
               )}
-            </>
-          )}
-        </div>
+
+              {!addMeLoading ? (
+                interestedUsers.some((data) => data._id === user._id) ? (
+                  <Button
+                    variant="destructive"
+                    onClick={removeUserHandler}
+                    className="w-full"
+                  >
+                    Remove me from the list
+                  </Button>
+                ) : (
+                  <Button onClick={submitHandler} className="w-full">
+                    Add me on the list!
+                  </Button>
+                )
+              ) : (
+                <>
+                  {addMeLoading && (
+                    <div className="mx-auto w-fit">
+                      <LoadingSpinner />
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

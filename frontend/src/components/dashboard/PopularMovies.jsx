@@ -8,11 +8,12 @@ import { RiArrowRightSLine } from "react-icons/ri";
 import { RiArrowLeftSLine } from "react-icons/ri";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import Loading from "../Loading/Loading";
 
 const NextArrow = ({ onClick }) => {
   return (
     <button
-      className="bg-black/60 hover:bg-black/90 transition-colors h-fit rounded-full aspect-square w-14 flex items-center justify-center font-bold"
+      className="flex aspect-square h-fit w-14 items-center justify-center rounded-full bg-black/60 font-bold transition-colors hover:bg-black/90"
       style={{
         zIndex: 800,
         position: "absolute",
@@ -22,7 +23,7 @@ const NextArrow = ({ onClick }) => {
       }}
       onClick={onClick}
     >
-      <RiArrowRightSLine className="text-white size-8" />
+      <RiArrowRightSLine className="size-8 text-white" />
     </button>
   );
 };
@@ -30,7 +31,7 @@ const NextArrow = ({ onClick }) => {
 const PrevArrow = ({ onClick }) => {
   return (
     <button
-      className="bg-black/60 hover:bg-black/90 transition-colors h-fit rounded-full aspect-square w-14 flex items-center justify-center font-bold"
+      className="flex aspect-square h-fit w-14 items-center justify-center rounded-full bg-black/60 font-bold transition-colors hover:bg-black/90"
       style={{
         zIndex: 800,
         position: "absolute",
@@ -40,13 +41,14 @@ const PrevArrow = ({ onClick }) => {
       }}
       onClick={onClick}
     >
-      <RiArrowLeftSLine className="text-white size-8" />
+      <RiArrowLeftSLine className="size-8 text-white" />
     </button>
   );
 };
 
 const PopularMovies = () => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [currentMovie, setCurrentMovie] = useAtom(currentMovieAtom);
   const [popularMovies, setPopularMovies] = useState(null);
 
@@ -57,12 +59,14 @@ const PopularMovies = () => {
 
   useEffect(() => {
     const getMovies = async () => {
+      setLoading(true);
       try {
         const response = await fetchTopMovies();
         setPopularMovies(response);
       } catch (error) {
         console.error("Error fetching popular movies:", error);
       }
+      setLoading(false);
     };
     getMovies();
   }, []);
@@ -146,23 +150,34 @@ const PopularMovies = () => {
     prevArrow: <PrevArrow />,
   };
 
+  if (loading) {
+    return <Loading />;
+  }
+  if (!popularMovies)
+    return (
+      <div>
+        <h1 className="p-4 text-xl font-bold text-opacity-60">
+          Oops, We had an error fetching the content for you
+        </h1>
+      </div>
+    );
   return (
     <div className="my-5 pb-5">
-      <h1 className="px-4 font-bold text-4xl mb-6">Popular Movies</h1>
+      <h1 className="mb-6 px-4 text-4xl font-bold">Popular Movies</h1>
       <div className="slider-container h-full px-3">
         <Slider {...settings}>
           {popularMovies?.map((movie) => (
-            <div key={movie.id} className="pr-1 h-full overflow-hidden">
+            <div key={movie.id} className="h-full overflow-hidden pr-1">
               <div
                 onClick={() => handleClick(movie)}
-                className="cursor-pointer h-full rounded-lg relative overflow-hidden"
+                className="relative h-full cursor-pointer overflow-hidden rounded-lg"
               >
                 <img
                   src={`http://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt="poster"
-                  className="object-cover h-full"
+                  className="h-full object-cover"
                 />
-                <div className="absolute inset-0 hover:bg-black/20 rounded-lg transition duration-200"></div>
+                <div className="absolute inset-0 rounded-lg transition duration-200 hover:bg-black/20"></div>
               </div>
             </div>
           ))}

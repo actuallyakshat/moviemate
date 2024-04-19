@@ -18,7 +18,7 @@ const Sidebar = ({
     const filtered = conversations.filter((conversation) =>
       conversation.friend.fullName
         .toLowerCase()
-        .includes(searchQuery.toLowerCase())
+        .includes(searchQuery.toLowerCase()),
     );
     setFilteredConversations(filtered);
   }, [searchQuery, conversations]);
@@ -29,28 +29,28 @@ const Sidebar = ({
 
   return (
     <div
-      className={`fixed bg-background h-full lg:max-h-[calc(100vh-64px)] bottom-0 left-0 lg:max-w-[25rem] pt-14 w-full p-3 border-r z-[1000] ${
+      className={`fixed bottom-0 left-0 z-[1000] h-full w-full border-r bg-background p-3 pt-14 lg:max-h-[calc(100vh-64px)] lg:max-w-[25rem] lg:pt-3 ${
         isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
       }`}
     >
       <div
-        className="absolute block lg:hidden top-3 font-black right-7"
+        className="absolute right-7 top-3 block font-black lg:hidden"
         onClick={() => setIsMobileMenuOpen(false)}
       >
         X
       </div>
       <Input
-        className="max-w-2xl mx-auto"
+        className="mx-auto max-w-2xl"
         placeholder="Search friends"
         value={searchQuery}
         onChange={handleInputChange}
       />
       {loading ? (
-        <div className="w-full h-full flex items-center">
+        <div className="flex h-full w-full items-center">
           <LoadingSpinner />
         </div>
       ) : (
-        <div className="space-y-2 mt-4">
+        <div className="mt-4 space-y-2">
           {filteredConversations.length > 0 ? (
             filteredConversations.map((conversation) => (
               <div
@@ -60,7 +60,7 @@ const Sidebar = ({
                   conversation?.friendshipId
                     ? "bg-gray-200/70 dark:bg-gray-700"
                     : "bg-zinc-50 hover:bg-zinc-100 dark:bg-gray-600 hover:dark:bg-gray-700"
-                } items-center gap-3 flex  transition-colors border shadow-md rounded-lg cursor-pointer`}
+                } flex cursor-pointer items-center  gap-3 rounded-lg border shadow-md transition-colors`}
               >
                 <div
                   onClick={() => {
@@ -69,19 +69,19 @@ const Sidebar = ({
                       setIsMobileMenuOpen(false);
                     }
                   }}
-                  className="w-full h-full p-3 rounded-lg"
+                  className="h-full w-full rounded-lg p-3"
                 >
                   <div className="flex items-center gap-3">
                     <img
                       src={conversation?.friend?.profileImage}
                       alt="pfp"
-                      className="w-10 h-10 rounded-full"
+                      className="h-10 w-10 rounded-full"
                     />
-                    <div className="h-fit my-auto">
+                    <div className="my-auto h-fit">
                       <h1 className="font-bold">
                         {conversation?.friend?.fullName}
                       </h1>
-                      <div className="text-sm font-medium text-foreground/70 flex gap-1">
+                      <div className="flex gap-1 text-sm font-medium text-foreground/70">
                         <h3>{conversation?.friend.age},</h3>
                         <h3>{conversation?.friend.gender}</h3>
                       </div>
@@ -91,7 +91,7 @@ const Sidebar = ({
               </div>
             ))
           ) : (
-            <p className="font-semibold text-xl text-secondary-foreground/70 text-center pt-6 px-6">
+            <p className="px-6 pt-6 text-center text-xl font-semibold text-secondary-foreground/70">
               You currently don&apos;t have any mates to chat with
             </p>
           )}

@@ -24,15 +24,25 @@ const Mates = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (user) {
-      getFriends(user._id, setFriends);
-      getPendingRequest(user._id, setIncomingRequests, setOutgoingRequests)
-        .then(() => setLoading(false)) // Set loading to false after data is fetched
-        .catch((error) => {
+    const fetchData = async () => {
+      setLoading(true);
+      if (user) {
+        try {
+          await getFriends(user._id, setFriends);
+          await getPendingRequest(
+            user._id,
+            setIncomingRequests,
+            setOutgoingRequests,
+          );
+          setLoading(false);
+        } catch (error) {
           console.error("Error fetching data:", error);
-          setLoading(false); // In case of error, still set loading to false to prevent indefinite loading
-        });
-    }
+          setLoading(false);
+        }
+      }
+    };
+
+    fetchData();
   }, [user]);
 
   const acceptFriendHandler = async (userId, friend) => {
@@ -43,7 +53,7 @@ const Mates = () => {
         description: "Mate request accepted successfully",
       });
       setIncomingRequests(
-        incomingRequests.filter((f) => f.friend._id !== friend._id)
+        incomingRequests.filter((f) => f.friend._id !== friend._id),
       );
       setFriends([...friends, { friend }]);
     } else {
@@ -60,7 +70,7 @@ const Mates = () => {
         variant: "destructive",
       });
       setIncomingRequests(
-        incomingRequests.filter((f) => f.friend._id !== friendId)
+        incomingRequests.filter((f) => f.friend._id !== friendId),
       );
     } else {
       console.error("Error accepting friend request", response.message);
@@ -76,7 +86,7 @@ const Mates = () => {
         variant: "destructive",
       });
       setOutgoingRequests(
-        outgoingRequests.filter((f) => f.friend._id !== friendId)
+        outgoingRequests.filter((f) => f.friend._id !== friendId),
       );
     } else {
       console.error("Error accepting friend request", response.message);
@@ -102,8 +112,8 @@ const Mates = () => {
     return <Loading />;
   }
   return (
-    <div className="pt-20 w-full">
-      <div className="grid grid-col-1 md:grid-cols-2 gap-8 max-w-7xl w-full mx-auto p-4">
+    <div className="w-full pt-20">
+      <div className="grid-col-1 mx-auto grid w-full max-w-7xl gap-8 p-4 md:grid-cols-2">
         <div className="col-span-1">
           <h1 className="text-3xl font-semibold">Incoming Requests</h1>
           <div className="mt-5 space-y-2">
@@ -111,16 +121,16 @@ const Mates = () => {
               incomingRequests.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="p-2 shadow-md flex w-full items-center justify-between gap-4 border rounded-xl px-4"
+                  className="flex w-full items-center justify-between gap-4 rounded-xl border p-2 px-4 shadow-md"
                 >
                   <div className="flex items-center justify-center gap-4">
                     <img
                       src={friend?.friend?.profileImage}
-                      className="w-14 h-14 my-auto rounded-full"
+                      className="my-auto h-14 w-14 rounded-full"
                     />
                     <div>
                       <h1
-                        className="font-semibold cursor-pointer"
+                        className="cursor-pointer font-semibold"
                         onClick={() => {
                           navigate(`/profile/${friend?.friend?._id}`);
                         }}
@@ -141,7 +151,7 @@ const Mates = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="space-x-3 flex">
+                  <div className="flex space-x-3">
                     <Button
                       variant="ghost"
                       className="hover:text-red-500"
@@ -177,16 +187,16 @@ const Mates = () => {
               outgoingRequests?.map((friend) => (
                 <div
                   key={friend.friend._id}
-                  className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
+                  className="flex w-full items-center justify-between rounded-lg border bg-zinc-100 p-2 px-4 shadow-md dark:bg-secondary"
                 >
                   <div className="flex gap-3">
                     <img
                       src={friend.friend.profileImage}
-                      className="w-14 h-14 my-auto rounded-full"
+                      className="my-auto h-14 w-14 rounded-full"
                     />
-                    <div className="h-fit my-auto">
+                    <div className="my-auto h-fit">
                       <h1
-                        className="font-semibold cursor-pointer"
+                        className="cursor-pointer font-semibold"
                         onClick={() => {
                           navigate(`/profile/${friend?.friend?._id}`);
                         }}
@@ -226,25 +236,25 @@ const Mates = () => {
           </div>
         </div>
       </div>
-      <div className="my-2 h-[0.5px] dark:bg-gray-300/30 bg-gray-600/20" />
-      <div className="p-4 max-w-7xl mx-auto">
-        <h1 className="text-3xl font-semibold max-w-7xl mx-auto">All Mates</h1>
-        <div className="pt-5 space-y-2">
+      <div className="my-2 h-[0.5px] bg-gray-600/20 dark:bg-gray-300/30" />
+      <div className="mx-auto max-w-7xl p-4">
+        <h1 className="mx-auto max-w-7xl text-3xl font-semibold">All Mates</h1>
+        <div className="space-y-2 pt-5">
           {friends?.length > 0 ? (
             friends?.map((friend) => (
               <div
                 key={friend._id}
-                className="flex items-center justify-between bg-zinc-100 dark:bg-secondary shadow-md border rounded-lg px-4 p-2 w-full"
+                className="flex w-full items-center justify-between rounded-lg border bg-zinc-100 p-2 px-4 shadow-md dark:bg-secondary"
               >
                 <div className="flex items-center gap-3">
                   <img
                     src={friend?.friend?.profileImage}
                     alt="pfp"
-                    className="w-14 h-14 my-auto rounded-full"
+                    className="my-auto h-14 w-14 rounded-full"
                   />
                   <div className="flex flex-col">
                     <h1
-                      className="font-semibold cursor-pointer text-lg"
+                      className="cursor-pointer text-lg font-semibold"
                       onClick={() => {
                         navigate(`/profile/${friend?.friend?._id}`);
                       }}
